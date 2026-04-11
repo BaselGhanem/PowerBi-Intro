@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="برنامج تدريب Power BI Desktop لسوق العمل مع المدرب باسل غانم">
+    <title>دورة Power BI المعمارية | باسل غانم</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <style>
+        :root {
+            --primary-teal: #099999;
+            --primary-teal-dark: #066666;
+            --luxury-gold: #D4AF37;
+            --bg-dark: #0f172a;
+            --bg-card: rgba(30, 41, 59, 0.7);
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-dark);
+            color: #f8fafc;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection { background-color: var(--primary-teal); color: white; }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary-teal); }
+
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            background: rgba(30, 41, 59, 0.9);
+            border-color: var(--primary-teal);
+            box-shadow: 0 20px 40px -10px rgba(9, 153, 153, 0.2);
+        }
+
+        .dot-pattern {
+            background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+
+        @keyframes float { 
+            0%, 100% { transform: translateY(0px); } 
+            50% { transform: translateY(-15px); } 
+        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+
+        @keyframes shine { 
+            0% { left: -100%; } 
+            100% { left: 100%; } 
+        }
+        .btn-shine { position: relative; overflow: hidden; }
+        .btn-shine::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg); animation: shine 3s infinite;
+        }
+
+        .timeline-container::before {
+            content: ''; position: absolute; top: 0; bottom: 0; right: 28px; width: 2px;
+            background: rgba(255,255,255,0.1); z-index: 0;
+        }
+        @media (min-width: 768px) { 
+            .timeline-container::before { right: 50%; margin-right: -1px; } 
+        }
+    </style>
+</head>
+<body class="antialiased text-slate-300">
+
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center gap-3 group cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-[#099999] blur opacity-40 group-hover:opacity-70 transition duration-500 rounded-xl"></div>
+                        <div class="relative bg-gradient-to-br from-[#099999] to-slate-900 p-2.5 rounded-xl text-white shadow-lg transform group-hover:rotate-6 transition duration-300">
+                            <i data-lucide="bar-chart-2" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+                    <span class="text-2xl font-black text-white tracking-tight group-hover:text-[#099999] transition-colors">
+                        Power BI <span class="text-[#099999]">مع باسل</span>
+                    </span>
+                </div>
+
+                <div class="hidden md:flex items-center gap-6 font-bold text-slate-300 text-sm lg:text-base">
+                    <a href="#philosophy" class="hover:text-[#099999] transition-colors duration-300">منهجيتنا</a>
+                    <a href="#agenda" class="hover:text-[#099999] transition-colors duration-300">الأجندة</a>
+                    <a href="#roadmap" class="hover:text-[#099999] transition-colors duration-300">خارطة الطريق</a>
+                    <a href="#project" class="hover:text-[#099999] transition-colors duration-300">المشروع</a>
+                    <a href="#contact" class="bg-[#099999] text-white px-7 py-2.5 rounded-full hover:bg-[#066666] transition-all duration-300 shadow-lg shadow-[#099999]/20 hover:-translate-y-1 btn-shine">
+                        تواصل معنا
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="relative overflow-hidden min-h-[95vh] flex items-center justify-center pt-20">
+        <div class="absolute inset-0 dot-pattern opacity-30"></div>
+        <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-[#099999]/10 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#D4AF37]/5 rounded-full blur-[120px]"></div>
+        
+        <div class="max-w-5xl mx-auto px-4 relative z-10 text-center">
+            <div data-aos="zoom-in" data-aos-delay="100" class="inline-flex items-center gap-3 px-5 py-2.5 rounded-full glass-card border border-[#099999]/30 mb-8 animate-float">
+                <span class="flex h-2.5 w-2.5 relative">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#099999] opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#099999]"></span>
+                </span>
+                <span class="text-sm font-bold text-white tracking-wide">برنامج تدريبي متكامل لسوق العمل</span>
+            </div>
+
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black mb-8 leading-[1.2] text-white" data-aos="fade-up" data-aos-delay="200">
+                التصميم المعماري <br>
+                <span class="relative inline-block mt-2">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-l from-[#099999] to-[#2dd4bf]">لذكاء الأعمال</span>
+                </span>
+            </h1>
+
+            <p class="text-xl md:text-2xl text-slate-400 mb-12 max-w-3xl mx-auto leading-relaxed" data-aos="fade-up" data-aos-delay="400">
+                مقدمة من <span class="text-white font-bold">X Academy</span>. نركز على الفهم المعماري لمحرك البيانات بدلاً من الحفظ التلقائي للخطوات، لنخرج محللي بيانات بـ <span class="text-[#D4AF37]">جاهزية فورية للسوق</span>.
+            </p>
+
+            <div class="flex flex-col sm:flex-row justify-center gap-5" data-aos="fade-up" data-aos-delay="600">
+                <div class="flex items-center gap-4 glass-card p-5 rounded-2xl border-l-2 border-[#099999]">
+                    <div class="bg-[#099999]/20 p-3 rounded-xl text-[#099999]">
+                        <i data-lucide="layers" class="w-6 h-6"></i>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">المنهجية</p>
+                        <p class="font-bold text-white text-lg">التدريب المعرفي الموجه</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 glass-card p-5 rounded-2xl border-l-2 border-[#D4AF37]">
+                    <div class="bg-[#D4AF37]/10 p-3 rounded-xl text-[#D4AF37]">
+                        <i data-lucide="shield-check" class="w-6 h-6"></i>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">المدرب</p>
+                        <p class="font-bold text-white text-lg">باسل غانم</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="philosophy" class="py-20 bg-slate-900/50 relative border-y border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 md:px-6">
+            <div class="text-center mb-16" data-aos="fade-down">
+                <span class="text-[#099999] font-bold tracking-wider uppercase text-sm mb-2 block">فلسفتنا التدريبية</span>
+                <h2 class="text-3xl md:text-5xl font-black text-white mb-6">لماذا هذا المنهج مختلف؟</h2>
+                <p class="text-slate-400 max-w-3xl mx-auto text-lg leading-relaxed">المناهج التقليدية تعتمد على "جدول البيانات الواحد" والقفز للمؤشرات البصرية. نحن هنا نبني <span class="text-white font-bold">مهندس بيانات</span> يفهم محرك VertiPaq وسياق التقييم (Context).</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass-card p-8 rounded-3xl hover:border-[#099999] transition duration-300" data-aos="fade-up" data-aos-delay="0">
+                    <div class="w-14 h-14 bg-[#099999]/20 rounded-2xl flex items-center justify-center mb-6 text-[#099999]">
+                        <i data-lucide="network" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">نموذج النجمة (Star Schema)</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">تجاوز فخ "الجدول الضخم" المكدس. سنتعلم هندسة البيانات الحقيقية التي تحافظ على الذاكرة وترفع أداء محرك VertiPaq لأقصى درجة.</p>
+                </div>
+                
+                <div class="glass-card p-8 rounded-3xl hover:border-[#D4AF37] transition duration-300" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-14 h-14 bg-[#D4AF37]/20 rounded-2xl flex items-center justify-center mb-6 text-[#D4AF37]">
+                        <i data-lucide="cpu" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">قاعدة روش (Roche's Maxim)</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">تحويل البيانات يجب أن يتم في أبعد نقطة ممكنة نحو المصدر (Upstream)، مما يقلل العبء على محرك العرض في Power BI ويحسن طي الاستعلام.</p>
+                </div>
+
+                <div class="glass-card p-8 rounded-3xl hover:border-[#099999] transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-14 h-14 bg-[#099999]/20 rounded-2xl flex items-center justify-center mb-6 text-[#099999]">
+                        <i data-lucide="code-2" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">المقاييس vs الأعمدة المحسوبة</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">وقف الاستخدام المفرط للأعمدة المحسوبة التي تستهلك التخزين، والتركيز على المقاييس (Measures) وفهم عميق للـ Row Context والـ Filter Context.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="agenda" class="py-24 relative overflow-hidden">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#099999]/5 rounded-full blur-[100px] -z-10"></div>
+        
+        <div class="max-w-4xl mx-auto px-4 md:px-6 relative z-10 text-center">
+            <span class="text-[#D4AF37] font-bold tracking-wider uppercase text-sm mb-2 block">Schedule</span>
+            <h2 class="text-4xl md:text-5xl font-black text-white mb-10">الجدول الزمني للبرنامج</h2>
+            
+            <div class="glass-card p-10 md:p-14 rounded-[3rem] border-t-4 border-[#099999] shadow-2xl relative overflow-hidden group" data-aos="zoom-in">
+                <div class="absolute -right-10 -top-10 text-[#099999]/10 group-hover:scale-110 transition duration-500">
+                    <i data-lucide="calendar-check" class="w-48 h-48"></i>
+                </div>
+                
+                <div class="relative z-10">
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-6 mb-8">
+                        <div class="bg-slate-800/80 border border-slate-700 px-6 py-3 rounded-2xl flex items-center gap-3">
+                            <i data-lucide="rocket" class="w-6 h-6 text-[#099999]"></i>
+                            <div class="text-right">
+                                <span class="block text-xs text-slate-400">تاريخ البدء</span>
+                                <span class="text-white font-bold text-lg">11 - 4 - 2026</span>
+                            </div>
+                        </div>
+                        <div class="bg-slate-800/80 border border-slate-700 px-6 py-3 rounded-2xl flex items-center gap-3">
+                            <i data-lucide="layout-grid" class="w-6 h-6 text-[#D4AF37]"></i>
+                            <div class="text-right">
+                                <span class="block text-xs text-slate-400">مدة البرنامج</span>
+                                <span class="text-white font-bold text-lg">5 محاضرات مكثفة</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-4xl md:text-5xl font-black text-white mb-6">كل يوم سبت</h3>
+                    
+                    <div class="inline-flex items-center gap-4 bg-[#099999]/20 border border-[#099999]/50 px-8 py-4 rounded-full text-[#2dd4bf] font-black text-2xl md:text-3xl">
+                        <i data-lucide="clock" class="w-8 h-8"></i>
+                        12:00 م — 03:00 م
+                    </div>
+                    
+                    <p class="mt-8 text-slate-400 font-medium">* يرجى الالتزام بالمواعيد وإحضار اللابتوب الخاص بك لكل جلسة.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="roadmap" class="py-24 bg-slate-900/30 overflow-hidden border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 md:px-6">
+            <div class="text-center mb-20" data-aos="fade-down">
+                <h2 class="text-4xl md:text-5xl font-black text-white mb-4">خارطة الطريق التفاعلية</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto text-lg">تتدفق رحلتنا التعليمية محاكيةً لدورة حياة البيانات الحقيقية في المؤسسات الكبرى، عبر 6 مراحل متتالية.</p>
+            </div>
+
+            <div class="relative timeline-container">
+                <div class="mb-12 flex flex-col md:flex-row items-center w-full relative group">
+                    <div class="md:w-1/2 flex justify-center md:justify-end md:pr-12 mb-8 md:mb-0 w-full">
+                        <div class="glass-card p-6 rounded-3xl w-full max-w-md relative hover:border-[#099999]" data-aos="fade-left">
+                            <h3 class="text-xl font-bold text-white mb-2"><span class="text-[#099999] mr-2">01</span> اكتشاف المشكلة واستخراج البيانات</h3>
+                            <p class="text-slate-400 text-sm">فهم بيئة العمل والاتصال بالمصادر. الفرق بين Import و DirectQuery وفهم معمارية VertiPaq.</p>
+                        </div>
+                    </div>
+                    <div class="absolute right-[28px] md:right-1/2 md:mr-[-20px] top-0 md:top-1/2 md:-translate-y-1/2 w-10 h-10 bg-slate-800 border-2 border-[#099999] rounded-full z-10 flex items-center justify-center text-[#099999]">1</div>
+                    <div class="md:w-1/2"></div>
+                </div>
+
+                <div class="mb-12 flex flex-col md:flex-row-reverse items-center w-full relative group">
+                    <div class="md:w-1/2 flex justify-center md:justify-start md:pl-12 mb-8 md:mb-0 w-full">
+                        <div class="glass-card p-6 rounded-3xl w-full max-w-md relative hover:border-[#099999]" data-aos="fade-right">
+                            <h3 class="text-xl font-bold text-white mb-2"><span class="text-[#099999] mr-2">02</span> التنظيف والتحويل المتقدم</h3>
+                            <p class="text-slate-400 text-sm">تطبيق استراتيجيات Power Query، قاعدة روش، طي الاستعلام (Query Folding)، ومعالجة البيانات المحورية (Unpivot).</p>
+                        </div>
+                    </div>
+                    <div class="absolute right-[28px] md:right-1/2 md:mr-[-20px] top-0 md:top-1/2 md:-translate-y-1/2 w-10 h-10 bg-slate-800 border-2 border-[#099999] rounded-full z-10 flex items-center justify-center text-[#099999]">2</div>
+                    <div class="md:w-1/2"></div>
+                </div>
+
+                <div class="mb-12 flex flex-col md:flex-row items-center w-full relative group">
+                    <div class="md:w-1/2 flex justify-center md:justify-end md:pr-12 mb-8 md:mb-0 w-full">
+                        <div class="glass-card p-6 rounded-3xl w-full max-w-md relative hover:border-[#099999]" data-aos="fade-left">
+                            <h3 class="text-xl font-bold text-white mb-2"><span class="text-[#099999] mr-2">03</span> هندسة النمذجة (Data Modeling)</h3>
+                            <p class="text-slate-400 text-sm">بناء نماذج النجمة (Star Schema)، ديناميكية العلاقات وتوجيه الفلاتر، وتجنب كارثة العلاقات ثنائية الاتجاه.</p>
+                        </div>
+                    </div>
+                    <div class="absolute right-[28px] md:right-1/2 md:mr-[-20px] top-0 md:top-1/2 md:-translate-y-1/2 w-10 h-10 bg-slate-800 border-2 border-[#099999] rounded-full z-10 flex items-center justify-center text-[#099999]">3</div>
+                    <div class="md:w-1/2"></div>
+                </div>
+
+                <div class="mb-12 flex flex-col md:flex-row-reverse items-center w-full relative group">
+                    <div class="md:w-1/2 flex justify-center md:justify-start md:pl-12 mb-8 md:mb-0 w-full">
+                        <div class="glass-card p-6 rounded-3xl w-full max-w-md relative hover:border-[#D4AF37]" data-aos="fade-right">
+                            <h3 class="text-xl font-bold text-white mb-2"><span class="text-[#D4AF37] mr-2">04</span> الحسابات والتحليل المنطقي (DAX)</h3>
+                            <p class="text-slate-400 text-sm">إتقان لغة DAX وفهم سياقات التقييم (Row vs Filter Context). التحكم بالدالة CALCULATE ودوال ذكاء الوقت (Time Intelligence).</p>
+                        </div>
+                    </div>
+                    <div class="absolute right-[28px] md:right-1/2 md:mr-[-20px] top-0 md:top-1/2 md:-translate-y-1/2 w-10 h-10 bg-slate-800 border-2 border-[#D4AF37] rounded-full z-10 flex items-center justify-center text-[#D4AF37]">4</div>
+                    <div class="md:w-1/2"></div>
+                </div>
+
+                <div class="mb-12 flex flex-col md:flex-row items-center w-full relative group">
+                    <div class="md:w-1/2 flex justify-center md:justify-end md:pr-12 mb-8 md:mb-0 w-full">
+                        <div class="glass-card p-6 rounded-3xl w-full max-w-md relative hover:border-[#D4AF37]" data-aos="fade-left">
+                            <h3 class="text-xl font-bold text-white mb-2"><span class="text-[#D4AF37] mr-2">05</span> السرد القصصي والتصميم البصري</h3>
+                            <p class="text-slate-400 text-sm">دمج المؤشرات المخصصة وتحسين الأداء (Performance Analyzer). تطبيق معايير (IBCS) للسرد المالي لضمان فهم تنفيذي سريع.</p>
+                        </div>
+                    </div>
+                    <div class="absolute right-[28px] md:right-1/2 md:mr-[-20px] top-0 md:top-1/2 md:-translate-y-1/2 w-10 h-10 bg-slate-800 border-2 border-[#D4AF37] rounded-full z-10 flex items-center justify-center text-[#D4AF37]">5</div>
+                    <div class="md:w-1/2"></div>
+                </div>
+
+                <div class="flex flex-col md:flex-row-reverse items-center w-full relative group">
+                    <div class="md:w-1/2 flex justify-center md:justify-start md:pl-12 mb-8 md:mb-0 w-full">
+                        <div class="glass-card p-6 rounded-3xl w-full max-w-md relative hover:border-[#D4AF37]" data-aos="fade-right">
+                            <h3 class="text-xl font-bold text-white mb-2"><span class="text-[#D4AF37] mr-2">06</span> الجاهزية للسوق والأمان</h3>
+                            <p class="text-slate-400 text-sm">إدارة مساحات العمل، الأمان على مستوى الصف (RLS)، وبناء معرض أعمال (Portfolio) للتحضير لمقابلات التوظيف التقنية بقوة.</p>
+                        </div>
+                    </div>
+                    <div class="absolute right-[28px] md:right-1/2 md:mr-[-20px] top-0 md:top-1/2 md:-translate-y-1/2 w-10 h-10 bg-slate-800 border-2 border-[#D4AF37] rounded-full z-10 flex items-center justify-center text-[#D4AF37]">6</div>
+                    <div class="md:w-1/2"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="project" class="py-20 border-t border-slate-800 relative">
+        <div class="absolute inset-0 dot-pattern opacity-10"></div>
+        <div class="max-w-6xl mx-auto px-4 md:px-6 relative z-10">
+            <div class="glass-card p-10 md:p-14 rounded-[3rem] border-r-4 border-[#099999] bg-gradient-to-l from-slate-800/80 to-slate-900/90" data-aos="fade-up">
+                <div class="grid md:grid-cols-2 gap-10 items-center">
+                    <div>
+                        <span class="inline-block bg-[#099999]/20 text-[#2dd4bf] px-4 py-1.5 rounded-full font-bold text-sm mb-4">المشروع المتكامل طوال الدورة</span>
+                        <h2 class="text-3xl md:text-4xl font-black text-white mb-6">تحليل تجارة إلكترونية بأكثر من <span class="text-[#D4AF37]">مليون صف</span></h2>
+                        <p class="text-slate-400 leading-relaxed mb-6">
+                            لتجنب التشتت المعرفي، سنعمل على مشروع واحد ضخم يتطور معنا عبر المحاضرات. يحاكي بيانات حقيقية لشركة تجارة إلكترونية مع <span class="text-white font-bold">تعمد إدخال عيوب هيكلية وتحديات واقعية</span> (تواريخ إقليمية، أهداف مبيعات محورية، إلخ).
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-center gap-3 text-slate-300 text-sm"><i data-lucide="check-circle" class="w-5 h-5 text-[#099999]"></i> 5 ملفات خام معقدة للدمج والتنظيف.</li>
+                            <li class="flex items-center gap-3 text-slate-300 text-sm"><i data-lucide="check-circle" class="w-5 h-5 text-[#099999]"></i> بناء (Executive Summary Dashboard).</li>
+                            <li class="flex items-center gap-3 text-slate-300 text-sm"><i data-lucide="check-circle" class="w-5 h-5 text-[#099999]"></i> تطبيق معايير (IBCS) لانحرافات الموازنة.</li>
+                        </ul>
+                    </div>
+                    <div class="relative h-64 md:h-full min-h-[300px] rounded-2xl overflow-hidden border border-slate-700 shadow-2xl group">
+                        <div class="absolute inset-0 bg-[#099999] opacity-20 group-hover:opacity-10 transition duration-500 z-10"></div>
+                        <div class="w-full h-full bg-slate-800 flex items-center justify-center flex-col gap-4">
+                            <i data-lucide="line-chart" class="w-20 h-20 text-slate-600"></i>
+                            <span class="text-slate-500 font-bold uppercase tracking-widest text-sm">E-Commerce Analytics</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" class="bg-[#050810] py-16 px-4 border-t border-slate-800 relative overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-1 bg-gradient-to-r from-transparent via-[#099999] to-transparent opacity-30"></div>
+        
+        <div class="max-w-7xl mx-auto text-center relative z-10">
+            <h3 class="text-3xl font-black text-white mb-4">X Academy</h3>
+            <p class="text-slate-400 mb-10 max-w-md mx-auto">ارتقِ بمهاراتك في تحليل البيانات واصنع الفارق في مسيرتك المهنية.</p>
+            
+            <div class="flex flex-wrap justify-center gap-6 mb-12">
+                <a href="https://fb.com/theexcelcode" target="_blank" class="flex items-center gap-3 px-6 py-3 rounded-xl glass-card hover:border-[#099999] hover:text-white transition">
+                    <i data-lucide="facebook" class="w-5 h-5 text-blue-500"></i>
+                    <span class="font-bold text-sm">fb.com/theexcelcode</span>
+                </a>
+                
+                <a href="mailto:Xacademy2@outlook.com" class="flex items-center gap-3 px-6 py-3 rounded-xl glass-card hover:border-[#099999] hover:text-white transition">
+                    <i data-lucide="mail" class="w-5 h-5 text-red-400"></i>
+                    <span class="font-bold text-sm">Xacademy2@outlook.com</span>
+                </a>
+                
+                <div class="flex items-center gap-3 px-6 py-3 rounded-xl glass-card hover:border-[#099999] hover:text-white transition">
+                    <i data-lucide="phone" class="w-5 h-5 text-green-400"></i>
+                    <span class="font-bold text-sm" dir="ltr">+962 78 45 87 87</span>
+                </div>
+
+                <div class="flex items-center gap-3 px-6 py-3 rounded-xl glass-card hover:border-[#099999] hover:text-white transition">
+                    <i data-lucide="map-pin" class="w-5 h-5 text-[#D4AF37]"></i>
+                    <span class="font-bold text-sm">عمان - الأردن</span>
+                </div>
+            </div>
+            
+            <div class="text-sm text-slate-600 border-t border-slate-800/50 pt-8 flex flex-col md:flex-row justify-center items-center gap-2">
+                <span>© 2026 - تم التصميم والتطوير بلمسة فخامة | X Academy</span>
+                <span class="hidden md:inline">|</span>
+                <span>المدرب: باسل غانم</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // تفعيل الأيقونات
+        lucide.createIcons();
+
+        // تفعيل الحركات (AOS)
+        AOS.init({
+            once: true,
+            offset: 50,
+            duration: 900,
+            easing: 'ease-out-cubic',
+        });
+
+        // تأثير بلور للناف بار عند النزول
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.style.background = 'rgba(15, 23, 42, 0.95)';
+                navbar.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.5)';
+            } else {
+                navbar.style.background = 'rgba(15, 23, 42, 0.85)';
+                navbar.style.boxShadow = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
