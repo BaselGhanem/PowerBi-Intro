@@ -8,6 +8,7 @@ const COURSE_CONFIG = {
   totalHours: 20,
   sessionHours: 2,
   portalPassword: 'PowerBI',
+  powerBiDownloadUrl: 'https://www.microsoft.com/en-us/power-platform/products/power-bi/downloads',
   liveUrl: 'https://teams.microsoft.com/meet/384079113607436?p=lgLLd5ReKE51ncdmN8',
   dashboardPreviewUrl: 'https://app.powerbi.com/view?r=eyJrIjoiMWUwODU5MjEtMjQ2OS00OTM0LWJmNWMtY2Q0MjY5ZDg1NGVmIiwidCI6IjhiNjAyNDRiLTFiZGQtNDk4YS04ODY3LTljNzJhNGQ5NzFhMCIsImMiOjl9',
   instructorImage: 'https://raw.githubusercontent.com/BaselGhanem/Portfolio/refs/heads/main/BaselGhanem.jpg',
@@ -23,20 +24,19 @@ const DAYS = [
     id: 1,
     date: '2026-09-20',
     weekday: 'الأحد',
-    phase: 'DISCOVER',
-    title: 'From Chaos to First Insight',
-    titleAr: 'من البيانات الخام لأول Insight',
-    hook: 'المدير يريد Sales، Target Achievement وأفضل Region. عندك 15 دقيقة.',
-    mission: 'ابنِ أول Report بسرعة، ثم افهم كيف يفكر Power BI قبل الدخول في التفاصيل.',
-    topics: ['Power BI interface', 'Get Data', 'Report / Data / Model Views', 'Basic Visuals', 'Slicers & Filters', 'Visual Interactions'],
-    build: ['Total Sales', 'Sales by Region', 'Monthly Trend', 'Top Products'],
-    challenge: 'اختر الـVisual المناسب للإجابة عن 3 أسئلة Business بدون تعليمات خطوة بخطوة.',
-    deliverable: 'أول نسخة من Commercial Performance 360 تعمل وتجيب عن أسئلة أساسية.',
+    phase: 'CONNECT',
+    title: 'Connect Everything',
+    titleAr: 'وصّل كل شيء',
+    hook: 'Excel، CSV، TXT، Web، PDF... هل Power BI فعلاً يقدر يقرأهم كلهم؟',
+    mission: 'ثبّت Power BI Desktop، وصّل خمسة أنواع مصادر، افهم ETL والواجهات الأساسية، ثم ابنِ أول Report تفاعلي بإيدك.',
+    topics: ['Power BI Desktop Installation', 'Get Data', 'Excel / CSV / Text', 'Web Connector', 'PDF Connector', 'ETL Concept', 'Report / Data / Model Views', 'Card & Bar Chart', 'Slicer & Filters'],
+    build: ['Install & launch Power BI Desktop', 'Connect Excel, CSV, TXT, PDF and Web sources', 'Understand Extract → Transform → Load', 'Tour the interface only after using it', 'Build Total Revenue Card', 'Build Revenue by Region', 'Add Channel Slicer and test interactions', 'Save Commercial_Performance_360_[Name].pbix'],
+    challenge: 'أجب عن أسئلة الإدارة باستخدام الـVisual المناسب. لا تبدأ بالـChart؛ ابدأ بالسؤال.',
+    deliverable: 'أول نسخة من Commercial Performance 360 + فهم واضح لـETL وواجهات Power BI الأساسية.',
     recordingUrl: '',
     resources: [
-      { name: '01_Commercial_Performance_360_START.pbix', type: 'PBIX', url: '', note: 'ملف البداية للمشروع' },
-      { name: '01_Sales_Raw_Data.xlsx', type: 'Excel', url: '', note: 'البيانات الخام' },
-      { name: 'Day 01 — Find the Problem', type: 'Challenge', url: '', note: 'تحدي نهاية اليوم' }
+      { name: 'Day 01 — Complete Source Pack', type: 'ZIP', url: 'week1/packs/Day01_CONNECT_EVERYTHING.zip', note: 'Excel + CSV + TXT + PDF + ETL Quick Reference + Challenge' },
+      { name: 'Branch Performance — Web Source', type: 'WEB', url: 'week1/day1/Branch_Performance.html', note: 'استخدم هذا الرابط مباشرة في Get Data > Web' }
     ]
   },
   {
@@ -46,17 +46,15 @@ const DAYS = [
     phase: 'CLEAN',
     title: 'Clean Data Like an Analyst',
     titleAr: 'نظّف البيانات كمحلل',
-    hook: 'Revenue فيه Nulls، أسماء Regions غير موحدة، والتواريخ بعضها Text.',
-    mission: 'حوّل البيانات الفوضوية إلى Transformation Pipeline يعاد تشغيله تلقائياً.',
-    topics: ['Power Query Editor', 'Data Types', 'Trim & Clean', 'Split Column', 'Replace Values', 'Nulls & Errors', 'Conditional Column', 'Applied Steps'],
-    build: ['تنظيف Sales Data', 'توحيد Regions', 'إصلاح Dates', 'تهيئة Product Fields'],
-    challenge: 'نظّف Customer Master سيئ بناءً على المطلوب Business-wise فقط.',
-    deliverable: 'Query نظيفة وقابلة للـRefresh بدل التنظيف اليدوي كل مرة.',
+    hook: 'التاريخ بأكثر من شكل، أسماء Regions غير موحدة، Revenue فيه فراغات، وTransaction IDs مكررة. هل تبني Dashboard على هيك Data؟',
+    mission: 'اكتشف مشاكل الجودة أولاً، ثم حوّل التنظيف إلى Power Query pipeline تتكرر تلقائياً مع كل Refresh.',
+    topics: ['Power Query Editor', 'Data Types', 'Trim & Clean', 'Replace Values', 'Standardize Categories', 'Nulls', 'Duplicates', 'Errors', 'Applied Steps'],
+    build: ['Inspect dirty data before touching it', 'Fix data types and date issues', 'Trim & clean text fields', 'Standardize Region and Channel labels', 'Handle blanks intentionally', 'Remove duplicates where appropriate', 'Review Applied Steps', 'Refresh and prove the pipeline repeats'],
+    challenge: 'نظّف Customer Master السيئ باستخدام الـCleaning Checklist فقط، بدون recipe خطوة بخطوة.',
+    deliverable: 'Sales Query + Customer Master نظيفان وقابلان للـRefresh بدون تنظيف يدوي متكرر.',
     recordingUrl: '',
     resources: [
-      { name: '02_Dirty_Sales_Data.xlsx', type: 'Excel', url: '', note: 'Dataset به أخطاء متعمدة' },
-      { name: '02_Customer_Master_Dirty.xlsx', type: 'Excel', url: '', note: 'Challenge Dataset' },
-      { name: 'Day 02 — Cleaning Checklist', type: 'Guide', url: '', note: 'مرجع سريع' }
+      { name: 'Day 02 — Cleaning Lab Pack', type: 'ZIP', url: 'week1/packs/Day02_CLEAN_DATA.zip', note: 'Dirty Sales + Dirty Customer Master + Cleaning Checklist' }
     ]
   },
   {
@@ -65,18 +63,16 @@ const DAYS = [
     weekday: 'الأربعاء',
     phase: 'AUTOMATE',
     title: 'Stop Copying Files',
-    titleAr: 'خلّصنا من Copy / Paste الشهري',
-    hook: 'كل شهر يصل ملف Sales جديد. هل ستعيد نفس الشغل للأبد؟',
-    mission: 'ابنِ تدفق بيانات يتوسع مع كل ملف جديد بدون إعادة بناء التقرير.',
-    topics: ['Folder Connection', 'Combine Files', 'Append Queries', 'Merge Queries', 'Reference vs Duplicate', 'Query Dependencies', 'Refresh'],
-    build: ['Monthly Sales Folder', 'Customer Merge', 'Product Merge', 'Refresh Pipeline'],
-    challenge: 'Sales Files + Customer Master + Product Master → Dataset موحد.',
-    deliverable: 'إضافة ملف شهر جديد ثم Refresh وظهوره في التقرير تلقائياً.',
+    titleAr: 'وقف Copy / Paste الشهري',
+    hook: 'January، February، March... وبكرا April. هل رح تعيد نفس الشغل كل شهر؟',
+    mission: 'ابنِ Pipeline تجمع ملفات الأشهر تلقائياً، ثم Merge مع Customer وProduct Masters، وبعدها أثبت أن ملف شهر جديد يدخل بالـRefresh فقط.',
+    topics: ['Folder Connector', 'Combine Files', 'Append Thinking', 'Merge Queries', 'Expand Columns', 'Reference vs Duplicate', 'Enable Load', 'Query Dependencies', 'Refresh'],
+    build: ['Connect to Monthly_Sales folder', 'Combine January–March', 'Keep Source File Name', 'Merge Customer Master', 'Merge Product Master', 'Load only the final analytical query', 'Drop April file and Refresh'],
+    challenge: 'ابنِ العملية كاملة من Folder إلى Dataset موحد. النجاح الحقيقي: إضافة April بدون Copy/Paste أو تعديل يدوي.',
+    deliverable: 'Refreshable multi-file pipeline جاهزة للأشهر القادمة.',
     recordingUrl: '',
     resources: [
-      { name: '03_Monthly_Sales_Folder.zip', type: 'ZIP', url: '', note: 'ملفات الأشهر للتجميع' },
-      { name: '03_Customer_Master.xlsx', type: 'Excel', url: '', note: 'Master Data' },
-      { name: '03_Product_Master.xlsx', type: 'Excel', url: '', note: 'Master Data' }
+      { name: 'Day 03 — Automation Learner Pack', type: 'ZIP', url: 'week1/packs/Day03_STOP_COPYING_FILES_LEARNER.zip', note: 'Jan–Mar files + Customer Master + Product Master + Automation Challenge' }
     ]
   },
   {
