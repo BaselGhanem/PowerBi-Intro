@@ -308,6 +308,7 @@ def update_day1():
     zp = DAY1_DOWNLOADS / 'Day01_CONNECT_EVERYTHING.zip'
     with tempfile.TemporaryDirectory() as td:
         root = unzip_pack(zp, Path(td))
+        rename_once(root, '05_ETL_Reference.xlsx', '05_Nova_ETL_Reference.xlsx')
         rename_once(root, '06_Day_01_Challenge.xlsx', '06_Nova_Day_01_Challenge.xlsx')
         remove_if_exists(root, '01_Product_Master.xlsx', '01_Nova_Product_Master.xlsx', '01_Nova_Product_Master.csv')
         catalog = product_catalog_rows()
@@ -328,7 +329,8 @@ def update_day1():
             '2) 02_Nova_Sales_Transactions.csv - 120,000 transaction rows\n'
             '3) 03_Nova_Workforce_Snapshot.txt - workforce snapshot\n'
             '4) 04_Nova_Budget_and_Targets.pdf - finance/target document\n'
-            '5) Web source - Branch_Performance.html (use the live GitHub Pages URL during class)\n\n'
+            '5) 05_Nova_ETL_Reference.xlsx - Excel source / ETL reference\n'
+            '6) Web source - Branch_Performance.html (use the live GitHub Pages URL during class)\n\n'
             'Day 1 goal: connect the evidence and build the first report view; do not solve the whole company yet.\n', encoding='utf-8')
         (root / '00_DATASET_SCALE.txt').write_text('DAY 01 SCALE\n- Sales Transactions: 120,000 rows\n- Workforce Snapshot: 2,400 employees\n- Web Branch Performance: 4,000 rows (100 branches x 40 weeks)\n- Company: 5 regions, 4 channels\n', encoding='utf-8')
         rezip_pack(root, zp)
