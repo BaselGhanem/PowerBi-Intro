@@ -25,7 +25,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add week1/day1/Branch_Performance.html week1/day1/packs/*.zip
+          git add week1/day1/web/Branch_Performance.html week1/day1/downloads/*.zip week1/day2/downloads/*.zip week1/day3/downloads/*.zip
           if git diff --cached --quiet; then
             echo "No generated changes."
             exit 0

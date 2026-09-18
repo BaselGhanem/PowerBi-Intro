@@ -6,7 +6,12 @@ import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 DAY1 = ROOT / 'week1' / 'day1'
-PACKS = DAY1 / 'packs'
+DAY2 = ROOT / 'week1' / 'day2'
+DAY3 = ROOT / 'week1' / 'day3'
+DAY1_DOWNLOADS = DAY1 / 'downloads'
+DAY1_WEB = DAY1 / 'web'
+DAY2_DOWNLOADS = DAY2 / 'downloads'
+DAY3_DOWNLOADS = DAY3 / 'downloads'
 random.seed(260918)
 
 REGIONS = ['Amman', 'North', 'South', 'Zarqa', 'Central']
@@ -135,7 +140,7 @@ def make_branch_html(path: Path):
     return len(records)
 
 def update_day1():
-    zp = PACKS / 'Day01_CONNECT_EVERYTHING.zip'
+    zp = DAY1_DOWNLOADS / 'Day01_CONNECT_EVERYTHING.zip'
     with tempfile.TemporaryDirectory() as td:
         root = unzip_pack(zp, Path(td))
         products = find_ids(root / '01_Product_Master.xlsx', ['product id','product','sku'], 'P', 500)
@@ -153,7 +158,7 @@ def update_day1():
         make_branch_html(root / 'web' / 'Branch_Performance.html')
         (root / '00_DATASET_SCALE.txt').write_text('DAY 01 DATA SCALE\n- Sales Transactions: 120,000 rows\n- Web Branch Performance: 4,000 rows\n- Reference/master files remain intentionally compact.\n', encoding='utf-8')
         rezip_pack(root, zp)
-    make_branch_html(DAY1 / 'Branch_Performance.html')
+    make_branch_html(DAY1_WEB / 'Branch_Performance.html')
 
 def dirty_sales(count=50000):
     header = ['Transaction ID','Order Date','Customer ID','Region','Channel','Product','Quantity','Unit Price','Revenue','Sales Rep']
@@ -197,7 +202,7 @@ def dirty_customers(count=8000):
     return header, rows
 
 def update_day2():
-    zp = PACKS / 'Day02_CLEAN_DATA.zip'
+    zp = DAY2_DOWNLOADS / 'Day02_CLEAN_DATA.zip'
     with tempfile.TemporaryDirectory() as td:
         root = unzip_pack(zp, Path(td))
         h, r = dirty_sales()
@@ -220,7 +225,7 @@ def monthly_rows(count, month, product_ids, customer_ids):
         yield [f'{month:02d}-{i+1:07d}', dt.isoformat(), random.choice(customer_ids), random.choice(product_ids), f'SR{random.randint(1,180):03d}', f'B{random.randint(1,320):03d}', random.choice(REGIONS), random.choice(CHANNELS), qty, price, disc, rev]
 
 def update_day3():
-    zp = PACKS / 'Day03_STOP_COPYING_FILES_LEARNER.zip'
+    zp = DAY3_DOWNLOADS / 'Day03_STOP_COPYING_FILES_LEARNER.zip'
     with tempfile.TemporaryDirectory() as td:
         root = unzip_pack(zp, Path(td))
         products = find_ids(root / '03_Product_Master.xlsx', ['product id','product','sku'], 'P', 500)

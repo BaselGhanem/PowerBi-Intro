@@ -53,3 +53,32 @@ recordingUrl: 'YOUR_EMBED_OR_VIDEO_URL'
 - X Academy Teal: `#099999`
 - Arabic font: Almarai
 - Vanilla JS فقط، بدون React/Vue/Angular.
+
+
+## تنظيم ملفات الدورة
+
+```text
+week1/
+  day1/
+    downloads/
+    web/
+  day2/
+    downloads/
+  day3/
+    downloads/
+
+week2/
+  day4/
+  day5/
+  day6/
+
+week3/
+  day7/
+  day8/
+  day9/
+
+week4/
+  day10/
+```
+
+كل يوم يملك مجلده الخاص. ملفات التنزيل توضع داخل `downloads/`، وأي مصدر Web تدريبي يوضع داخل `web/`.
