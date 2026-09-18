@@ -1,0 +1,34 @@
+name: Generate Week 1 Training Data
+
+on:
+  push:
+    paths:
+      - 'tools/generate_week1_data.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Generate scaled datasets
+        run: python tools/generate_week1_data.py
+      - name: Commit generated files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add week1/day1/Branch_Performance.html week1/day1/packs/*.zip
+          if git diff --cached --quiet; then
+            echo "No generated changes."
+            exit 0
+          fi
+          git commit -m "Scale Week 1 Power BI training datasets"
+          git push
