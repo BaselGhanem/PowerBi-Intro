@@ -35,7 +35,7 @@ const DAYS = [
     deliverable: 'أول نسخة من Commercial Performance 360 + فهم واضح لـETL وواجهات Power BI الأساسية.',
     recordingUrl: '',
     resources: [
-      { name: 'Day 01 — Complete Source Pack', type: 'ZIP', url: 'week1/packs/Day01_CONNECT_EVERYTHING.zip', note: 'Excel + CSV + TXT + PDF + ETL Quick Reference + Challenge' },
+      { name: 'Day 01 — Complete Source Pack', type: 'ZIP', url: 'week1/day1/packs/Day01_CONNECT_EVERYTHING.zip', note: 'Excel + CSV + TXT + PDF + ETL Quick Reference + Challenge' },
       { name: 'Branch Performance — Web Source', type: 'WEB', url: 'week1/day1/Branch_Performance.html', note: 'استخدم هذا الرابط مباشرة في Get Data > Web' }
     ]
   },
@@ -54,7 +54,7 @@ const DAYS = [
     deliverable: 'Sales Query + Customer Master نظيفان وقابلان للـRefresh بدون تنظيف يدوي متكرر.',
     recordingUrl: '',
     resources: [
-      { name: 'Day 02 — Cleaning Lab Pack', type: 'ZIP', url: 'week1/packs/Day02_CLEAN_DATA.zip', note: 'Dirty Sales + Dirty Customer Master + Cleaning Checklist' }
+      { name: 'Day 02 — Cleaning Lab Pack', type: 'ZIP', url: 'week1/day1/packs/Day02_CLEAN_DATA.zip', note: 'Dirty Sales + Dirty Customer Master + Cleaning Checklist' }
     ]
   },
   {
@@ -72,7 +72,7 @@ const DAYS = [
     deliverable: 'Refreshable multi-file pipeline جاهزة للأشهر القادمة.',
     recordingUrl: '',
     resources: [
-      { name: 'Day 03 — Automation Learner Pack', type: 'ZIP', url: 'week1/packs/Day03_STOP_COPYING_FILES_LEARNER.zip', note: 'Jan–Mar files + Customer Master + Product Master + Automation Challenge' }
+      { name: 'Day 03 — Automation Learner Pack', type: 'ZIP', url: 'week1/day1/packs/Day03_STOP_COPYING_FILES_LEARNER.zip', note: 'Jan–Mar files + Customer Master + Product Master + Automation Challenge' }
     ]
   },
   {
