@@ -1,8 +1,14 @@
 from __future__ import annotations
-import csv, html, random, tempfile, zipfile
+import csv, html, random, shutil, tempfile, zipfile
 from datetime import date, timedelta
 from pathlib import Path
 import xml.etree.ElementTree as ET
+
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.units import mm
+from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
 
 ROOT = Path(__file__).resolve().parents[1]
 DAY1 = ROOT / 'week1' / 'day1'
@@ -12,13 +18,23 @@ DAY1_DOWNLOADS = DAY1 / 'downloads'
 DAY1_WEB = DAY1 / 'web'
 DAY2_DOWNLOADS = DAY2 / 'downloads'
 DAY3_DOWNLOADS = DAY3 / 'downloads'
-random.seed(260918)
+random.seed(260919)
 
 REGIONS = ['Amman', 'North', 'South', 'Zarqa', 'Central']
 CHANNELS = ['Retail', 'Corporate', 'Online', 'Partner']
 CITIES = ['Amman', 'Irbid', 'Zarqa', 'Aqaba', 'Salt', 'Jerash', 'Madaba', 'Karak', 'Mafraq', "Ma'an"]
 FIRST = ['Ahmad','Mohammad','Omar','Yazan','Laith','Ali','Khaled','Samer','Rami','Dana','Lina','Rana','Maya','Noor','Hala']
 LAST = ['Haddad','Khalil','Nasser','Saleh','Awad','Hamdan','Tawalbeh','Khatib','Masri','Zoubi','Shami','Qasem']
+COMPANY = 'Nova Distribution Group'
+DEPARTMENTS = ['Sales', 'Operations', 'Finance', 'People & Culture', 'Supply Chain']
+REGION_BY_CITY = {'Amman':'Amman','Irbid':'North','Jerash':'North','Mafraq':'North','Zarqa':'Zarqa','Aqaba':'South',"Ma'an":'South','Karak':'South','Salt':'Central','Madaba':'Central'}
+POSITIONS = {
+    'Sales': ['Sales Representative', 'Key Account Executive', 'Sales Coordinator', 'Branch Sales Lead'],
+    'Operations': ['Branch Supervisor', 'Operations Officer', 'Service Coordinator'],
+    'Finance': ['Accountant', 'Finance Analyst', 'Cash Controller'],
+    'People & Culture': ['HR Officer', 'Workforce Planner', 'Talent Coordinator'],
+    'Supply Chain': ['Warehouse Officer', 'Inventory Planner', 'Logistics Coordinator'],
+}
 
 def xlsx_rows(path: Path):
     if not path.exists():
@@ -98,7 +114,43 @@ def write_csv(path, header, rows):
         w.writerow(header)
         w.writerows(rows)
 
-def sales_rows(count, start, days, product_ids, rep_ids, branch_count=320, customer_count=8000):
+def rename_once(root: Path, old_name: str, new_name: str):
+    old = root / old_name
+    new = root / new_name
+    if old.exists() and not new.exists():
+        old.replace(new)
+    return new if new.exists() else old
+
+def remove_if_exists(root: Path, *names: str):
+    for name in names:
+        p = root / name
+        if p.is_dir():
+            shutil.rmtree(p)
+        elif p.exists():
+            p.unlink()
+
+def branch_master_rows():
+    for b in range(1, 101):
+        city = CITIES[(b - 1) % len(CITIES)]
+        region = REGION_BY_CITY[city]
+        channel = CHANNELS[(b - 1) % len(CHANNELS)]
+        opened = date(2018,1,1) + timedelta(days=((b * 37) % 2500))
+        manager = f'{FIRST[(b*3) % len(FIRST)]} {LAST[(b*5) % len(LAST)]}'
+        yield [f'B{b:03d}', f'Nova {city} {b:03d}', city, region, channel, opened.isoformat(), manager, 'Active']
+
+def workforce_rows(count=2400):
+    for i in range(1, count + 1):
+        branch = f'B{random.randint(1,100):03d}'
+        dept = random.choices(DEPARTMENTS, weights=[34,25,10,8,23], k=1)[0]
+        position = random.choice(POSITIONS[dept])
+        emp_type = random.choices(['Full Time','Part Time','Contract'], weights=[82,8,10], k=1)[0]
+        status = random.choices(['Active','Leave','Secondment'], weights=[94,5,1], k=1)[0]
+        hire = date(2017,1,1) + timedelta(days=random.randrange(3400))
+        fte = 1.0 if emp_type != 'Part Time' else 0.5
+        monthly_cost = round(random.uniform(520,2300),2)
+        yield [f'E{i:05d}', f'{random.choice(FIRST)} {random.choice(LAST)}', branch, dept, position, emp_type, status, hire.isoformat(), fte, monthly_cost]
+
+def sales_rows(count, start, days, product_ids, rep_ids, branch_count=100, customer_count=8000):
     for i in range(count):
         dt = start + timedelta(days=random.randrange(days))
         qty = random.randint(1, 12)
@@ -109,78 +161,135 @@ def sales_rows(count, start, days, product_ids, rep_ids, branch_count=320, custo
 
 def branch_records():
     records = []
-    snapshots = [date(2026, m, 1) for m in range(1, 11)]
-    region_map = {'Amman':'Amman','Irbid':'North','Jerash':'North','Mafraq':'North','Zarqa':'Zarqa','Aqaba':'South',"Ma'an":'South','Karak':'South','Salt':'Central','Madaba':'Central'}
-    for b in range(1, 401):
-        city = CITIES[(b - 1) % len(CITIES)]
-        region = region_map[city]
-        channel = CHANNELS[(b - 1) % len(CHANNELS)]
-        name = f'{city} {channel} {b:03d}'
-        for snap in snapshots:
-            service = round(min(99.8, max(72, random.gauss(90.5, 5.2))), 1)
-            rating = round(min(5, max(3.2, random.gauss(4.45, 0.28))), 1)
-            revenue = round(random.uniform(45000, 420000), 2)
-            tx = random.randint(350, 4200)
-            ret = round(random.uniform(0.3, 5.8), 2)
-            records.append([f'B{b:03d}', name, region, channel, snap.strftime('%Y-%m'), service, rating, revenue, tx, ret])
+    week_starts = [date(2026,1,5) + timedelta(days=7*i) for i in range(40)]
+    for b in range(1,101):
+        city = CITIES[(b-1) % len(CITIES)]
+        region = REGION_BY_CITY[city]
+        channel = CHANNELS[(b-1) % len(CHANNELS)]
+        name = f'Nova {city} {b:03d}'
+        planned_hc = random.randint(18,45)
+        for week in week_starts:
+            target = round(random.uniform(55000,165000),2)
+            revenue = round(target * random.uniform(.78,1.18),2)
+            budget_cost = round(target * random.uniform(.18,.29),2)
+            operating_cost = round(budget_cost * random.uniform(.88,1.16),2)
+            actual_hc = max(10, planned_hc-random.randint(0,5))
+            vacancies = planned_hc-actual_hc
+            service = round(min(99.8,max(72,random.gauss(90.5,5.2))),1)
+            rating = round(min(5,max(3.2,random.gauss(4.45,.28))),1)
+            tx = random.randint(350,2400)
+            ret = round(random.uniform(.3,5.8),2)
+            records.append([f'B{b:03d}',name,region,channel,week.isoformat(),revenue,target,operating_cost,budget_cost,planned_hc,actual_hc,vacancies,service,rating,tx,ret])
     return records
+
+def company_profile_html():
+    products = [
+        ('Food & Beverage','Fast-moving essentials and refreshment lines.'),
+        ('Personal Care','Everyday personal care and hygiene products.'),
+        ('Home Care','Household cleaning and home-maintenance products.'),
+        ('Health & Wellness','OTC wellness and lifestyle-support products.'),
+        ('Office & Tech','Business supplies and selected accessories.'),
+        ('Seasonal','Rotating campaigns and seasonal product ranges.')
+    ]
+    cards = ''.join(f'<article class="product"><span>{i+1:02d}</span><h3>{html.escape(n)}</h3><p>{html.escape(d)}</p></article>' for i,(n,d) in enumerate(products))
+    return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Nova Distribution Group | Company Profile</title>
+<style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Almarai:wght@400;700&display=swap');:root{{--ink:#102033;--muted:#667085;--line:#e7ebf0;--bg:#f5f7fa;--purple:#695cff;--teal:#099999}}*{{box-sizing:border-box}}body{{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Arial,sans-serif}}.wrap{{max-width:1180px;margin:auto;padding:32px 22px 64px}}.hero{{background:linear-gradient(135deg,#101d33,#18284a 57%,#264d5a);color:white;border-radius:28px;padding:44px;position:relative;overflow:hidden;box-shadow:0 22px 70px rgba(16,32,51,.15)}}.hero:after{{content:'';position:absolute;width:360px;height:360px;border-radius:50%;background:linear-gradient(135deg,rgba(105,92,255,.55),rgba(9,153,153,.18));right:-95px;top:-135px}}.brand{{display:flex;align-items:center;gap:14px;position:relative;z-index:2}}.logo{{width:58px;height:58px;border-radius:18px;background:white;display:grid;place-items:center}}.logo svg{{width:42px;height:42px}}.brand strong{{font-size:20px}}.brand small{{display:block;color:#b9c4d6;margin-top:3px}}.hero h1{{font-size:clamp(42px,7vw,82px);line-height:.95;margin:72px 0 18px;max-width:800px;letter-spacing:-3px;position:relative;z-index:2}}.hero p{{max-width:700px;color:#d8deea;font-size:18px;line-height:1.7;position:relative;z-index:2}}.badge{{display:inline-flex;margin-top:26px;padding:10px 14px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);border-radius:999px;font-size:13px;position:relative;z-index:2}}.stats{{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin:20px 0}}.stat,.section{{background:white;border:1px solid var(--line);border-radius:18px;padding:22px}}.stat b{{font-size:28px;display:block}}.stat span,.lead,.product p{{color:var(--muted)}}.section{{border-radius:24px;padding:30px;margin-top:18px}}.kicker{{font-size:12px;font-weight:800;letter-spacing:1.6px;color:var(--teal);text-transform:uppercase}}h2{{font-size:30px;margin:8px 0}}.lead{{line-height:1.7;max-width:850px}}.grid{{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}}.product{{border:1px solid var(--line);border-radius:18px;padding:20px;min-height:150px}}.product span{{font-size:12px;font-weight:800;color:var(--purple)}}.product h3{{margin:22px 0 8px;font-size:17px}}.product p{{font-size:13px;line-height:1.6;margin:0}}.flow{{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:20px}}.step{{padding:18px;border-radius:16px;background:#f7f9fb;border:1px solid var(--line);font-weight:700}}.step small{{display:block;color:var(--muted);font-weight:400;margin-top:6px}}.challenge{{background:#101d33;color:white;border:0}}.challenge .kicker{{color:#74dfd7}}.challenge .lead{{color:#cbd4e1}}.questions{{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:22px}}.q{{padding:18px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12)}}.role{{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-top:22px;padding-top:20px;border-top:1px solid rgba(255,255,255,.14)}}.role a{{color:#101d33;background:white;text-decoration:none;padding:13px 18px;border-radius:12px;font-weight:800}}.ar{{font-family:Almarai,Arial,sans-serif;direction:rtl;text-align:right;color:#98a2b3;font-size:13px;margin-top:8px}}@media(max-width:800px){{.hero{{padding:28px}}.hero h1{{margin-top:55px;letter-spacing:-1.5px}}.stats{{grid-template-columns:repeat(2,1fr)}}.grid{{grid-template-columns:1fr}}.flow{{grid-template-columns:1fr 1fr}}.questions{{grid-template-columns:1fr}}.role{{align-items:flex-start;flex-direction:column}}}}</style></head><body><main class="wrap">
+<section class="hero"><div class="brand"><div class="logo"><svg viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#695cff"/><stop offset="1" stop-color="#099999"/></linearGradient></defs><path d="M11 49V15h9l24 23V15h9v34h-8L20 26v23z" fill="url(#g)"/><path d="M47 6l2.8 6.2L56 15l-6.2 2.8L47 24l-2.8-6.2L38 15l6.2-2.8z" fill="#f2c811"/></svg></div><div><strong>Nova Distribution Group</strong><small>Company Profile • Training Case</small></div></div><h1>Move products.<br>Empower people.<br>Grow responsibly.</h1><p>Nova is a regional distribution and retail group serving customers through branches, field teams, digital channels and corporate accounts. Leadership wants one trusted view across Sales, Finance and Workforce.</p><div class="badge">Synthetic company created for the X Academy Power BI Specialist case</div></section>
+<section class="stats"><div class="stat"><b>100</b><span>Branches</span></div><div class="stat"><b>8,000+</b><span>Customers</span></div><div class="stat"><b>2,400</b><span>Employees</span></div><div class="stat"><b>5</b><span>Regions</span></div><div class="stat"><b>4</b><span>Sales Channels</span></div></section>
+<section class="section"><div class="kicker">01 • Who we are</div><h2>A business with many moving parts</h2><p class="lead">Each Nova branch has revenue targets, operating budgets, staffing plans and service expectations. Good performance is not only about selling more; management needs the full picture.</p><p class="ar">نوفا شركة افتراضية سنستخدمها كقصة واحدة خلال الدورة. كل البيانات والمواقف مصممة للتدريب فقط.</p></section>
+<section class="section"><div class="kicker">02 • Product portfolio</div><h2>What Nova moves</h2><p class="lead">A broad portfolio keeps the case relevant to different business backgrounds rather than one specific industry.</p><div class="grid">{cards}</div></section>
+<section class="section"><div class="kicker">03 • Operating model</div><h2>How the business works</h2><div class="flow"><div class="step">Suppliers<small>Products enter Nova's network.</small></div><div class="step">Distribution & Supply<small>Stock moves to regions and branches.</small></div><div class="step">Branches & Sales Teams<small>Teams serve retail and corporate demand.</small></div><div class="step">Customers<small>Sales, service and returns create the performance picture.</small></div></div></section>
+<section class="section challenge"><div class="kicker">04 • The management challenge</div><h2>Management has data everywhere.</h2><p class="lead">Sales files, workforce snapshots, targets, budgets, customer masters and branch data are stored in different formats. Your team must build a reliable Power BI view that connects the story.</p><div class="questions"><div class="q"><b>Sales</b><br>Which branches are growing, and which are missing target?</div><div class="q"><b>Finance</b><br>Where are operating costs running above budget?</div><div class="q"><b>Workforce</b><br>Do staffing gaps appear where performance is weak?</div><div class="q"><b>Management</b><br>Where should leadership focus first, and why?</div></div><div class="role"><div><b>Your role: Nova Analytics Team</b><br><span style="color:#cbd4e1">Day 1 starts by connecting the evidence. No conclusions yet.</span></div><a href="Branch_Performance.html">Open Branch Data →</a></div></section>
+</main></body></html>'''
+
+def make_company_profile(path: Path):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(company_profile_html(), encoding='utf-8')
 
 def make_branch_html(path: Path):
     records = branch_records()
-    head = ['Branch ID','Branch Name','Region','Channel','Snapshot Month','Service Level %','Customer Rating','Revenue','Transactions','Return Rate %']
-    parts = ['<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Commercial Performance 360 - Branch Performance</title>',
-             '<style>body{font-family:Arial,sans-serif;margin:32px;background:#f7f9fa;color:#162126}h1{margin-bottom:4px}.meta{color:#60727a;margin-bottom:20px}table{border-collapse:collapse;width:100%;background:#fff;font-size:13px}th,td{border:1px solid #d9e1e5;padding:7px 9px;text-align:left;white-space:nowrap}th{position:sticky;top:0;background:#0b7777;color:#fff}tr:nth-child(even){background:#f5f9f9}</style></head><body>',
-             '<h1>Branch Performance</h1><div class="meta">Commercial Performance 360 - Training Web Source | 4,000 rows | Synthetic training data</div><table id="branch-performance"><thead><tr>']
+    head = ['Branch ID','Branch Name','Region','Channel','Week Start','Revenue','Target Revenue','Operating Cost','Budget Cost','Planned Headcount','Actual Headcount','Vacant Positions','Service Level %','Customer Rating','Transactions','Return Rate %']
+    parts = ['<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Nova Branch Performance | Web Data Source</title>',
+             '<style>body{font-family:Arial,sans-serif;margin:32px;background:#f7f9fa;color:#162126}h1{margin-bottom:4px}.meta{color:#60727a;margin-bottom:20px}.brand{font-size:12px;font-weight:700;color:#695cff;text-transform:uppercase;letter-spacing:1.2px}table{border-collapse:collapse;width:100%;background:#fff;font-size:12px}th,td{border:1px solid #d9e1e5;padding:7px 9px;text-align:left;white-space:nowrap}th{position:sticky;top:0;background:#13233b;color:#fff}tr:nth-child(even){background:#f5f9f9}</style></head><body>',
+             f'<div class="brand">{COMPANY}</div><h1>Branch Performance</h1><div class="meta">Power BI Web Connector source | 4,000 rows = 100 branches × 40 weeks | Sales + Finance + Workforce indicators | Synthetic training data</div><table id="nova-branch-performance"><thead><tr>']
     parts.extend(f'<th>{html.escape(h)}</th>' for h in head)
     parts.append('</tr></thead><tbody>')
     for r in records:
         parts.append('<tr>' + ''.join(f'<td>{html.escape(str(v))}</td>' for v in r) + '</tr>')
     parts.append('</tbody></table></body></html>')
+    path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(''.join(parts), encoding='utf-8')
     return len(records)
+
+def make_budget_pdf(path: Path):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    doc = SimpleDocTemplate(str(path), pagesize=A4, rightMargin=18*mm, leftMargin=18*mm, topMargin=16*mm, bottomMargin=16*mm)
+    styles = getSampleStyleSheet()
+    story = [Paragraph('Nova Distribution Group', styles['Title']), Paragraph('2026 Regional Budget & Performance Targets', styles['Heading2']), Spacer(1,5*mm)]
+    data = [['Region','Revenue Target','Operating Budget','Planned Headcount']]
+    targets = {'Amman':(22500000,5200000,620),'North':(14800000,3500000,470),'South':(10900000,2700000,390),'Zarqa':(12600000,3000000,410),'Central':(11700000,2850000,510)}
+    for region, vals in targets.items():
+        data.append([region, f'JOD {vals[0]:,.0f}', f'JOD {vals[1]:,.0f}', f'{vals[2]:,}'])
+    table = Table(data, colWidths=[38*mm,45*mm,45*mm,42*mm])
+    table.setStyle(TableStyle([('BACKGROUND',(0,0),(-1,0),colors.HexColor('#13233B')),('TEXTCOLOR',(0,0),(-1,0),colors.white),('FONTNAME',(0,0),(-1,0),'Helvetica-Bold'),('GRID',(0,0),(-1,-1),.5,colors.HexColor('#D7DEE8')),('ROWBACKGROUNDS',(0,1),(-1,-1),[colors.white,colors.HexColor('#F5F7FA')]),('ALIGN',(1,1),(-1,-1),'RIGHT'),('VALIGN',(0,0),(-1,-1),'MIDDLE'),('BOTTOMPADDING',(0,0),(-1,-1),8),('TOPPADDING',(0,0),(-1,-1),8)]))
+    story.extend([table, Spacer(1,7*mm), Paragraph('Management note', styles['Heading3']), Paragraph('Targets are approved for the 2026 operating plan. Review branch performance together with staffing capacity, service quality and sales-channel mix before recommending action.', styles['BodyText']), Spacer(1,4*mm), Paragraph('Synthetic training document - X Academy Power BI Specialist case.', styles['Italic'])])
+    doc.build(story)
 
 def update_day1():
     zp = DAY1_DOWNLOADS / 'Day01_CONNECT_EVERYTHING.zip'
     with tempfile.TemporaryDirectory() as td:
         root = unzip_pack(zp, Path(td))
-        products = find_ids(root / '01_Product_Master.xlsx', ['product id','product','sku'], 'P', 500)
-        rep_ids = []
-        txt = root / '03_Sales_Reps.txt'
-        if txt.exists():
-            for line in txt.read_text(encoding='utf-8', errors='ignore').splitlines()[1:]:
-                cell = line.split(',')[0].split('\t')[0].strip()
-                if cell:
-                    rep_ids.append(cell)
-        if not rep_ids:
-            rep_ids = [f'SR{i:03d}' for i in range(1, 181)]
+        product_master = rename_once(root, '01_Product_Master.xlsx', '01_Nova_Product_Master.xlsx')
+        rename_once(root, '06_Day_01_Challenge.xlsx', '06_Nova_Day_01_Challenge.xlsx')
+        products = find_ids(product_master, ['product id','product','sku'], 'P', 250)
+        rep_ids = [f'SR{i:03d}' for i in range(1,181)]
+        remove_if_exists(root, '02_Sales_Transactions.csv', '03_Sales_Reps.txt', '04_Regional_Targets.pdf', '00_DATASET_SCALE.txt')
         header = ['Transaction ID','Date','Customer ID','Product ID','Sales Rep ID','Branch ID','Region','Channel','Quantity','Unit Price','Discount %','Revenue']
-        write_csv(root / '02_Sales_Transactions.csv', header, sales_rows(120000, date(2025,1,1), 620, products, rep_ids))
+        write_csv(root / '02_Nova_Sales_Transactions.csv', header, sales_rows(120000, date(2025,1,1), 620, products, rep_ids))
+        write_csv(root / '03_Nova_Workforce_Snapshot.txt', ['Employee ID','Employee Name','Branch ID','Department','Position','Employment Type','Status','Hire Date','FTE','Monthly Cost'], workforce_rows())
+        make_budget_pdf(root / '04_Nova_Budget_and_Targets.pdf')
         make_branch_html(root / 'web' / 'Branch_Performance.html')
-        (root / '00_DATASET_SCALE.txt').write_text('DAY 01 DATA SCALE\n- Sales Transactions: 120,000 rows\n- Web Branch Performance: 4,000 rows\n- Reference/master files remain intentionally compact.\n', encoding='utf-8')
+        make_company_profile(root / 'web' / 'Nova_Company_Profile.html')
+        (root / '00_START_HERE.txt').write_text(
+            'NOVA DISTRIBUTION GROUP - DAY 01\n\n'
+            'You are joining the Nova Analytics Team. Management wants one trusted view across Sales, Finance and Workforce.\n\n'
+            'Connect these sources in Power BI:\n'
+            '1) 01_Nova_Product_Master.xlsx - Excel source\n'
+            '2) 02_Nova_Sales_Transactions.csv - 120,000 transaction rows\n'
+            '3) 03_Nova_Workforce_Snapshot.txt - workforce snapshot\n'
+            '4) 04_Nova_Budget_and_Targets.pdf - finance/target document\n'
+            '5) Web source - Branch_Performance.html (use the live GitHub Pages URL during class)\n\n'
+            'Day 1 goal: connect the evidence and build the first report view; do not solve the whole company yet.\n', encoding='utf-8')
+        (root / '00_DATASET_SCALE.txt').write_text('DAY 01 SCALE\n- Sales Transactions: 120,000 rows\n- Workforce Snapshot: 2,400 employees\n- Web Branch Performance: 4,000 rows (100 branches x 40 weeks)\n- Company: 5 regions, 4 channels\n', encoding='utf-8')
         rezip_pack(root, zp)
+    make_company_profile(DAY1_WEB / 'Nova_Company_Profile.html')
     make_branch_html(DAY1_WEB / 'Branch_Performance.html')
 
-def dirty_sales(count=50000):
-    header = ['Transaction ID','Order Date','Customer ID','Region','Channel','Product','Quantity','Unit Price','Revenue','Sales Rep']
+def dirty_branch_performance(count=50000):
+    header = ['Record ID','Week Start','Branch ID','Branch Name','Region','Channel','Revenue','Target Revenue','Operating Cost','Budget Cost','Planned Headcount','Actual Headcount','Vacant Positions','Manager']
     rows = []
     region_variants = ['Amman',' amman ','AMMAN','North',' north','SOUTH ','Zarqa','zarqa','Central','CENTRAL']
     channel_variants = ['Retail',' retail ','RETAIL','Corporate','corporate ','Online','ONLINE','Partner',' partner']
     for i in range(count):
-        dt = date(2026,1,1) + timedelta(days=random.randrange(240))
+        dt = date(2026,1,5) + timedelta(days=7*random.randrange(40))
         fmt = random.choice(['iso','slash','us'])
         ds = dt.isoformat() if fmt == 'iso' else (dt.strftime('%d/%m/%Y') if fmt == 'slash' else dt.strftime('%m-%d-%Y'))
-        qty = random.randint(1, 10)
-        price = round(random.uniform(5, 180), 2)
-        revenue = round(qty * price, 2)
-        if i % 173 == 0:
-            ds = 'invalid-date'
-        if i % 211 == 0:
-            revenue = ''
-        if i % 257 == 0:
-            qty = 'N/A'
-        rows.append([f'DTX{i+1:07d}', ds, f'C{random.randint(1,6500):05d}', random.choice(region_variants), random.choice(channel_variants), f'Product {random.randint(1,400):03d}', qty, price, revenue, f'  {random.choice(FIRST)} {random.choice(LAST)}  '])
-        if i % 499 == 0:
-            rows.append(rows[-1][:])
+        target = round(random.uniform(55000,165000),2)
+        revenue = round(target*random.uniform(.78,1.18),2)
+        budget = round(target*random.uniform(.18,.29),2)
+        cost = round(budget*random.uniform(.88,1.16),2)
+        planned = random.randint(18,45)
+        actual = max(10,planned-random.randint(0,5))
+        vacant = planned-actual
+        b = random.randint(1,100)
+        city = CITIES[(b-1) % len(CITIES)]
+        manager = f'  {random.choice(FIRST)} {random.choice(LAST)}  '
+        if i % 173 == 0: ds = 'invalid-date'
+        if i % 211 == 0: revenue = ''
+        if i % 257 == 0: actual = 'N/A'
+        if i % 389 == 0: cost = ''
+        rows.append([f'NBR{i+1:07d}',ds,f'B{b:03d}',f'Nova {city} {b:03d}',random.choice(region_variants),random.choice(channel_variants),revenue,target,cost,budget,planned,actual,vacant,manager])
+        if i % 499 == 0: rows.append(rows[-1][:])
     return header, rows
 
 def dirty_customers(count=8000):
@@ -205,11 +314,19 @@ def update_day2():
     zp = DAY2_DOWNLOADS / 'Day02_CLEAN_DATA.zip'
     with tempfile.TemporaryDirectory() as td:
         root = unzip_pack(zp, Path(td))
-        h, r = dirty_sales()
-        write_csv(root / '02_Dirty_Sales_Data_LARGE.csv', h, r)
+        remove_if_exists(root, '02_Dirty_Sales_Data.xlsx', '02_Customer_Master_Dirty.xlsx', '02_Dirty_Sales_Data_LARGE.csv', '02_Customer_Master_Dirty_LARGE.csv', '00_USE_THE_LARGE_FILES.txt', '01_Nova_Branch_Performance_Dirty_LARGE.csv', '02_Nova_Customer_Master_Dirty_LARGE.csv')
+        rename_once(root, '03_Day_02_Cleaning_Checklist.xlsx', '03_Nova_Cleaning_Checklist.xlsx')
+        h, r = dirty_branch_performance()
+        write_csv(root / '01_Nova_Branch_Performance_Dirty_LARGE.csv', h, r)
         h, r = dirty_customers()
-        write_csv(root / '02_Customer_Master_Dirty_LARGE.csv', h, r)
-        (root / '00_USE_THE_LARGE_FILES.txt').write_text('Use the LARGE CSV files for the main cleaning demo. The original XLSX files remain as compact backup/reference files.\nDirty Sales LARGE: ~50,000 rows plus intentional duplicates.\nCustomer Master LARGE: ~8,000 rows plus intentional duplicates.\n', encoding='utf-8')
+        write_csv(root / '02_Nova_Customer_Master_Dirty_LARGE.csv', h, r)
+        (root / '00_START_HERE.txt').write_text(
+            'NOVA DISTRIBUTION GROUP - DAY 02\n\n'
+            'Yesterday you connected Nova data. Today management tells you the weekly branch file is not trustworthy.\n'
+            'The main dataset mixes Sales + Finance + Workforce indicators in the SAME business case.\n\n'
+            'Main lab: 01_Nova_Branch_Performance_Dirty_LARGE.csv (~50,000 rows + intentional duplicates)\n'
+            'Challenge: 02_Nova_Customer_Master_Dirty_LARGE.csv (~8,000 rows)\n'
+            'Use the checklist only after you inspect the data yourself.\n', encoding='utf-8')
         rezip_pack(root, zp)
 
 def monthly_rows(count, month, product_ids, customer_ids):
@@ -222,29 +339,45 @@ def monthly_rows(count, month, product_ids, customer_ids):
         price = round(random.uniform(5, 220), 2)
         disc = random.choice([0,0,0.05,0.10])
         rev = round(qty * price * (1 - disc), 2)
-        yield [f'{month:02d}-{i+1:07d}', dt.isoformat(), random.choice(customer_ids), random.choice(product_ids), f'SR{random.randint(1,180):03d}', f'B{random.randint(1,320):03d}', random.choice(REGIONS), random.choice(CHANNELS), qty, price, disc, rev]
+        yield [f'{month:02d}-{i+1:07d}', dt.isoformat(), random.choice(customer_ids), random.choice(product_ids), f'SR{random.randint(1,180):03d}', f'B{random.randint(1,100):03d}', random.choice(REGIONS), random.choice(CHANNELS), qty, price, disc, rev]
 
 def update_day3():
     zp = DAY3_DOWNLOADS / 'Day03_STOP_COPYING_FILES_LEARNER.zip'
     with tempfile.TemporaryDirectory() as td:
         root = unzip_pack(zp, Path(td))
-        products = find_ids(root / '03_Product_Master.xlsx', ['product id','product','sku'], 'P', 500)
-        customers = find_ids(root / '03_Customer_Master.xlsx', ['customer id','customer'], 'C', 8000)
+        customer_master = rename_once(root, '03_Customer_Master.xlsx', '03_Nova_Customer_Master.xlsx')
+        product_master = rename_once(root, '03_Product_Master.xlsx', '04_Nova_Product_Master.xlsx')
+        rename_once(root, '04_Day_03_Automation_Challenge.xlsx', '05_Nova_Automation_Challenge.xlsx')
+        products = find_ids(product_master, ['product id','product','sku'], 'P', 250)
+        customers = find_ids(customer_master, ['customer id','customer'], 'C', 8000)
         header = ['Transaction ID','Date','Customer ID','Product ID','Sales Rep ID','Branch ID','Region','Channel','Quantity','Unit Price','Discount %','Revenue']
         folder = root / 'Monthly_Sales'
-        mapping = {1:'2026-01_January.csv',2:'2026-02_February.csv',3:'2026-03_March.csv'}
+        folder.mkdir(parents=True, exist_ok=True)
+        for p in folder.glob('*.csv'): p.unlink()
+        mapping = {1:'Nova_Sales_2026-01_January.csv',2:'Nova_Sales_2026-02_February.csv',3:'Nova_Sales_2026-03_March.csv'}
         for m, fn in mapping.items():
             write_csv(folder / fn, header, monthly_rows(40000, m, products, customers))
         new = root / 'NEW_MONTH_TO_DROP_AFTER_BUILD'
-        write_csv(new / '2026-04_April.csv', header, monthly_rows(40000, 4, products, customers))
-        (root / '00_AUTOMATION_SCALE.txt').write_text('Monthly_Sales: 40,000 rows per month (Jan-Mar = 120,000 rows).\nApril: 40,000 rows in NEW_MONTH_TO_DROP_AFTER_BUILD. Move/copy it into Monthly_Sales only after the learner builds the Folder query, then Refresh.\n', encoding='utf-8')
+        new.mkdir(parents=True, exist_ok=True)
+        for p in new.glob('*.csv'): p.unlink()
+        write_csv(new / 'Nova_Sales_2026-04_April.csv', header, monthly_rows(40000,4,products,customers))
+        write_csv(root / '02_Nova_Branch_Master.csv', ['Branch ID','Branch Name','City','Region','Channel','Open Date','Branch Manager','Status'], branch_master_rows())
+        remove_if_exists(root, '00_AUTOMATION_SCALE.txt')
+        (root / '00_START_HERE.txt').write_text(
+            'NOVA DISTRIBUTION GROUP - DAY 03\n\n'
+            'Nova receives one Sales CSV every month. The process cannot depend on Copy/Paste.\n\n'
+            '1) Connect to Monthly_Sales as a Folder.\n2) Combine January-March.\n3) Keep Source File Name.\n'
+            '4) Merge Branch, Customer and Product masters.\n'
+            '5) Move April into Monthly_Sales only after the pipeline works, then Refresh.\n\n'
+            'Important: Budget and Workforce remain separate business facts for the semantic model later; do not force them into Sales transactions.\n', encoding='utf-8')
+        (root / '00_AUTOMATION_SCALE.txt').write_text('Monthly_Sales: 40,000 rows per month (Jan-Mar = 120,000 rows).\nApril: 40,000 rows held separately for the refresh proof.\nBranches: 100.\n', encoding='utf-8')
         rezip_pack(root, zp)
 
 def main():
     update_day1()
     update_day2()
     update_day3()
-    print('Generated scaled Week 1 datasets successfully.')
+    print('Generated Nova Week 1 training case successfully.')
 
 if __name__ == '__main__':
     main()

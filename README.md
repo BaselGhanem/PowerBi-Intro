@@ -82,3 +82,15 @@ week4/
 ```
 
 كل يوم يملك مجلده الخاص. ملفات التنزيل توضع داخل `downloads/`، وأي مصدر Web تدريبي يوضع داخل `web/`.
+
+
+## Nova training case
+
+Week 1 uses one shared company story: **Nova Distribution Group**.
+
+- Day 1: connect Nova sources across Sales, Workforce, Budget, Web and PDF.
+- Day 2: clean one shared Branch Performance dataset with Sales + Finance + Workforce indicators.
+- Day 3: automate monthly Nova Sales files and merge Branch, Customer and Product masters.
+- `week1/day1/web/Nova_Company_Profile.html` is the Day 1 company introduction and management brief.
+
+The case is synthetic and designed so learners from Sales, Finance and Workforce backgrounds learn the same Power BI skills on the same story.

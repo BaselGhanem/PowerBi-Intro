@@ -19,16 +19,18 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Generate scaled datasets
+      - name: Install generator dependencies
+        run: python -m pip install reportlab
+      - name: Generate Nova Week 1 case
         run: python tools/generate_week1_data.py
       - name: Commit generated files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add week1/day1/web/Branch_Performance.html week1/day1/downloads/*.zip week1/day2/downloads/*.zip week1/day3/downloads/*.zip
+          git add week1/day1/web/*.html week1/day1/downloads/*.zip week1/day2/downloads/*.zip week1/day3/downloads/*.zip
           if git diff --cached --quiet; then
             echo "No generated changes."
             exit 0
           fi
-          git commit -m "Scale Week 1 Power BI training datasets"
+          git commit -m "Build Nova Week 1 training case"
           git push

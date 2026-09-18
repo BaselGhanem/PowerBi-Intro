@@ -27,16 +27,17 @@ const DAYS = [
     phase: 'CONNECT',
     title: 'Connect Everything',
     titleAr: 'وصّل كل شيء',
-    hook: 'Excel، CSV، TXT، Web، PDF... هل Power BI فعلاً يقدر يقرأهم كلهم؟',
-    mission: 'ثبّت Power BI Desktop، وصّل خمسة أنواع مصادر، افهم ETL والواجهات الأساسية، ثم ابنِ أول Report تفاعلي بإيدك.',
-    topics: ['Power BI Desktop Installation', 'Get Data', 'Excel / CSV / Text', 'Web Connector', 'PDF Connector', 'ETL Concept', 'Report / Data / Model Views', 'Card & Bar Chart', 'Slicer & Filters'],
-    build: ['Install & launch Power BI Desktop', 'Connect Excel, CSV, TXT, PDF and Web sources', 'Understand Extract → Transform → Load', 'Tour the interface only after using it', 'Build Total Revenue Card', 'Build Revenue by Region', 'Add Channel Slicer and test interactions', 'Save Commercial_Performance_360_[Name].pbix'],
-    challenge: 'أجب عن أسئلة الإدارة باستخدام الـVisual المناسب. لا تبدأ بالـChart؛ ابدأ بالسؤال.',
-    deliverable: 'أول نسخة من Commercial Performance 360 + فهم واضح لـETL وواجهات Power BI الأساسية.',
+    hook: 'أول يوم لك مع Nova: Sales، Workforce، Budget، Web وPDF... البيانات موجودة، لكن القصة موزعة في كل مكان.',
+    mission: 'تعرّف على Nova أولاً، ثم ثبّت Power BI Desktop ووصل Excel وCSV وTXT وPDF وWeb لتبدأ أول نسخة من Business Performance 360.',
+    topics: ['Nova Company Case', 'Power BI Desktop Installation', 'Get Data', 'Excel / CSV / Text', 'Web Connector', 'PDF Connector', 'ETL Concept', 'Report / Data / Model Views', 'Card & Bar Chart', 'Slicer & Filters'],
+    build: ['Open Nova Company Profile and understand the management challenge', 'Install & launch Power BI Desktop', 'Connect Nova Excel, CSV, TXT, PDF and Web sources', 'Understand Extract → Transform → Load', 'Tour the interface only after using it', 'Build Total Revenue Card', 'Build Revenue vs Target by Region', 'Add Channel Slicer and test interactions', 'Save Nova_Business_Performance_360_[Name].pbix'],
+    challenge: 'الإدارة لا تريد Chart جميل فقط. ابدأ بالسؤال: أي Region أو Branch يحتاج انتباه أولاً؟',
+    deliverable: 'أول نسخة من Nova Business Performance 360 + فهم واضح لـETL وواجهات Power BI الأساسية.',
     recordingUrl: '',
     resources: [
-      { name: 'Day 01 — Complete Source Pack', type: 'ZIP', url: 'week1/day1/downloads/Day01_CONNECT_EVERYTHING.zip', note: 'Excel + CSV + TXT + PDF + ETL Quick Reference + Challenge' },
-      { name: 'Branch Performance — Web Source', type: 'WEB', url: 'week1/day1/web/Branch_Performance.html', note: 'استخدم هذا الرابط مباشرة في Get Data > Web' }
+      { name: 'Meet Nova — Company Profile', type: 'WEB', url: 'week1/day1/web/Nova_Company_Profile.html', note: 'ابدأ من هنا: الشركة، الشعار، المنتجات، نموذج العمل والتحدي الإداري.' },
+      { name: 'Day 01 — Nova Source Pack', type: 'ZIP', url: 'week1/day1/downloads/Day01_CONNECT_EVERYTHING.zip', note: 'Excel Product Master + 120K Sales CSV + Workforce TXT + Budget PDF + Challenge' },
+      { name: 'Nova Branch Performance — Web Source', type: 'WEB', url: 'week1/day1/web/Branch_Performance.html', note: '4,000 صف تجمع Sales + Finance + Workforce indicators. استخدم الرابط مباشرة في Get Data > Web.' }
     ]
   },
   {
@@ -46,15 +47,15 @@ const DAYS = [
     phase: 'CLEAN',
     title: 'Clean Data Like an Analyst',
     titleAr: 'نظّف البيانات كمحلل',
-    hook: 'التاريخ بأكثر من شكل، أسماء Regions غير موحدة، Revenue فيه فراغات، وTransaction IDs مكررة. هل تبني Dashboard على هيك Data؟',
-    mission: 'اكتشف مشاكل الجودة أولاً، ثم حوّل التنظيف إلى Power Query pipeline تتكرر تلقائياً مع كل Refresh.',
+    hook: 'Nova عندها ملف أسبوعي واحد يبدو مفيداً... لكنه مليان تواريخ مختلطة، Regions غير موحدة، Revenue ناقص، Headcount فيه أخطاء وRows مكررة.',
+    mission: 'حوّل ملف Nova Branch Performance غير الموثوق إلى Power Query pipeline نظيفة تتكرر تلقائياً مع كل Refresh.',
     topics: ['Power Query Editor', 'Data Types', 'Trim & Clean', 'Replace Values', 'Standardize Categories', 'Nulls', 'Duplicates', 'Errors', 'Applied Steps'],
-    build: ['Inspect dirty data before touching it', 'Fix data types and date issues', 'Trim & clean text fields', 'Standardize Region and Channel labels', 'Handle blanks intentionally', 'Remove duplicates where appropriate', 'Review Applied Steps', 'Refresh and prove the pipeline repeats'],
-    challenge: 'نظّف Customer Master السيئ باستخدام الـCleaning Checklist فقط، بدون recipe خطوة بخطوة.',
-    deliverable: 'Sales Query + Customer Master نظيفان وقابلان للـRefresh بدون تنظيف يدوي متكرر.',
+    build: ['Inspect Nova dirty data before touching it', 'Fix date and numeric data types', 'Trim & clean manager and category fields', 'Standardize Region and Channel labels', 'Handle missing Revenue / Cost / Headcount intentionally', 'Remove duplicates where appropriate', 'Review Applied Steps', 'Refresh and prove the pipeline repeats'],
+    challenge: 'بعد تنظيف Branch Performance، نظّف Nova Customer Master باستخدام الـCleaning Checklist فقط، بدون recipe خطوة بخطوة.',
+    deliverable: 'Nova Branch Performance + Customer Master نظيفان وقابلان للـRefresh بدون تنظيف يدوي متكرر.',
     recordingUrl: '',
     resources: [
-      { name: 'Day 02 — Cleaning Lab Pack', type: 'ZIP', url: 'week1/day2/downloads/Day02_CLEAN_DATA.zip', note: 'Dirty Sales + Dirty Customer Master + Cleaning Checklist' }
+      { name: 'Day 02 — Nova Cleaning Lab', type: 'ZIP', url: 'week1/day2/downloads/Day02_CLEAN_DATA.zip', note: '50K Branch Performance rows تجمع Sales + Finance + Workforce + 8K Dirty Customers + Checklist' }
     ]
   },
   {
@@ -64,15 +65,15 @@ const DAYS = [
     phase: 'AUTOMATE',
     title: 'Stop Copying Files',
     titleAr: 'وقف Copy / Paste الشهري',
-    hook: 'January، February، March... وبكرا April. هل رح تعيد نفس الشغل كل شهر؟',
-    mission: 'ابنِ Pipeline تجمع ملفات الأشهر تلقائياً، ثم Merge مع Customer وProduct Masters، وبعدها أثبت أن ملف شهر جديد يدخل بالـRefresh فقط.',
+    hook: 'Nova تستلم ملف Sales جديد كل شهر. January، February، March... وApril بالطريق. هل سنعيد نفس الشغل كل شهر؟',
+    mission: 'ابنِ Nova Sales pipeline تجمع ملفات الأشهر تلقائياً، ثم Merge مع Branch وCustomer وProduct Masters، وبعدها أثبت أن April يدخل بالـRefresh فقط.',
     topics: ['Folder Connector', 'Combine Files', 'Append Thinking', 'Merge Queries', 'Expand Columns', 'Reference vs Duplicate', 'Enable Load', 'Query Dependencies', 'Refresh'],
-    build: ['Connect to Monthly_Sales folder', 'Combine January–March', 'Keep Source File Name', 'Merge Customer Master', 'Merge Product Master', 'Load only the final analytical query', 'Drop April file and Refresh'],
+    build: ['Connect to Nova Monthly_Sales folder', 'Combine January–March', 'Keep Source File Name', 'Merge Nova Branch Master', 'Merge Customer Master', 'Merge Product Master', 'Load only the final analytical query', 'Drop April file and Refresh'],
     challenge: 'ابنِ العملية كاملة من Folder إلى Dataset موحد. النجاح الحقيقي: إضافة April بدون Copy/Paste أو تعديل يدوي.',
-    deliverable: 'Refreshable multi-file pipeline جاهزة للأشهر القادمة.',
+    deliverable: 'Nova monthly Sales pipeline قابلة للـRefresh وجاهزة للأشهر القادمة، مع Masters موحدة.',
     recordingUrl: '',
     resources: [
-      { name: 'Day 03 — Automation Learner Pack', type: 'ZIP', url: 'week1/day3/downloads/Day03_STOP_COPYING_FILES_LEARNER.zip', note: 'Jan–Mar files + Customer Master + Product Master + Automation Challenge' }
+      { name: 'Day 03 — Nova Automation Pack', type: 'ZIP', url: 'week1/day3/downloads/Day03_STOP_COPYING_FILES_LEARNER.zip', note: 'Jan–Mar × 40K rows + April refresh proof + Branch/Customer/Product Masters + Challenge' }
     ]
   },
   {
@@ -207,12 +208,12 @@ const DAYS = [
     topics: ['Refresh & Validation', 'Model Check', 'KPI Review', 'Target / Budget', 'PY & Growth', 'Executive Story', 'Power BI Service', 'Publish', 'Workspaces', 'Refresh Concept', 'RLS Overview'],
     build: ['Final Refresh', 'Executive Dashboard', 'Root Cause Analysis', 'Boardroom Story'],
     challenge: 'Final Mission: What happened? Why? Where should management focus? What action do you recommend?',
-    deliverable: 'Commercial Performance 360 — مشروع نهائي متكامل وقابل للعرض على الإدارة.',
+    deliverable: 'Nova Business Performance 360 — مشروع نهائي متكامل وقابل للعرض على الإدارة.',
     recordingUrl: '',
     resources: [
       { name: '10_Boardroom_Final_Case.zip', type: 'ZIP', url: '', note: 'البيانات الجديدة + Brief' },
       { name: '10_Final_Submission_Checklist.pdf', type: 'PDF', url: '', note: 'قائمة التحقق النهائية' },
-      { name: 'Commercial_Performance_360_FINAL.pbix', type: 'PBIX', url: '', note: 'Trainer Reveal — يضاف بعد التحدي' }
+      { name: 'Nova_Business_Performance_360_FINAL.pbix', type: 'PBIX', url: '', note: 'Trainer Reveal — يضاف بعد التحدي' }
     ]
   }
 ];
