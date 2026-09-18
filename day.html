@@ -67,6 +67,20 @@
         </div>
 
         <aside>
+          <article class="panel live-session-panel" id="liveSessionPanel">
+            <span class="panel-kicker">LIVE SESSION</span>
+            <h2>الجلسة المباشرة</h2>
+            <p>نفس رابط Teams لكل جلسات الدورة.</p>
+            <a class="btn btn-primary full-btn" id="liveSessionBtn" target="_blank" rel="noopener">JOIN TEAMS SESSION ↗</a>
+          </article>
+
+          <article class="panel install-panel" id="installPanel" hidden>
+            <span class="panel-kicker">BEFORE WE START</span>
+            <h2>نزّل Power BI Desktop</h2>
+            <p>Day 01 يبدأ من جهازك. استخدم صفحة Microsoft الرسمية للحصول على النسخة الحالية.</p>
+            <a class="btn btn-primary full-btn" id="downloadPowerBiBtn" target="_blank" rel="noopener">DOWNLOAD POWER BI DESKTOP ↗</a>
+          </article>
+
           <article class="panel">
             <span class="panel-kicker">SESSION RECORDING</span>
             <h2>تسجيل الجلسة</h2>
@@ -112,6 +126,21 @@
     document.getElementById('challenge').textContent = day.challenge;
     document.getElementById('deliverable').textContent = day.deliverable;
 
+    const liveSessionBtn = document.getElementById('liveSessionBtn');
+    if (COURSE_CONFIG.liveUrl) {
+      liveSessionBtn.href = COURSE_CONFIG.liveUrl;
+    } else {
+      liveSessionBtn.textContent = 'رابط Teams يضاف قبل الجلسة';
+      liveSessionBtn.classList.add('btn-disabled');
+      liveSessionBtn.removeAttribute('href');
+    }
+
+    const installPanel = document.getElementById('installPanel');
+    if (day.id === 1) {
+      installPanel.hidden = false;
+      document.getElementById('downloadPowerBiBtn').href = COURSE_CONFIG.powerBiDownloadUrl;
+    }
+
     document.getElementById('topics').innerHTML = day.topics.map(t => `<div class="topic-item">${t}</div>`).join('');
     document.getElementById('buildSteps').innerHTML = day.build.map((t,i) => `<div class="step"><span class="step-num">${String(i+1).padStart(2,'0')}</span><span>${t}</span></div>`).join('');
 
@@ -122,12 +151,12 @@
       videoBox.innerHTML = `<div class="video-pending"><strong>التسجيل سيظهر هنا</strong><span>بعد الجلسة، أضف الرابط في data.js فقط.</span></div>`;
     }
 
-    const typeIcon = {PBIX:'PBI',Excel:'XLSX',PDF:'PDF',ZIP:'ZIP',Challenge:'LAB',Guide:'DOC'};
+    const typeIcon = {PBIX:'PBI',Excel:'XLSX',PDF:'PDF',ZIP:'ZIP',Challenge:'LAB',Guide:'DOC',WEB:'WEB'};
     document.getElementById('resources').innerHTML = day.resources.map(r => {
       const available = Boolean(r.url);
       return `<${available ? 'a' : 'div'} class="resource ${available ? '' : 'pending'}" ${available ? `href="${r.url}" target="_blank" rel="noopener"` : ''}>
         <span class="resource-icon">${typeIcon[r.type] || r.type}</span>
-        <span class="resource-copy"><strong>${r.name}</strong><small>${r.note}</small></span>
+        <span class="resource-copy"><strong dir="ltr">${r.name}</strong><small>${r.note}</small></span>
         <span class="resource-action">${available ? 'فتح ↗' : 'قيد الإعداد'}</span>
       </${available ? 'a' : 'div'}>`;
     }).join('');
