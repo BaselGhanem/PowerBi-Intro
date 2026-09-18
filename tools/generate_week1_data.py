@@ -129,6 +129,73 @@ def remove_if_exists(root: Path, *names: str):
         elif p.exists():
             p.unlink()
 
+def product_catalog_rows():
+    """Single Nova product universe used by the profile, Product Master and all Sales facts."""
+    specs = {
+        'Food & Beverage': {
+            'brands': ['Nova Fresh','Harvest Lane','Daily Sip'],
+            'items': [('Sparkling Water',['330ml','500ml','1L']),('Still Water',['500ml','1.5L']),('Orange Juice',['250ml','1L']),('Apple Juice',['250ml','1L']),('Ground Coffee',['250g','500g']),('Black Tea',['25 bags','100 bags']),('Granola Bar',['40g','6 pack']),('Mixed Nuts',['150g','300g'])],
+            'price': (0.65,8.50), 'margin': (0.18,0.34)
+        },
+        'Personal Care': {
+            'brands': ['Nova Care','Pureline','Nura Care'],
+            'items': [('Shampoo',['250ml','400ml']),('Conditioner',['250ml','400ml']),('Body Wash',['250ml','500ml']),('Hand Wash',['250ml','500ml']),('Toothpaste',['75ml','120ml']),('Deodorant',['50ml','150ml']),('Hand Cream',['75ml','150ml']),('Facial Cleanser',['150ml','250ml'])],
+            'price': (1.40,12.00), 'margin': (0.22,0.40)
+        },
+        'Home Care': {
+            'brands': ['Nova Home','BrightNest','HomePro'],
+            'items': [('Laundry Detergent',['1kg','3kg']),('Dishwashing Liquid',['500ml','1L']),('Surface Cleaner',['500ml','750ml']),('Glass Cleaner',['500ml','750ml']),('Floor Cleaner',['1L','2L']),('Kitchen Degreaser',['500ml','750ml']),('Fabric Softener',['1L','2L']),('Cleaning Wipes',['40 wipes','80 wipes'])],
+            'price': (1.20,16.00), 'margin': (0.20,0.38)
+        },
+        'Health & Wellness': {
+            'brands': ['NovaWell','Vitalis','WellSpring'],
+            'items': [('Vitamin C',['30 tablets','60 tablets']),('Multivitamin',['30 tablets','60 tablets']),('Electrolyte Drink',['330ml','500ml']),('Protein Bar',['45g','12 pack']),('Herbal Tea',['20 bags','40 bags']),('Hand Sanitizer',['100ml','500ml']),('Sleep Mask',['single','2 pack']),('Resistance Band',['light','medium','heavy'])],
+            'price': (1.00,22.00), 'margin': (0.24,0.42)
+        },
+        'Office & Tech': {
+            'brands': ['Nova Office','WorkGrid','TechNest'],
+            'items': [('Wireless Mouse',['standard','silent']),('USB-C Cable',['1m','2m']),('Notebook',['A5','A4']),('Ballpoint Pens',['5 pack','10 pack']),('Desk Organizer',['small','large']),('Laptop Stand',['fixed','adjustable']),('Power Bank',['10000mAh','20000mAh']),('USB Hub',['4 port','7 port'])],
+            'price': (1.00,45.00), 'margin': (0.18,0.36)
+        },
+        'Seasonal': {
+            'brands': ['Nova Select','Festiva','Outdoor+'],
+            'items': [('Insulated Bottle',['500ml','750ml']),('Travel Mug',['350ml','500ml']),('Picnic Blanket',['standard','XL']),('LED String Lights',['5m','10m']),('Gift Bag Set',['small','large']),('Cooling Bag',['12L','24L']),('Umbrella',['compact','golf']),('Storage Box',['20L','40L'])],
+            'price': (1.50,38.00), 'margin': (0.20,0.40)
+        }
+    }
+    suppliers = ['Apex Trading Co.','Levant Consumer Goods','Cedar Supply Partners','Horizon Imports','Prime Distribution Supply','Mena Wholesale Group']
+    local = random.Random(260919)
+    rows = []
+    pid = 1
+    for category, spec in specs.items():
+        combos = [(brand, name, variant) for name, variants in spec['items'] for variant in variants for brand in spec['brands']]
+        local.shuffle(combos)
+        for brand, name, variant in combos[:40]:
+            list_price = round(local.uniform(*spec['price']), 2)
+            margin = local.uniform(*spec['margin'])
+            unit_cost = round(list_price * (1 - margin), 2)
+            rows.append({
+                'product_id': f'P{pid:04d}',
+                'sku': f'NOVA-{pid:04d}',
+                'product_name': f'{brand} {name} {variant}',
+                'category': category,
+                'subcategory': name,
+                'brand': brand,
+                'variant': variant,
+                'unit_cost': unit_cost,
+                'list_price': list_price,
+                'supplier': local.choice(suppliers),
+                'portfolio_role': local.choice(['Core','Core','Core','Growth','Seasonal']),
+                'status': 'Active'
+            })
+            pid += 1
+    return rows
+
+def write_product_master_csv(path: Path, catalog):
+    header = ['Product ID','SKU','Product Name','Category','Subcategory','Brand','Pack / Variant','Unit Cost','List Price','Supplier','Portfolio Role','Status']
+    rows = [[p['product_id'],p['sku'],p['product_name'],p['category'],p['subcategory'],p['brand'],p['variant'],p['unit_cost'],p['list_price'],p['supplier'],p['portfolio_role'],p['status']] for p in catalog]
+    write_csv(path, header, rows)
+
 def branch_master_rows():
     for b in range(1, 101):
         city = CITIES[(b - 1) % len(CITIES)]
@@ -150,14 +217,16 @@ def workforce_rows(count=2400):
         monthly_cost = round(random.uniform(520,2300),2)
         yield [f'E{i:05d}', f'{random.choice(FIRST)} {random.choice(LAST)}', branch, dept, position, emp_type, status, hire.isoformat(), fte, monthly_cost]
 
-def sales_rows(count, start, days, product_ids, rep_ids, branch_count=100, customer_count=8000):
+def sales_rows(count, start, days, catalog, rep_ids, branch_count=100, customer_count=8000):
     for i in range(count):
         dt = start + timedelta(days=random.randrange(days))
+        product = random.choice(catalog)
         qty = random.randint(1, 12)
-        price = round(random.uniform(4, 250), 2)
+        # Unit price comes from Nova Product Master, with only a small channel/transaction variation.
+        price = round(product['list_price'] * random.uniform(0.97, 1.03), 2)
         disc = random.choice([0,0,0,0.05,0.05,0.10,0.15])
         revenue = round(qty * price * (1 - disc), 2)
-        yield [f'TX{i+1:08d}', dt.isoformat(), f'C{random.randint(1,customer_count):05d}', random.choice(product_ids), random.choice(rep_ids), f'B{random.randint(1,branch_count):03d}', random.choice(REGIONS), random.choice(CHANNELS), qty, price, disc, revenue]
+        yield [f'TX{i+1:08d}', dt.isoformat(), f'C{random.randint(1,customer_count):05d}', product['product_id'], random.choice(rep_ids), f'B{random.randint(1,branch_count):03d}', random.choice(REGIONS), random.choice(CHANNELS), qty, price, disc, revenue]
 
 def branch_records():
     records = []
@@ -184,12 +253,12 @@ def branch_records():
 
 def company_profile_html():
     products = [
-        ('Food & Beverage','Fast-moving essentials and refreshment lines.'),
-        ('Personal Care','Everyday personal care and hygiene products.'),
-        ('Home Care','Household cleaning and home-maintenance products.'),
-        ('Health & Wellness','OTC wellness and lifestyle-support products.'),
-        ('Office & Tech','Business supplies and selected accessories.'),
-        ('Seasonal','Rotating campaigns and seasonal product ranges.')
+        ('Food & Beverage','Nova Fresh water & juice, Harvest Lane coffee & snacks, Daily Sip beverages.'),
+        ('Personal Care','Nova Care, Pureline and Nura Care shampoo, body wash, toothpaste and hygiene lines.'),
+        ('Home Care','Nova Home, BrightNest and HomePro detergents, cleaners and household essentials.'),
+        ('Health & Wellness','NovaWell, Vitalis and WellSpring vitamins, hydration, wellness and self-care products.'),
+        ('Office & Tech','Nova Office, WorkGrid and TechNest notebooks, cables, accessories and desk products.'),
+        ('Seasonal','Nova Select, Festiva and Outdoor+ travel, gifting and rotating seasonal ranges.')
     ]
     cards = ''.join(f'<article class="product"><span>{i+1:02d}</span><h3>{html.escape(n)}</h3><p>{html.escape(d)}</p></article>' for i,(n,d) in enumerate(products))
     return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Nova Distribution Group | Company Profile</title>
@@ -239,13 +308,14 @@ def update_day1():
     zp = DAY1_DOWNLOADS / 'Day01_CONNECT_EVERYTHING.zip'
     with tempfile.TemporaryDirectory() as td:
         root = unzip_pack(zp, Path(td))
-        product_master = rename_once(root, '01_Product_Master.xlsx', '01_Nova_Product_Master.xlsx')
         rename_once(root, '06_Day_01_Challenge.xlsx', '06_Nova_Day_01_Challenge.xlsx')
-        products = find_ids(product_master, ['product id','product','sku'], 'P', 250)
+        remove_if_exists(root, '01_Product_Master.xlsx', '01_Nova_Product_Master.xlsx', '01_Nova_Product_Master.csv')
+        catalog = product_catalog_rows()
+        write_product_master_csv(root / '01_Nova_Product_Master.csv', catalog)
         rep_ids = [f'SR{i:03d}' for i in range(1,181)]
         remove_if_exists(root, '02_Sales_Transactions.csv', '03_Sales_Reps.txt', '04_Regional_Targets.pdf', '00_DATASET_SCALE.txt')
         header = ['Transaction ID','Date','Customer ID','Product ID','Sales Rep ID','Branch ID','Region','Channel','Quantity','Unit Price','Discount %','Revenue']
-        write_csv(root / '02_Nova_Sales_Transactions.csv', header, sales_rows(120000, date(2025,1,1), 620, products, rep_ids))
+        write_csv(root / '02_Nova_Sales_Transactions.csv', header, sales_rows(120000, date(2025,1,1), 620, catalog, rep_ids))
         write_csv(root / '03_Nova_Workforce_Snapshot.txt', ['Employee ID','Employee Name','Branch ID','Department','Position','Employment Type','Status','Hire Date','FTE','Monthly Cost'], workforce_rows())
         make_budget_pdf(root / '04_Nova_Budget_and_Targets.pdf')
         make_branch_html(root / 'web' / 'Branch_Performance.html')
@@ -254,7 +324,7 @@ def update_day1():
             'NOVA DISTRIBUTION GROUP - DAY 01\n\n'
             'You are joining the Nova Analytics Team. Management wants one trusted view across Sales, Finance and Workforce.\n\n'
             'Connect these sources in Power BI:\n'
-            '1) 01_Nova_Product_Master.xlsx - Excel source\n'
+            '1) 01_Nova_Product_Master.csv - Nova product catalog (240 products)\n'
             '2) 02_Nova_Sales_Transactions.csv - 120,000 transaction rows\n'
             '3) 03_Nova_Workforce_Snapshot.txt - workforce snapshot\n'
             '4) 04_Nova_Budget_and_Targets.pdf - finance/target document\n'
@@ -329,26 +399,28 @@ def update_day2():
             'Use the checklist only after you inspect the data yourself.\n', encoding='utf-8')
         rezip_pack(root, zp)
 
-def monthly_rows(count, month, product_ids, customer_ids):
+def monthly_rows(count, month, catalog, customer_ids):
     start = date(2026, month, 1)
     nextm = date(2026 + (month == 12), (month % 12) + 1, 1)
     span = (nextm - start).days
     for i in range(count):
         dt = start + timedelta(days=random.randrange(span))
+        product = random.choice(catalog)
         qty = random.randint(1, 10)
-        price = round(random.uniform(5, 220), 2)
+        price = round(product['list_price'] * random.uniform(0.97, 1.03), 2)
         disc = random.choice([0,0,0.05,0.10])
         rev = round(qty * price * (1 - disc), 2)
-        yield [f'{month:02d}-{i+1:07d}', dt.isoformat(), random.choice(customer_ids), random.choice(product_ids), f'SR{random.randint(1,180):03d}', f'B{random.randint(1,100):03d}', random.choice(REGIONS), random.choice(CHANNELS), qty, price, disc, rev]
+        yield [f'{month:02d}-{i+1:07d}', dt.isoformat(), random.choice(customer_ids), product['product_id'], f'SR{random.randint(1,180):03d}', f'B{random.randint(1,100):03d}', random.choice(REGIONS), random.choice(CHANNELS), qty, price, disc, rev]
 
 def update_day3():
     zp = DAY3_DOWNLOADS / 'Day03_STOP_COPYING_FILES_LEARNER.zip'
     with tempfile.TemporaryDirectory() as td:
         root = unzip_pack(zp, Path(td))
         customer_master = rename_once(root, '03_Customer_Master.xlsx', '03_Nova_Customer_Master.xlsx')
-        product_master = rename_once(root, '03_Product_Master.xlsx', '04_Nova_Product_Master.xlsx')
         rename_once(root, '04_Day_03_Automation_Challenge.xlsx', '05_Nova_Automation_Challenge.xlsx')
-        products = find_ids(product_master, ['product id','product','sku'], 'P', 250)
+        remove_if_exists(root, '03_Product_Master.xlsx', '04_Nova_Product_Master.xlsx', '04_Nova_Product_Master.csv')
+        catalog = product_catalog_rows()
+        write_product_master_csv(root / '04_Nova_Product_Master.csv', catalog)
         customers = find_ids(customer_master, ['customer id','customer'], 'C', 8000)
         header = ['Transaction ID','Date','Customer ID','Product ID','Sales Rep ID','Branch ID','Region','Channel','Quantity','Unit Price','Discount %','Revenue']
         folder = root / 'Monthly_Sales'
@@ -356,18 +428,18 @@ def update_day3():
         for p in folder.glob('*.csv'): p.unlink()
         mapping = {1:'Nova_Sales_2026-01_January.csv',2:'Nova_Sales_2026-02_February.csv',3:'Nova_Sales_2026-03_March.csv'}
         for m, fn in mapping.items():
-            write_csv(folder / fn, header, monthly_rows(40000, m, products, customers))
+            write_csv(folder / fn, header, monthly_rows(40000, m, catalog, customers))
         new = root / 'NEW_MONTH_TO_DROP_AFTER_BUILD'
         new.mkdir(parents=True, exist_ok=True)
         for p in new.glob('*.csv'): p.unlink()
-        write_csv(new / 'Nova_Sales_2026-04_April.csv', header, monthly_rows(40000,4,products,customers))
+        write_csv(new / 'Nova_Sales_2026-04_April.csv', header, monthly_rows(40000,4,catalog,customers))
         write_csv(root / '02_Nova_Branch_Master.csv', ['Branch ID','Branch Name','City','Region','Channel','Open Date','Branch Manager','Status'], branch_master_rows())
         remove_if_exists(root, '00_AUTOMATION_SCALE.txt')
         (root / '00_START_HERE.txt').write_text(
             'NOVA DISTRIBUTION GROUP - DAY 03\n\n'
             'Nova receives one Sales CSV every month. The process cannot depend on Copy/Paste.\n\n'
             '1) Connect to Monthly_Sales as a Folder.\n2) Combine January-March.\n3) Keep Source File Name.\n'
-            '4) Merge Branch, Customer and Product masters.\n'
+            '4) Merge Branch, Customer and Nova Product masters.\n'
             '5) Move April into Monthly_Sales only after the pipeline works, then Refresh.\n\n'
             'Important: Budget and Workforce remain separate business facts for the semantic model later; do not force them into Sales transactions.\n', encoding='utf-8')
         (root / '00_AUTOMATION_SCALE.txt').write_text('Monthly_Sales: 40,000 rows per month (Jan-Mar = 120,000 rows).\nApril: 40,000 rows held separately for the refresh proof.\nBranches: 100.\n', encoding='utf-8')
