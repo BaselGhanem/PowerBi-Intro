@@ -161,3 +161,28 @@ img { max-width: 100%; display: block; }
 @media (max-width: 620px){
   .shell{width:min(100% - 24px,1180px)}.topbar-inner{height:64px}.brand-copy small{display:none}.hero{padding:42px 0}.hero h1{font-size:clamp(2.7rem,14vw,4.6rem)}.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);width:100%}.hero-stat{min-width:0;margin:0}.mock-report{min-height:340px}.section{padding:64px 0}.instructor-card{grid-template-columns:1fr}.instructor-photo{max-width:220px}.portal-day-top{padding:16px}.portal-day-bottom{padding:11px 16px 14px}.day-card{min-height:auto}.auth-page{padding:14px}.auth-shell{border-radius:22px}.auth-art{padding:28px;min-height:310px}.auth-form{padding:28px}.nav-actions .btn{padding:10px 12px}.day-nav{flex-direction:column}
 }
+
+
+/* WEEK 1 POLISH */
+.full-btn{width:100%;justify-content:center;text-align:center}
+.live-session-panel{border-color:rgba(242,200,17,.22);background:linear-gradient(135deg,rgba(242,200,17,.08),rgba(255,255,255,.018))}
+.install-panel{border-color:rgba(9,153,153,.25);background:linear-gradient(135deg,rgba(9,153,153,.09),rgba(255,255,255,.018))}
+.install-panel .panel-kicker{color:#52caca}
+.portal-grid{align-items:stretch}
+.portal-day{height:100%;display:flex;flex-direction:column}
+.portal-day-top{flex:1}
+.portal-day-top>div:last-child{min-width:0;flex:1}
+.portal-day-bottom{margin-top:auto;align-items:flex-start}
+.status-chip{line-height:1.35}
+.resource-count{line-height:1.55;text-align:left}
+.day-title-wrap>div:first-child{min-width:0}
+.day-hero h1{overflow-wrap:anywhere}
+.resource-copy strong{direction:ltr;text-align:left}
+.resource-copy small{line-height:1.5}
+.resource-action{white-space:nowrap}
+.day-date-card{align-self:end}
+@media (max-width:720px){
+  .portal-day-bottom{flex-direction:column;align-items:flex-start}
+  .resource-count{text-align:right}
+  .day-date-card{align-self:stretch}
+}
