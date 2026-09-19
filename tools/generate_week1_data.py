@@ -388,7 +388,7 @@ def branch_records():
             ])
     return records
 
-def company_profile_html():def company_profile_html():
+def company_profile_html():
     products = [
         ('Food & Beverage','Nova Fresh water & juice, Harvest Lane coffee & snacks, Daily Sip beverages.'),
         ('Personal Care','Nova Care, Pureline and Nura Care shampoo, body wash, toothpaste and hygiene lines.'),
