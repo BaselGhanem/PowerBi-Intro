@@ -642,7 +642,7 @@ def main():
     update_day1()
     update_day2()
     update_day3()
-    print('Generated Nova Week 1 training case successfully.')
+    print('Generated Nova Week 1 training case successfully.')  # QA trigger
 
 if __name__ == '__main__':
     main()
