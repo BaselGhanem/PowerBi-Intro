@@ -9,6 +9,8 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import mm
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
+from openpyxl import Workbook
+from openpyxl.styles import Font, PatternFill, Alignment
 
 ROOT = Path(__file__).resolve().parents[1]
 DAY1 = ROOT / 'week1' / 'day1'
@@ -114,6 +116,84 @@ def write_csv(path, header, rows):
         w.writerow(header)
         w.writerows(rows)
 
+def make_simple_xlsx(path: Path, sheets):
+    """Create small Nova-native reference/challenge workbooks."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    wb = Workbook()
+    default = wb.active
+    wb.remove(default)
+    header_fill = PatternFill('solid', fgColor='13233B')
+    accent_fill = PatternFill('solid', fgColor='DFF3F1')
+    for title, rows in sheets:
+        ws = wb.create_sheet(title[:31])
+        for r_idx, row in enumerate(rows, 1):
+            for c_idx, value in enumerate(row, 1):
+                cell = ws.cell(r_idx, c_idx, value)
+                cell.alignment = Alignment(vertical='top', wrap_text=True)
+                if r_idx == 1:
+                    cell.font = Font(bold=True, color='FFFFFF')
+                    cell.fill = header_fill
+                elif r_idx == 2:
+                    cell.fill = accent_fill
+            ws.row_dimensions[r_idx].height = 24
+        for col in ws.columns:
+            letter = col[0].column_letter
+            max_len = max(len(str(c.value or '')) for c in col)
+            ws.column_dimensions[letter].width = min(max(max_len + 3, 14), 52)
+        ws.freeze_panes = 'A2'
+        ws.auto_filter.ref = ws.dimensions
+    wb.save(path)
+
+def make_day1_excel_files(root: Path):
+    make_simple_xlsx(root / '05_Nova_ETL_Reference.xlsx', [
+        ('ETL Reference', [
+            ['Stage','Meaning','Nova example','What Power BI does'],
+            ['Extract','Connect to the source','Sales CSV, Workforce TXT, Budget PDF, Web table','Reads data from the source'],
+            ['Transform','Clean and shape','Fix types, names, nulls, duplicates','Power Query records repeatable steps'],
+            ['Load','Make data available for analysis','Load trusted tables to the model','Creates tables used by visuals and measures']
+        ]),
+        ('Source Map', [
+            ['Source','Format','Business area','Day 1 purpose'],
+            ['Nova Product Master','CSV','Products','Structured master data'],
+            ['Nova Sales Transactions','CSV','Sales','Large transaction fact'],
+            ['Nova Workforce Snapshot','TXT','Workforce','Text-file connector'],
+            ['Nova Budget & Targets','PDF','Finance','PDF connector'],
+            ['Nova Branch Performance','WEB','Management','Web connector']
+        ])
+    ])
+    make_simple_xlsx(root / '06_Nova_Day_01_Challenge.xlsx', [
+        ('Challenge', [
+            ['Mission','Requirement','Done when'],
+            ['First management view','Build Total Revenue, Revenue vs Target by Region and a Channel slicer','The page answers where attention may be needed without claiming root cause'],
+            ['Data check','Confirm source names and row counts before building visuals','No unexpected empty table or wrong data type'],
+            ['Save','Save the report as Nova_Business_Performance_360_[Name].pbix','PBIX is ready to continue next session']
+        ])
+    ])
+
+def make_day2_excel_files(root: Path):
+    make_simple_xlsx(root / '03_Nova_Cleaning_Checklist.xlsx', [
+        ('Cleaning Checklist', [
+            ['Check','Question','Power Query action'],
+            ['Grain','Is Branch ID + Date unique after bad duplicates are removed?','Remove only true duplicate rows'],
+            ['Dates','Are all dates valid and typed as Date?','Fix/replace invalid values intentionally'],
+            ['Categories','Do Region and Channel use one canonical spelling?','Trim, Clean, standardize case/values'],
+            ['Numbers','Are Revenue, Cost and Headcount numeric?','Set types and investigate errors/nulls'],
+            ['Names','Are manager/customer names free of extra spaces?','Trim and Clean'],
+            ['Audit','Can the same steps run again on Refresh?','Review Applied Steps']
+        ])
+    ])
+
+def make_day3_excel_files(root: Path):
+    make_simple_xlsx(root / '05_Nova_Automation_Challenge.xlsx', [
+        ('Automation Challenge', [
+            ['Step','Mission','Proof'],
+            ['1','Connect to Monthly_Sales as Folder','Jan-Mar combine without opening files individually'],
+            ['2','Keep Source File Name','Each transaction can be traced to its month file'],
+            ['3','Merge Branch, Customer and Product masters','Descriptive fields expand correctly with no orphan keys'],
+            ['4','Add April only after pipeline is complete','Refresh adds April rows without editing Power Query steps']
+        ])
+    ])
+
 def rename_once(root: Path, old_name: str, new_name: str):
     old = root / old_name
     new = root / new_name
@@ -196,62 +276,119 @@ def write_product_master_csv(path: Path, catalog):
     rows = [[p['product_id'],p['sku'],p['product_name'],p['category'],p['subcategory'],p['brand'],p['variant'],p['unit_cost'],p['list_price'],p['supplier'],p['portfolio_role'],p['status']] for p in catalog]
     write_csv(path, header, rows)
 
-def branch_master_rows():
+def branch_catalog_rows():
+    branches = []
     for b in range(1, 101):
         city = CITIES[(b - 1) % len(CITIES)]
         region = REGION_BY_CITY[city]
         channel = CHANNELS[(b - 1) % len(CHANNELS)]
         opened = date(2018,1,1) + timedelta(days=((b * 37) % 2500))
         manager = f'{FIRST[(b*3) % len(FIRST)]} {LAST[(b*5) % len(LAST)]}'
-        yield [f'B{b:03d}', f'Nova {city} {b:03d}', city, region, channel, opened.isoformat(), manager, 'Active']
+        branches.append({
+            'branch_id': f'B{b:03d}',
+            'branch_name': f'Nova {city} {b:03d}',
+            'city': city,
+            'region': region,
+            'channel': channel,
+            'open_date': opened.isoformat(),
+            'manager': manager,
+            'status': 'Active'
+        })
+    return branches
 
-def workforce_rows(count=2400):
+def branch_master_rows(branches=None):
+    branches = branches or branch_catalog_rows()
+    for b in branches:
+        yield [b['branch_id'],b['branch_name'],b['city'],b['region'],b['channel'],b['open_date'],b['manager'],b['status']]
+
+def customer_catalog_rows(count=8000):
+    local = random.Random(260922)
+    segments = ['SMB','Enterprise','Retail','Key Account']
+    types = ['Retail Customer','Corporate Account','Reseller','Institutional']
+    rows = []
     for i in range(1, count + 1):
-        branch = f'B{random.randint(1,100):03d}'
-        dept = random.choices(DEPARTMENTS, weights=[34,25,10,8,23], k=1)[0]
-        position = random.choice(POSITIONS[dept])
-        emp_type = random.choices(['Full Time','Part Time','Contract'], weights=[82,8,10], k=1)[0]
-        status = random.choices(['Active','Leave','Secondment'], weights=[94,5,1], k=1)[0]
-        hire = date(2017,1,1) + timedelta(days=random.randrange(3400))
-        fte = 1.0 if emp_type != 'Part Time' else 0.5
-        monthly_cost = round(random.uniform(520,2300),2)
-        yield [f'E{i:05d}', f'{random.choice(FIRST)} {random.choice(LAST)}', branch, dept, position, emp_type, status, hire.isoformat(), fte, monthly_cost]
+        city = local.choice(CITIES)
+        rows.append({
+            'customer_id': f'C{i:05d}',
+            'customer_name': f'{local.choice(FIRST)} {local.choice(LAST)} Trading {i:04d}',
+            'city': city,
+            'region': REGION_BY_CITY[city],
+            'segment': local.choice(segments),
+            'customer_type': local.choice(types),
+            'account_manager': f'{local.choice(FIRST)} {local.choice(LAST)}',
+            'status': local.choices(['Active','Inactive'],weights=[94,6],k=1)[0]
+        })
+    return rows
 
-def sales_rows(count, start, days, catalog, rep_ids, branch_count=100, customer_count=8000):
+def write_customer_master_csv(path: Path, customers):
+    write_csv(path,
+        ['Customer ID','Customer Name','City','Region','Segment','Customer Type','Account Manager','Status'],
+        [[c['customer_id'],c['customer_name'],c['city'],c['region'],c['segment'],c['customer_type'],c['account_manager'],c['status']] for c in customers])
+
+def workforce_rows(count=2400, branches=None):
+    branches = branches or branch_catalog_rows()
+    local = random.Random(260923)
+    for i in range(1, count + 1):
+        branch = local.choice(branches)
+        dept = local.choices(DEPARTMENTS, weights=[34,25,10,8,23], k=1)[0]
+        position = local.choice(POSITIONS[dept])
+        emp_type = local.choices(['Full Time','Part Time','Contract'], weights=[82,8,10], k=1)[0]
+        status = local.choices(['Active','Leave','Secondment'], weights=[94,5,1], k=1)[0]
+        hire = date(2017,1,1) + timedelta(days=local.randrange(3400))
+        fte = 1.0 if emp_type != 'Part Time' else 0.5
+        monthly_cost = round(local.uniform(520,2300),2)
+        yield [f'E{i:05d}', f'{local.choice(FIRST)} {local.choice(LAST)}', branch['branch_id'], dept, position, emp_type, status, hire.isoformat(), fte, monthly_cost]
+
+def monthly_sales_rows(count, month, catalog, customers, branches):
+    """Deterministic monthly facts. Day 1 Jan-Mar and Day 3 Jan-Mar are byte-for-byte the same business rows."""
+    local = random.Random(261000 + month)
+    start = date(2026, month, 1)
+    nextm = date(2026 + (month == 12), (month % 12) + 1, 1)
+    span = (nextm - start).days
     for i in range(count):
-        dt = start + timedelta(days=random.randrange(days))
-        product = random.choice(catalog)
-        qty = random.randint(1, 12)
-        # Unit price comes from Nova Product Master, with only a small channel/transaction variation.
-        price = round(product['list_price'] * random.uniform(0.97, 1.03), 2)
-        disc = random.choice([0,0,0,0.05,0.05,0.10,0.15])
+        dt = start + timedelta(days=local.randrange(span))
+        product = local.choice(catalog)
+        customer = local.choice(customers)
+        branch = local.choice(branches)
+        qty = local.randint(1, 12)
+        price = round(product['list_price'] * local.uniform(0.97, 1.03), 2)
+        disc = local.choice([0,0,0,0.05,0.05,0.10,0.15])
         revenue = round(qty * price * (1 - disc), 2)
-        yield [f'TX{i+1:08d}', dt.isoformat(), f'C{random.randint(1,customer_count):05d}', product['product_id'], random.choice(rep_ids), f'B{random.randint(1,branch_count):03d}', random.choice(REGIONS), random.choice(CHANNELS), qty, price, disc, revenue]
+        yield [
+            f'N{month:02d}-{i+1:07d}', dt.isoformat(), customer['customer_id'], product['product_id'],
+            f'SR{local.randint(1,180):03d}', branch['branch_id'], branch['region'], branch['channel'],
+            qty, price, disc, revenue
+        ]
+
+def consolidated_sales_rows(months, count_per_month, catalog, customers, branches):
+    for month in months:
+        yield from monthly_sales_rows(count_per_month, month, catalog, customers, branches)
 
 def branch_records():
     records = []
+    branches = branch_catalog_rows()
+    local = random.Random(261100)
     week_starts = [date(2026,1,5) + timedelta(days=7*i) for i in range(40)]
-    for b in range(1,101):
-        city = CITIES[(b-1) % len(CITIES)]
-        region = REGION_BY_CITY[city]
-        channel = CHANNELS[(b-1) % len(CHANNELS)]
-        name = f'Nova {city} {b:03d}'
-        planned_hc = random.randint(18,45)
+    for branch in branches:
+        planned_hc = local.randint(18,45)
         for week in week_starts:
-            target = round(random.uniform(55000,165000),2)
-            revenue = round(target * random.uniform(.78,1.18),2)
-            budget_cost = round(target * random.uniform(.18,.29),2)
-            operating_cost = round(budget_cost * random.uniform(.88,1.16),2)
-            actual_hc = max(10, planned_hc-random.randint(0,5))
+            target = round(local.uniform(55000,165000),2)
+            revenue = round(target * local.uniform(.78,1.18),2)
+            budget_cost = round(target * local.uniform(.18,.29),2)
+            operating_cost = round(budget_cost * local.uniform(.88,1.16),2)
+            actual_hc = max(10, planned_hc-local.randint(0,5))
             vacancies = planned_hc-actual_hc
-            service = round(min(99.8,max(72,random.gauss(90.5,5.2))),1)
-            rating = round(min(5,max(3.2,random.gauss(4.45,.28))),1)
-            tx = random.randint(350,2400)
-            ret = round(random.uniform(.3,5.8),2)
-            records.append([f'B{b:03d}',name,region,channel,week.isoformat(),revenue,target,operating_cost,budget_cost,planned_hc,actual_hc,vacancies,service,rating,tx,ret])
+            service = round(min(99.8,max(72,local.gauss(90.5,5.2))),1)
+            rating = round(min(5,max(3.2,local.gauss(4.45,.28))),1)
+            tx = local.randint(350,2400)
+            ret = round(local.uniform(.3,5.8),2)
+            records.append([
+                branch['branch_id'],branch['branch_name'],branch['region'],branch['channel'],week.isoformat(),
+                revenue,target,operating_cost,budget_cost,planned_hc,actual_hc,vacancies,service,rating,tx,ret
+            ])
     return records
 
-def company_profile_html():
+def company_profile_html():def company_profile_html():
     products = [
         ('Food & Beverage','Nova Fresh water & juice, Harvest Lane coffee & snacks, Daily Sip beverages.'),
         ('Personal Care','Nova Care, Pureline and Nura Care shampoo, body wash, toothpaste and hygiene lines.'),
@@ -308,17 +445,31 @@ def update_day1():
     zp = DAY1_DOWNLOADS / 'Day01_CONNECT_EVERYTHING.zip'
     with tempfile.TemporaryDirectory() as td:
         root = unzip_pack(zp, Path(td))
-        rename_once(root, '05_ETL_Reference.xlsx', '05_Nova_ETL_Reference.xlsx')
-        rename_once(root, '06_Day_01_Challenge.xlsx', '06_Nova_Day_01_Challenge.xlsx')
-        remove_if_exists(root, '01_Product_Master.xlsx', '01_Nova_Product_Master.xlsx', '01_Nova_Product_Master.csv')
+        remove_if_exists(
+            root,
+            '01_Product_Master.xlsx','01_Nova_Product_Master.xlsx','01_Nova_Product_Master.csv',
+            '02_Sales_Transactions.csv','02_Nova_Sales_Transactions.csv',
+            '03_Sales_Reps.txt','03_Nova_Workforce_Snapshot.txt',
+            '04_Regional_Targets.pdf','04_Nova_Budget_and_Targets.pdf',
+            '05_ETL_Reference.xlsx','05_Nova_ETL_Reference.xlsx',
+            '06_Day_01_Challenge.xlsx','06_Nova_Day_01_Challenge.xlsx',
+            '00_DATASET_SCALE.txt'
+        )
         catalog = product_catalog_rows()
+        customers = customer_catalog_rows()
+        branches = branch_catalog_rows()
         write_product_master_csv(root / '01_Nova_Product_Master.csv', catalog)
-        rep_ids = [f'SR{i:03d}' for i in range(1,181)]
-        remove_if_exists(root, '02_Sales_Transactions.csv', '03_Sales_Reps.txt', '04_Regional_Targets.pdf', '00_DATASET_SCALE.txt')
         header = ['Transaction ID','Date','Customer ID','Product ID','Sales Rep ID','Branch ID','Region','Channel','Quantity','Unit Price','Discount %','Revenue']
-        write_csv(root / '02_Nova_Sales_Transactions.csv', header, sales_rows(120000, date(2025,1,1), 620, catalog, rep_ids))
-        write_csv(root / '03_Nova_Workforce_Snapshot.txt', ['Employee ID','Employee Name','Branch ID','Department','Position','Employment Type','Status','Hire Date','FTE','Monthly Cost'], workforce_rows())
+        write_csv(
+            root / '02_Nova_Sales_Transactions.csv',
+            header,
+            consolidated_sales_rows([1,2,3], 40000, catalog, customers, branches)
+        )
+        write_csv(root / '03_Nova_Workforce_Snapshot.txt',
+                  ['Employee ID','Employee Name','Branch ID','Department','Position','Employment Type','Status','Hire Date','FTE','Monthly Cost'],
+                  workforce_rows(2400, branches))
         make_budget_pdf(root / '04_Nova_Budget_and_Targets.pdf')
+        make_day1_excel_files(root)
         make_branch_html(root / 'web' / 'Branch_Performance.html')
         make_company_profile(root / 'web' / 'Nova_Company_Profile.html')
         (root / '00_START_HERE.txt').write_text(
@@ -326,125 +477,165 @@ def update_day1():
             'You are joining the Nova Analytics Team. Management wants one trusted view across Sales, Finance and Workforce.\n\n'
             'Connect these sources in Power BI:\n'
             '1) 01_Nova_Product_Master.csv - Nova product catalog (240 products)\n'
-            '2) 02_Nova_Sales_Transactions.csv - 120,000 transaction rows\n'
+            '2) 02_Nova_Sales_Transactions.csv - 120,000 rows = January + February + March 2026\n'
             '3) 03_Nova_Workforce_Snapshot.txt - workforce snapshot\n'
             '4) 04_Nova_Budget_and_Targets.pdf - finance/target document\n'
             '5) 05_Nova_ETL_Reference.xlsx - Excel source / ETL reference\n'
             '6) Web source - Branch_Performance.html (use the live GitHub Pages URL during class)\n\n'
-            'Day 1 goal: connect the evidence and build the first report view; do not solve the whole company yet.\n', encoding='utf-8')
-        (root / '00_DATASET_SCALE.txt').write_text('DAY 01 SCALE\n- Sales Transactions: 120,000 rows\n- Workforce Snapshot: 2,400 employees\n- Web Branch Performance: 4,000 rows (100 branches x 40 weeks)\n- Company: 5 regions, 4 channels\n', encoding='utf-8')
+            'Important continuity note: the 120,000 Sales rows are the SAME Jan-Mar rows you will automate as three monthly files on Day 3.\n'
+            'Day 1 goal: connect the evidence and build the first report view; do not solve the whole company yet.\n',
+            encoding='utf-8')
+        (root / '00_DATASET_SCALE.txt').write_text(
+            'DAY 01 SCALE\n'
+            '- Sales Transactions: 120,000 rows (Jan-Mar 2026, 40,000 each month)\n'
+            '- Workforce Snapshot: 2,400 employees\n'
+            '- Web Branch Performance: 4,000 rows (100 branches x 40 weeks)\n'
+            '- Company: 100 branches, 5 regions, 4 channels\n',
+            encoding='utf-8')
         rezip_pack(root, zp)
     make_company_profile(DAY1_WEB / 'Nova_Company_Profile.html')
     make_branch_html(DAY1_WEB / 'Branch_Performance.html')
 
-def dirty_branch_performance(count=50000):
-    header = ['Record ID','Week Start','Branch ID','Branch Name','Region','Channel','Revenue','Target Revenue','Operating Cost','Budget Cost','Planned Headcount','Actual Headcount','Vacant Positions','Manager']
+def dirty_branch_performance():
+    """Logical grain = one Branch ID + one Date. 100 branches x 500 dates = 50,000 valid-grain rows before injected duplicates."""
+    branches = branch_catalog_rows()
+    local = random.Random(261200)
+    start = date(2025,1,1)
+    header = ['Record ID','Date','Branch ID','Branch Name','Region','Channel','Revenue','Target Revenue','Operating Cost','Budget Cost','Planned Headcount','Actual Headcount','Vacant Positions','Manager']
     rows = []
-    region_variants = ['Amman',' amman ','AMMAN','North',' north','SOUTH ','Zarqa','zarqa','Central','CENTRAL']
-    channel_variants = ['Retail',' retail ','RETAIL','Corporate','corporate ','Online','ONLINE','Partner',' partner']
-    for i in range(count):
-        dt = date(2026,1,5) + timedelta(days=7*random.randrange(40))
-        fmt = random.choice(['iso','slash','us'])
-        ds = dt.isoformat() if fmt == 'iso' else (dt.strftime('%d/%m/%Y') if fmt == 'slash' else dt.strftime('%m-%d-%Y'))
-        target = round(random.uniform(55000,165000),2)
-        revenue = round(target*random.uniform(.78,1.18),2)
-        budget = round(target*random.uniform(.18,.29),2)
-        cost = round(budget*random.uniform(.88,1.16),2)
-        planned = random.randint(18,45)
-        actual = max(10,planned-random.randint(0,5))
-        vacant = planned-actual
-        b = random.randint(1,100)
-        city = CITIES[(b-1) % len(CITIES)]
-        manager = f'  {random.choice(FIRST)} {random.choice(LAST)}  '
-        if i % 173 == 0: ds = 'invalid-date'
-        if i % 211 == 0: revenue = ''
-        if i % 257 == 0: actual = 'N/A'
-        if i % 389 == 0: cost = ''
-        rows.append([f'NBR{i+1:07d}',ds,f'B{b:03d}',f'Nova {city} {b:03d}',random.choice(region_variants),random.choice(channel_variants),revenue,target,cost,budget,planned,actual,vacant,manager])
-        if i % 499 == 0: rows.append(rows[-1][:])
+    record_no = 1
+    for branch in branches:
+        planned_hc = local.randint(18,45)
+        for day_offset in range(500):
+            dt = start + timedelta(days=day_offset)
+            target = round(local.uniform(1800,5600),2)
+            revenue = round(target * local.uniform(.72,1.22),2)
+            budget = round(target * local.uniform(.18,.29),2)
+            cost = round(budget * local.uniform(.86,1.18),2)
+            actual = max(10, planned_hc-local.randint(0,5))
+            vacant = planned_hc-actual
+
+            # Dirtiness changes representation, not business meaning.
+            date_value = local.choice([dt.isoformat(),dt.strftime('%d/%m/%Y'),dt.strftime('%m-%d-%Y')])
+            region = local.choice([branch['region'],branch['region'].lower(),branch['region'].upper(),f" {branch['region']} "])
+            channel = local.choice([branch['channel'],branch['channel'].lower(),branch['channel'].upper(),f" {branch['channel']} "])
+            branch_name = local.choice([branch['branch_name'],f" {branch['branch_name']} "])
+            manager = f"  {branch['manager']}  "
+
+            if record_no % 173 == 0: date_value = 'invalid-date'
+            if record_no % 211 == 0: revenue = ''
+            if record_no % 257 == 0: actual = 'N/A'
+            if record_no % 389 == 0: cost = ''
+
+            row = [f'NBD{record_no:07d}',date_value,branch['branch_id'],branch_name,region,channel,revenue,target,cost,budget,planned_hc,actual,vacant,manager]
+            rows.append(row)
+            # Intentional bad duplicate; duplicates are errors, not a second business record.
+            if record_no % 499 == 0:
+                rows.append(row[:])
+            record_no += 1
     return header, rows
 
-def dirty_customers(count=8000):
-    header = ['Customer ID','Customer Name','City','Segment','Email','Status']
+def dirty_customers(customers=None):
+    customers = customers or customer_catalog_rows()
     rows = []
-    for i in range(1, count + 1):
-        name = f'{random.choice(FIRST)} {random.choice(LAST)} Trading {i:04d}'
-        if i % 7 == 0:
-            name = ' ' + name + ' '
-        city = random.choice(CITIES)
-        if i % 9 == 0:
-            city = city.upper()
-        seg = random.choice(['SMB','Enterprise','Retail','Key Account',' key account '])
+    for i, c in enumerate(customers, 1):
+        name = c['customer_name']
+        city = c['city']
+        region = c['region']
+        segment = c['segment']
+        status = c['status']
+        if i % 7 == 0: name = f' {name} '
+        if i % 9 == 0: city = city.upper()
+        if i % 11 == 0: region = region.lower()
+        if i % 13 == 0: segment = f' {segment.lower()} '
+        if i % 17 == 0: status = status.upper()
         email = f'customer{i}@example.com' if i % 31 else ''
-        status = random.choice(['Active','ACTIVE',' active ','Inactive'])
-        rows.append([f'C{i:05d}', name, city, seg, email, status])
-        if i % 997 == 0:
-            rows.append(rows[-1][:])
-    return header, rows
+        row = [c['customer_id'],name,city,region,segment,c['customer_type'],email,status]
+        rows.append(row)
+        if i % 997 == 0: rows.append(row[:])
+    return ['Customer ID','Customer Name','City','Region','Segment','Customer Type','Email','Status'], rows
 
 def update_day2():
     zp = DAY2_DOWNLOADS / 'Day02_CLEAN_DATA.zip'
     with tempfile.TemporaryDirectory() as td:
         root = unzip_pack(zp, Path(td))
-        remove_if_exists(root, '02_Dirty_Sales_Data.xlsx', '02_Customer_Master_Dirty.xlsx', '02_Dirty_Sales_Data_LARGE.csv', '02_Customer_Master_Dirty_LARGE.csv', '00_USE_THE_LARGE_FILES.txt', '01_Nova_Branch_Performance_Dirty_LARGE.csv', '02_Nova_Customer_Master_Dirty_LARGE.csv')
-        rename_once(root, '03_Day_02_Cleaning_Checklist.xlsx', '03_Nova_Cleaning_Checklist.xlsx')
+        remove_if_exists(
+            root,
+            '02_Dirty_Sales_Data.xlsx','02_Customer_Master_Dirty.xlsx',
+            '02_Dirty_Sales_Data_LARGE.csv','02_Customer_Master_Dirty_LARGE.csv',
+            '01_Nova_Branch_Performance_Dirty_LARGE.csv','02_Nova_Customer_Master_Dirty_LARGE.csv',
+            '03_Day_02_Cleaning_Checklist.xlsx','03_Nova_Cleaning_Checklist.xlsx',
+            '00_USE_THE_LARGE_FILES.txt'
+        )
         h, r = dirty_branch_performance()
-        write_csv(root / '01_Nova_Branch_Performance_Dirty_LARGE.csv', h, r)
-        h, r = dirty_customers()
+        write_csv(root / '01_Nova_Branch_Daily_Performance_Dirty_LARGE.csv', h, r)
+        h, r = dirty_customers(customer_catalog_rows())
         write_csv(root / '02_Nova_Customer_Master_Dirty_LARGE.csv', h, r)
+        make_day2_excel_files(root)
         (root / '00_START_HERE.txt').write_text(
             'NOVA DISTRIBUTION GROUP - DAY 02\n\n'
-            'Yesterday you connected Nova data. Today management tells you the weekly branch file is not trustworthy.\n'
-            'The main dataset mixes Sales + Finance + Workforce indicators in the SAME business case.\n\n'
-            'Main lab: 01_Nova_Branch_Performance_Dirty_LARGE.csv (~50,000 rows + intentional duplicates)\n'
-            'Challenge: 02_Nova_Customer_Master_Dirty_LARGE.csv (~8,000 rows)\n'
-            'Use the checklist only after you inspect the data yourself.\n', encoding='utf-8')
+            'Yesterday you connected Nova data. Today management tells you the Branch Daily Performance file is not trustworthy.\n'
+            'Its intended grain is ONE row per Branch ID + Date. The clean business universe contains 100 branches x 500 dates = 50,000 logical records.\n'
+            'Extra repeated rows are intentional bad duplicates to remove; they are not legitimate business events.\n\n'
+            'Main lab: 01_Nova_Branch_Daily_Performance_Dirty_LARGE.csv (~50,000 logical rows + intentional duplicates)\n'
+            'Challenge: 02_Nova_Customer_Master_Dirty_LARGE.csv (~8,000 customers)\n'
+            'Use the checklist only after you inspect the data yourself.\n',
+            encoding='utf-8')
         rezip_pack(root, zp)
-
-def monthly_rows(count, month, catalog, customer_ids):
-    start = date(2026, month, 1)
-    nextm = date(2026 + (month == 12), (month % 12) + 1, 1)
-    span = (nextm - start).days
-    for i in range(count):
-        dt = start + timedelta(days=random.randrange(span))
-        product = random.choice(catalog)
-        qty = random.randint(1, 10)
-        price = round(product['list_price'] * random.uniform(0.97, 1.03), 2)
-        disc = random.choice([0,0,0.05,0.10])
-        rev = round(qty * price * (1 - disc), 2)
-        yield [f'{month:02d}-{i+1:07d}', dt.isoformat(), random.choice(customer_ids), product['product_id'], f'SR{random.randint(1,180):03d}', f'B{random.randint(1,100):03d}', random.choice(REGIONS), random.choice(CHANNELS), qty, price, disc, rev]
 
 def update_day3():
     zp = DAY3_DOWNLOADS / 'Day03_STOP_COPYING_FILES_LEARNER.zip'
     with tempfile.TemporaryDirectory() as td:
         root = unzip_pack(zp, Path(td))
-        customer_master = rename_once(root, '03_Customer_Master.xlsx', '03_Nova_Customer_Master.xlsx')
-        rename_once(root, '04_Day_03_Automation_Challenge.xlsx', '05_Nova_Automation_Challenge.xlsx')
-        remove_if_exists(root, '03_Product_Master.xlsx', '04_Nova_Product_Master.xlsx', '04_Nova_Product_Master.csv')
+        remove_if_exists(
+            root,
+            '02_Nova_Branch_Master.csv',
+            '03_Customer_Master.xlsx','03_Nova_Customer_Master.xlsx','03_Nova_Customer_Master.csv',
+            '03_Product_Master.xlsx','04_Nova_Product_Master.xlsx','04_Nova_Product_Master.csv',
+            '04_Day_03_Automation_Challenge.xlsx','05_Nova_Automation_Challenge.xlsx',
+            '00_AUTOMATION_SCALE.txt'
+        )
         catalog = product_catalog_rows()
-        write_product_master_csv(root / '04_Nova_Product_Master.csv', catalog)
-        customers = find_ids(customer_master, ['customer id','customer'], 'C', 8000)
+        customers = customer_catalog_rows()
+        branches = branch_catalog_rows()
+
         header = ['Transaction ID','Date','Customer ID','Product ID','Sales Rep ID','Branch ID','Region','Channel','Quantity','Unit Price','Discount %','Revenue']
         folder = root / 'Monthly_Sales'
         folder.mkdir(parents=True, exist_ok=True)
         for p in folder.glob('*.csv'): p.unlink()
         mapping = {1:'Nova_Sales_2026-01_January.csv',2:'Nova_Sales_2026-02_February.csv',3:'Nova_Sales_2026-03_March.csv'}
-        for m, fn in mapping.items():
-            write_csv(folder / fn, header, monthly_rows(40000, m, catalog, customers))
+        for month, fn in mapping.items():
+            write_csv(folder / fn, header, monthly_sales_rows(40000, month, catalog, customers, branches))
+
         new = root / 'NEW_MONTH_TO_DROP_AFTER_BUILD'
         new.mkdir(parents=True, exist_ok=True)
         for p in new.glob('*.csv'): p.unlink()
-        write_csv(new / 'Nova_Sales_2026-04_April.csv', header, monthly_rows(40000,4,catalog,customers))
-        write_csv(root / '02_Nova_Branch_Master.csv', ['Branch ID','Branch Name','City','Region','Channel','Open Date','Branch Manager','Status'], branch_master_rows())
-        remove_if_exists(root, '00_AUTOMATION_SCALE.txt')
+        write_csv(new / 'Nova_Sales_2026-04_April.csv', header, monthly_sales_rows(40000, 4, catalog, customers, branches))
+
+        write_csv(root / '02_Nova_Branch_Master.csv',
+                  ['Branch ID','Branch Name','City','Region','Channel','Open Date','Branch Manager','Status'],
+                  branch_master_rows(branches))
+        write_customer_master_csv(root / '03_Nova_Customer_Master.csv', customers)
+        write_product_master_csv(root / '04_Nova_Product_Master.csv', catalog)
+        make_day3_excel_files(root)
+
         (root / '00_START_HERE.txt').write_text(
             'NOVA DISTRIBUTION GROUP - DAY 03\n\n'
-            'Nova receives one Sales CSV every month. The process cannot depend on Copy/Paste.\n\n'
-            '1) Connect to Monthly_Sales as a Folder.\n2) Combine January-March.\n3) Keep Source File Name.\n'
+            'The Day 1 consolidated Sales file contained January-March 2026. Today you receive those EXACT SAME 120,000 business rows as three monthly source files.\n'
+            'Nova receives one new Sales CSV every month, so the process cannot depend on Copy/Paste.\n\n'
+            '1) Connect to Monthly_Sales as a Folder.\n'
+            '2) Combine January-March.\n'
+            '3) Keep Source File Name.\n'
             '4) Merge Branch, Customer and Nova Product masters.\n'
             '5) Move April into Monthly_Sales only after the pipeline works, then Refresh.\n\n'
-            'Important: Budget and Workforce remain separate business facts for the semantic model later; do not force them into Sales transactions.\n', encoding='utf-8')
-        (root / '00_AUTOMATION_SCALE.txt').write_text('Monthly_Sales: 40,000 rows per month (Jan-Mar = 120,000 rows).\nApril: 40,000 rows held separately for the refresh proof.\nBranches: 100.\n', encoding='utf-8')
+            'Data integrity: Branch ID determines Region and Channel consistently in both facts and Branch Master. Product and Customer IDs all come from the supplied masters.\n'
+            'Budget and Workforce remain separate business facts for the semantic model later; do not force them into Sales transactions.\n',
+            encoding='utf-8')
+        (root / '00_AUTOMATION_SCALE.txt').write_text(
+            'Monthly_Sales: Jan-Mar = 3 x 40,000 = 120,000 rows, identical to Day 1 consolidated Sales.\n'
+            'April: 40,000 new rows held separately for the refresh proof.\n'
+            'Branches: 100 | Customers: 8,000 | Products: 240.\n',
+            encoding='utf-8')
         rezip_pack(root, zp)
 
 def main():

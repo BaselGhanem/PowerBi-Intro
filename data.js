@@ -47,15 +47,15 @@ const DAYS = [
     phase: 'CLEAN',
     title: 'Clean Data Like an Analyst',
     titleAr: 'نظّف البيانات كمحلل',
-    hook: 'Nova عندها ملف أسبوعي واحد يبدو مفيداً... لكنه مليان تواريخ مختلطة، Regions غير موحدة، Revenue ناقص، Headcount فيه أخطاء وRows مكررة.',
-    mission: 'حوّل ملف Nova Branch Performance غير الموثوق إلى Power Query pipeline نظيفة تتكرر تلقائياً مع كل Refresh.',
+    hook: 'Nova عندها ملف Branch Daily Performance كبير يبدو مفيداً... لكنه مليان تواريخ مختلطة، Regions غير موحدة، Revenue ناقص، Headcount فيه أخطاء وRows مكررة.',
+    mission: 'حوّل ملف Nova Branch Daily Performance غير الموثوق إلى Power Query pipeline نظيفة مع Grain واضح: Branch + Date.',
     topics: ['Power Query Editor', 'Data Types', 'Trim & Clean', 'Replace Values', 'Standardize Categories', 'Nulls', 'Duplicates', 'Errors', 'Applied Steps'],
-    build: ['Inspect Nova dirty data before touching it', 'Fix date and numeric data types', 'Trim & clean manager and category fields', 'Standardize Region and Channel labels', 'Handle missing Revenue / Cost / Headcount intentionally', 'Remove duplicates where appropriate', 'Review Applied Steps', 'Refresh and prove the pipeline repeats'],
+    build: ['Confirm the intended grain: Branch ID + Date', 'Inspect Nova dirty data before touching it', 'Fix date and numeric data types', 'Trim & clean manager and category fields', 'Standardize Region and Channel labels', 'Handle missing Revenue / Cost / Headcount intentionally', 'Remove only true duplicate rows', 'Review Applied Steps and Refresh'],
     challenge: 'بعد تنظيف Branch Performance، نظّف Nova Customer Master باستخدام الـCleaning Checklist فقط، بدون recipe خطوة بخطوة.',
-    deliverable: 'Nova Branch Performance + Customer Master نظيفان وقابلان للـRefresh بدون تنظيف يدوي متكرر.',
+    deliverable: 'Nova Branch Daily Performance + Customer Master نظيفان، Grain واضح، وقابلان للـRefresh.',
     recordingUrl: '',
     resources: [
-      { name: 'Day 02 — Nova Cleaning Lab', type: 'ZIP', url: 'week1/day2/downloads/Day02_CLEAN_DATA.zip', note: '50K Branch Performance rows تجمع Sales + Finance + Workforce + 8K Dirty Customers + Checklist' }
+      { name: 'Day 02 — Nova Cleaning Lab', type: 'ZIP', url: 'week1/day2/downloads/Day02_CLEAN_DATA.zip', note: '50K logical Branch-Day rows + intentional bad duplicates + 8K Dirty Customers + Nova Cleaning Checklist' }
     ]
   },
   {
@@ -66,14 +66,14 @@ const DAYS = [
     title: 'Stop Copying Files',
     titleAr: 'وقف Copy / Paste الشهري',
     hook: 'Nova تستلم ملف Sales جديد كل شهر. January، February، March... وApril بالطريق. هل سنعيد نفس الشغل كل شهر؟',
-    mission: 'ابنِ Nova Sales pipeline تجمع ملفات الأشهر تلقائياً، ثم Merge مع Branch وCustomer وProduct Masters، وبعدها أثبت أن April يدخل بالـRefresh فقط.',
+    mission: 'حوّل نفس Jan–Mar الذي استخدمناه في Day 1 من ملف consolidated إلى Folder pipeline شهرية، ثم Merge مع Masters وأثبت أن April يدخل بالـRefresh فقط.',
     topics: ['Folder Connector', 'Combine Files', 'Append Thinking', 'Merge Queries', 'Expand Columns', 'Reference vs Duplicate', 'Enable Load', 'Query Dependencies', 'Refresh'],
     build: ['Connect to Nova Monthly_Sales folder', 'Combine January–March', 'Keep Source File Name', 'Merge Nova Branch Master', 'Merge Customer Master', 'Merge Product Master', 'Load only the final analytical query', 'Drop April file and Refresh'],
     challenge: 'ابنِ العملية كاملة من Folder إلى Dataset موحد. النجاح الحقيقي: إضافة April بدون Copy/Paste أو تعديل يدوي.',
     deliverable: 'Nova monthly Sales pipeline قابلة للـRefresh وجاهزة للأشهر القادمة، مع Masters موحدة.',
     recordingUrl: '',
     resources: [
-      { name: 'Day 03 — Nova Automation Pack', type: 'ZIP', url: 'week1/day3/downloads/Day03_STOP_COPYING_FILES_LEARNER.zip', note: 'Jan–Mar × 40K rows + April refresh proof + Branch/Customer/Product Masters + Challenge' }
+      { name: 'Day 03 — Nova Automation Pack', type: 'ZIP', url: 'week1/day3/downloads/Day03_STOP_COPYING_FILES_LEARNER.zip', note: 'نفس 120K Rows من Day 1، الآن Jan–Mar × 40K + April refresh proof + Branch/Customer/Product Masters' }
     ]
   },
   {

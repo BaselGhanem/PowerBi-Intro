@@ -89,8 +89,14 @@ week4/
 Week 1 uses one shared company story: **Nova Distribution Group**.
 
 - Day 1: connect Nova sources across Sales, Workforce, Budget, Web and PDF.
-- Day 2: clean one shared Branch Performance dataset with Sales + Finance + Workforce indicators.
-- Day 3: automate monthly Nova Sales files and merge Branch, Customer and Product masters.
+- Day 2: clean a 50K-row Branch Daily Performance dataset with a valid Branch + Date grain, plus intentional data-quality errors.
+- Day 3: automate the exact same Jan-Mar Sales rows used on Day 1, now split into monthly files, then merge Branch, Customer and Product masters.
 - `week1/day1/web/Nova_Company_Profile.html` is the Day 1 company introduction and management brief.
 
 The case is synthetic and designed so learners from Sales, Finance and Workforce backgrounds learn the same Power BI skills on the same story.
+
+### Week 1 data integrity
+- Branch ID determines Region and Channel consistently across facts and Branch Master.
+- Day 1 Sales (120K) equals Day 3 Jan-Mar (3 × 40K) at transaction level.
+- Customer and Product IDs are generated from the same Nova masters used later for Merge.
+- Day 2 Branch Daily Performance has one intended grain: Branch ID + Date; only injected duplicate rows violate it intentionally for cleaning practice.
