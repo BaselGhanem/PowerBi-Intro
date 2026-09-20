@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - 'Trainer/build_trainer_deck.js'
+      - 'Trainer/landscape_src/**'
+      - 'Trainer/assets/**'
   workflow_dispatch:
 
 permissions:
@@ -24,17 +26,19 @@ jobs:
       - name: Install PptxGenJS
         run: npm install --no-save pptxgenjs@3.12.0
 
-      - name: Build trainer deck
-        run: node Trainer/build_trainer_deck.js
+      - name: Build landscape trainer deck
+        run: |
+          rm -f Trainer/Week1_Trainer_Playbook_Portrait.pptx
+          node Trainer/build_trainer_deck.js
 
       - name: Commit generated presentation
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add Trainer/Week1_Trainer_Playbook_Portrait.pptx
+          git add -A Trainer/Week1_Trainer_Playbook_Portrait.pptx Trainer/Week1_Trainer_Playbook_Landscape_XAcademy.pptx
           if git diff --cached --quiet; then
             echo "No presentation changes."
             exit 0
           fi
-          git commit -m "Build Week 1 trainer presentation"
+          git commit -m "Build landscape Week 1 trainer presentation"
           git push
