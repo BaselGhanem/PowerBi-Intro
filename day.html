@@ -107,6 +107,7 @@
   </main>
 
   <script src="data.js"></script>
+  <script src="videos.js"></script>
   <script>
     const student = localStorage.getItem('pbi_student_name');
     if (!student) location.href = 'login.html';
@@ -145,10 +146,11 @@
     document.getElementById('buildSteps').innerHTML = day.build.map((t,i) => `<div class="step"><span class="step-num">${String(i+1).padStart(2,'0')}</span><span>${t}</span></div>`).join('');
 
     const videoBox = document.getElementById('videoBox');
-    if (day.recordingUrl) {
-      videoBox.innerHTML = `<iframe src="${day.recordingUrl}" title="تسجيل Day ${day.id}" allowfullscreen></iframe>`;
+    const videoEmbed = getDayVideo(day.id);
+    if (videoEmbed) {
+      videoBox.innerHTML = videoEmbed;
     } else {
-      videoBox.innerHTML = `<div class="video-pending"><strong>التسجيل سيظهر هنا</strong><span>بعد الجلسة، أضف الرابط في data.js فقط.</span></div>`;
+      videoBox.innerHTML = `<div class="video-pending"><strong>التسجيل سيظهر هنا</strong><span>بعد الجلسة، الصق iframe التسجيل في videos.js فقط.</span></div>`;
     }
 
     const typeIcon = {PBIX:'PBI',Excel:'XLSX',PDF:'PDF',ZIP:'ZIP',Challenge:'LAB',Guide:'DOC',WEB:'WEB'};
