@@ -32,19 +32,40 @@
       </div>
     </section>
 
-    <section>
-      <div class="shell day-layout">
-        <div>
-          <article class="panel hook-panel">
-            <span class="panel-kicker">THE BUSINESS PROBLEM</span>
-            <p class="hook-quote" id="hook"></p>
-          </article>
+    <section class="recording-hero-wrap" id="recordingHeroWrap" hidden>
+      <div class="shell">
+        <article class="recording-hero-panel">
+          <div class="recording-hero-head">
+            <div class="recording-hero-copy">
+              <div class="recording-label-row">
+                <span class="panel-kicker">SESSION RECORDING</span>
+                <span class="recording-live-badge"><i></i> AVAILABLE NOW</span>
+              </div>
+              <h2>تسجيل الجلسة</h2>
+              <p>شاهد الجلسة كاملة أو ارجع لأي جزء تحتاج مراجعته.</p>
+            </div>
+            <div class="recording-day-badge">DAY <span id="recordingDayNumber"></span></div>
+          </div>
+          <div class="video-stage" id="videoBox"></div>
+        </article>
+      </div>
+    </section>
 
-          <article class="panel">
-            <span class="panel-kicker">YOUR MISSION</span>
-            <h2>ماذا سننجز اليوم؟</h2>
-            <p id="mission"></p>
-          </article>
+    <section class="day-content-section">
+      <div class="shell day-layout">
+        <div class="day-main-stack">
+          <div class="day-intro-grid">
+            <article class="panel hook-panel">
+              <span class="panel-kicker">THE BUSINESS PROBLEM</span>
+              <p class="hook-quote" id="hook"></p>
+            </article>
+
+            <article class="panel mission-panel">
+              <span class="panel-kicker">YOUR MISSION</span>
+              <h2>ماذا سننجز اليوم؟</h2>
+              <p id="mission"></p>
+            </article>
+          </div>
 
           <article class="panel">
             <span class="panel-kicker">WHAT WE WILL USE</span>
@@ -66,7 +87,7 @@
           </article>
         </div>
 
-        <aside>
+        <aside class="day-sidebar">
           <article class="panel live-session-panel" id="liveSessionPanel">
             <span class="panel-kicker">LIVE SESSION</span>
             <h2>الجلسة المباشرة</h2>
@@ -81,13 +102,7 @@
             <a class="btn btn-primary full-btn" id="downloadPowerBiBtn" target="_blank" rel="noopener">DOWNLOAD POWER BI DESKTOP ↗</a>
           </article>
 
-          <article class="panel">
-            <span class="panel-kicker">SESSION RECORDING</span>
-            <h2>تسجيل الجلسة</h2>
-            <div class="video-box" id="videoBox"></div>
-          </article>
-
-          <article class="panel">
+          <article class="panel files-panel">
             <span class="panel-kicker">DAY FILES</span>
             <h2>ملفات اليوم</h2>
             <div class="resource-list" id="resources"></div>
@@ -145,12 +160,17 @@
     document.getElementById('topics').innerHTML = day.topics.map(t => `<div class="topic-item">${t}</div>`).join('');
     document.getElementById('buildSteps').innerHTML = day.build.map((t,i) => `<div class="step"><span class="step-num">${String(i+1).padStart(2,'0')}</span><span>${t}</span></div>`).join('');
 
+    const recordingHeroWrap = document.getElementById('recordingHeroWrap');
     const videoBox = document.getElementById('videoBox');
-    const videoEmbed = getDayVideo(day.id);
+    const videoEmbed = getDayVideo(day.id).trim();
+    document.getElementById('recordingDayNumber').textContent = String(day.id).padStart(2, '0');
+
     if (videoEmbed) {
       videoBox.innerHTML = videoEmbed;
+      recordingHeroWrap.hidden = false;
     } else {
-      videoBox.innerHTML = `<div class="video-pending"><strong>التسجيل سيظهر هنا</strong><span>بعد الجلسة، الصق iframe التسجيل في videos.js فقط.</span></div>`;
+      videoBox.replaceChildren();
+      recordingHeroWrap.hidden = true;
     }
 
     const typeIcon = {PBIX:'PBI',Excel:'XLSX',PDF:'PDF',ZIP:'ZIP',Challenge:'LAB',Guide:'DOC',WEB:'WEB'};
