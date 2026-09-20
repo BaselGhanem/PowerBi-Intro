@@ -305,3 +305,42 @@ img { max-width: 100%; display: block; }
   .recording-day-badge{min-width:74px;padding:10px 11px}
   .video-stage{border-radius:13px}
 }
+
+
+/* ACCESS CONTROL */
+.portal-day.locked{
+  cursor:not-allowed;
+  opacity:.58;
+  filter:saturate(.55);
+  background:linear-gradient(145deg,#111317,#0f1114);
+  border-color:rgba(255,255,255,.055)
+}
+.portal-day.locked:hover{
+  transform:none;
+  border-color:rgba(255,255,255,.055)
+}
+.portal-day.locked .portal-day-index{
+  background:#292d34;
+  color:#757e89;
+  box-shadow:none
+}
+.portal-day.locked .portal-en,
+.portal-day.locked .resource-count{color:#626a75}
+.portal-day-top{position:relative}
+.day-lock-badge{
+  margin-inline-start:auto;
+  align-self:flex-start;
+  padding:6px 8px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.035);
+  color:#747d88;
+  font:800 .58rem/1 'Inter',sans-serif;
+  letter-spacing:.09em
+}
+.status-chip.locked{
+  color:#737b86;
+  background:rgba(255,255,255,.025);
+  border-color:rgba(255,255,255,.06)
+}
+.status-chip.locked .complete-dot{background:#555c66}
