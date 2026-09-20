@@ -33,7 +33,7 @@ const DAYS = [
     build: ['Open Nova Company Profile and understand the management challenge', 'Install & launch Power BI Desktop', 'Connect Nova Excel, CSV, TXT, PDF and Web sources', 'Understand Extract → Transform → Load', 'Tour the interface only after using it', 'Build Total Revenue Card', 'Build Revenue vs Target by Region', 'Add Channel Slicer and test interactions', 'Save Nova_Business_Performance_360_[Name].pbix'],
     challenge: 'الإدارة لا تريد Chart جميل فقط. ابدأ بالسؤال: أي Region أو Branch يحتاج انتباه أولاً؟',
     deliverable: 'أول نسخة من Nova Business Performance 360 + فهم واضح لـETL وواجهات Power BI الأساسية.',
-    recordingUrl: 'https://1drv.ms/v/c/a1a27fad04d192e9/IQA1ap9rXHqTRIOXnbs6dHSyARa61D-daRMLE0DuOgnioPc?e=9Q0TAm',
+    recordingUrl: '<iframe src="https://1drv.ms/v/c/a1a27fad04d192e9/IQQ1ap9rXHqTRIOXnbs6dHSyAU4SDPKYweIgT7t9-M3ZI-M" width="1920" height="1080" frameborder="0" scrolling="no" allowfullscreen></iframe>',
     resources: [
       { name: 'Meet Nova — Company Profile', type: 'WEB', url: 'week1/day1/web/Nova_Company_Profile.html', note: 'ابدأ من هنا: الشركة، الشعار، المنتجات، نموذج العمل والتحدي الإداري.' },
       { name: 'Day 01 — Nova Source Pack', type: 'ZIP', url: 'week1/day1/downloads/Day01_CONNECT_EVERYTHING.zip', note: 'Nova Product Master + Excel ETL Reference + 120K Sales CSV + Workforce TXT + Budget PDF + Challenge' },
