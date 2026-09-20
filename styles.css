@@ -186,3 +186,122 @@ img { max-width: 100%; display: block; }
   .resource-count{text-align:right}
   .day-date-card{align-self:stretch}
 }
+
+
+/* DAY EXPERIENCE V2 — recording-first layout */
+.recording-hero-wrap[hidden]{display:none!important}
+.recording-hero-wrap{padding:0 0 24px}
+.recording-hero-panel{
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(242,200,17,.24);
+  border-radius:26px;
+  padding:22px;
+  background:
+    radial-gradient(circle at 88% 0%,rgba(242,200,17,.16),transparent 30%),
+    radial-gradient(circle at 10% 100%,rgba(9,153,153,.08),transparent 28%),
+    linear-gradient(145deg,#151719,#0d1014 62%,#101317);
+  box-shadow:0 30px 90px rgba(0,0,0,.38),0 0 0 1px rgba(255,255,255,.015) inset;
+}
+.recording-hero-panel::before{
+  content:'';
+  position:absolute;
+  inset:0 0 auto;
+  height:2px;
+  background:linear-gradient(90deg,transparent,var(--pbi),rgba(255,255,255,.35),var(--pbi),transparent);
+  opacity:.9
+}
+.recording-hero-head{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:22px;
+  padding:2px 2px 18px
+}
+.recording-hero-copy{min-width:0}
+.recording-label-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.recording-live-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:6px 9px;
+  border:1px solid rgba(80,190,135,.2);
+  border-radius:999px;
+  background:rgba(80,190,135,.07);
+  color:#9fe4c2;
+  font:700 .61rem/1 'Inter',sans-serif;
+  letter-spacing:.08em
+}
+.recording-live-badge i{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--success);
+  box-shadow:0 0 0 5px rgba(80,190,135,.08)
+}
+.recording-hero-copy h2{
+  margin:11px 0 6px;
+  font-size:clamp(1.65rem,3vw,2.45rem);
+  line-height:1.2
+}
+.recording-hero-copy p{
+  margin:0;
+  color:var(--muted);
+  font-size:.88rem;
+  line-height:1.75
+}
+.recording-day-badge{
+  flex:0 0 auto;
+  min-width:92px;
+  padding:12px 15px;
+  border-radius:14px;
+  border:1px solid rgba(242,200,17,.22);
+  background:rgba(242,200,17,.09);
+  color:#d9c44e;
+  text-align:center;
+  font:800 .7rem/1 'Inter',sans-serif;
+  letter-spacing:.08em
+}
+.recording-day-badge span{color:#fff;font-size:1rem;letter-spacing:0;margin-left:4px}
+.video-stage{
+  position:relative;
+  aspect-ratio:16/9;
+  width:100%;
+  overflow:hidden;
+  border-radius:19px;
+  border:1px solid rgba(255,255,255,.1);
+  background:#050607;
+  box-shadow:0 18px 50px rgba(0,0,0,.34)
+}
+.video-stage iframe{display:block;width:100%!important;height:100%!important;border:0!important}
+.day-content-section{padding-bottom:70px}
+.day-layout{
+  grid-template-columns:minmax(0,1.48fr) minmax(300px,.52fr);
+  gap:20px;
+  padding-bottom:0;
+  align-items:start
+}
+.day-main-stack,.day-sidebar{display:grid;gap:14px;min-width:0}
+.day-main-stack>.panel,.day-sidebar>.panel,.day-intro-grid>.panel{margin-top:0}
+.day-intro-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:stretch}
+.day-intro-grid>.panel{height:100%}
+.mission-panel{background:linear-gradient(145deg,rgba(255,255,255,.028),rgba(255,255,255,.012))}
+.day-sidebar{position:sticky;top:90px}
+.day-sidebar .day-nav{margin-top:0}
+.files-panel .resource-list{margin-top:4px}
+.video-box{display:none}
+@media (max-width:900px){
+  .recording-hero-wrap{padding-bottom:18px}
+  .recording-hero-panel{padding:17px;border-radius:20px}
+  .recording-hero-head{align-items:flex-start}
+  .day-layout{grid-template-columns:1fr}
+  .day-sidebar{position:static}
+  .day-intro-grid{grid-template-columns:1fr}
+}
+@media (max-width:620px){
+  .recording-hero-panel{padding:12px;border-radius:17px}
+  .recording-hero-head{padding:2px 2px 13px;gap:14px}
+  .recording-hero-copy p{font-size:.78rem}
+  .recording-day-badge{min-width:74px;padding:10px 11px}
+  .video-stage{border-radius:13px}
+}
