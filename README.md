@@ -14,6 +14,7 @@
 ## ملفات التحديث اليومية
 - `data.js` — محتوى الأيام والملفات والروابط العامة.
 - `videos.js` — تسجيلات الجلسات فقط.
+- `access.js` — التحكم بفتح/إغلاق الأيام وإظهار/إخفاء صفحة الأجندة.
 
 ### 1) إضافة رابط الجلسة المباشرة
 داخل `COURSE_CONFIG`:
@@ -111,3 +112,16 @@ The case is synthetic and designed so learners from Sales, Finance and Workforce
 - Day 1 Sales (120K) equals Day 3 Jan-Mar (3 × 40K) at transaction level.
 - Customer and Product IDs are generated from the same Nova masters used later for Merge.
 - Day 2 Branch Daily Performance has one intended grain: Branch ID + Date; only injected duplicate rows violate it intentionally for cleaning practice.
+
+
+### 5) التحكم بالوصول
+كل التحكم اليومي موجود في `access.js`.
+
+- `agenda: "ON"` يعرض `index.html`.
+- `agenda: "OFF"` يحول `index.html` مباشرة إلى `login.html`.
+- `AUTO` يفتح الأيام بالتدريج حسب تسجيل اليوم السابق.
+- `ON` يفتح اليوم إجبارياً.
+- `OFF` يقفل اليوم إجبارياً.
+- `ON/OFF` لهما أولوية على `AUTO`.
+
+الملف نفسه يحتوي على تعليقات `//` تشرح كل خيار.
