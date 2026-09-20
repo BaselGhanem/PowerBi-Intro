@@ -344,3 +344,5 @@ img { max-width: 100%; display: block; }
   border-color:rgba(255,255,255,.06)
 }
 .status-chip.locked .complete-dot{background:#555c66}
+
+.access-pending{visibility:hidden}
