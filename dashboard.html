@@ -114,7 +114,7 @@
           </div>
           <div class="portal-day-bottom">
             <span class="status-chip ${runtime}"><i class="complete-dot"></i>${runtime === 'today' ? 'اليوم' : runtime === 'past' ? 'تم موعده' : day.weekday + ' • ' + formatDateAr(day.date)}</span>
-            <span class="resource-count">${day.resources.length} ملفات مخططة • ${hasDayVideo(day.id) ? 'التسجيل متاح' : 'التسجيل بانتظار الرفع'}</span>
+            <span class="resource-count">${hasDayVideo(day.id) ? '▶ التسجيل متاح للمشاهدة' : day.resources.length + ' ملفات مخططة'}</span>
           </div>`;
         card.addEventListener('click', () => location.href = `day.html?id=${day.id}`);
         grid.appendChild(card);
