@@ -11,8 +11,9 @@
 ## التشغيل
 افتح `index.html` أو ارفع المجلد كاملاً على GitHub Pages.
 
-## أهم ملف للتحديث اليومي
-`data.js`
+## ملفات التحديث اليومية
+- `data.js` — محتوى الأيام والملفات والروابط العامة.
+- `videos.js` — تسجيلات الجلسات فقط.
 
 ### 1) إضافة رابط الجلسة المباشرة
 داخل `COURSE_CONFIG`:
@@ -28,10 +29,17 @@ portalPassword: 'PowerBI'
 > هذا Gate بسيط داخل Front-end وليس نظام Authentication آمن. أي شخص لديه ملفات الموقع يستطيع رؤية الرمز في المصدر. إذا أردت صلاحيات حقيقية نربطه لاحقاً بـ Firebase Authentication.
 
 ### 3) إضافة تسجيل يوم
-داخل الـDay المطلوب:
+التسجيلات منفصلة بالكامل عن `data.js`.
+
+افتح `videos.js` والصق كود الـiframe الكامل كما هو داخل رقم اليوم المطلوب:
 ```js
-recordingUrl: 'YOUR_EMBED_OR_VIDEO_URL'
+const DAY_VIDEOS = {
+  1: `<iframe src="https://1drv.ms/v/c/..." width="1920" height="1080" frameborder="0" scrolling="no" allowfullscreen></iframe>`,
+  2: ``
+};
 ```
+
+لا تستخرج رابط `src` من الـiframe ولا تضع التسجيل داخل `data.js`.
 
 ### 4) إضافة رابط ملف
 داخل `resources`:
@@ -46,7 +54,8 @@ recordingUrl: 'YOUR_EMBED_OR_VIDEO_URL'
 - `dashboard.html` — الأيام، التقدم، الجلسة القادمة.
 - `day.html?id=1` إلى `day.html?id=10` — تفاصيل كل يوم.
 - `styles.css` — الهوية البصرية.
-- `data.js` — كل محتوى الدورة والروابط.
+- `data.js` — محتوى الدورة والروابط العامة.
+- `videos.js` — تسجيلات الجلسات بصيغة iframe كاملة.
 
 ## الهوية
 - Power BI Yellow: `#F2C811`
