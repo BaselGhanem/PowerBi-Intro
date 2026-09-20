@@ -123,12 +123,18 @@
 
   <script src="data.js"></script>
   <script src="videos.js"></script>
+  <script src="access.js"></script>
   <script>
     const student = localStorage.getItem('pbi_student_name');
     if (!student) location.href = 'login.html';
     const params = new URLSearchParams(location.search);
     const day = getDay(params.get('id') || 1);
-    if (!day) location.href = 'dashboard.html';
+    if (!day) {
+      location.replace('dashboard.html');
+    } else if (!isDayOpen(day.id)) {
+      // حماية من فتح يوم مقفل عن طريق كتابة الرابط مباشرة.
+      location.replace('dashboard.html');
+    }
 
     document.title = `Day ${day.id} — ${day.title} | Power BI Specialist`;
     document.getElementById('crumb').textContent = `Day ${String(day.id).padStart(2,'0')}`;
@@ -202,8 +208,15 @@
     });
 
     const nav = document.getElementById('dayNav');
-    const prev = getDay(day.id - 1), next = getDay(day.id + 1);
-    nav.innerHTML = `${prev ? `<a href="day.html?id=${prev.id}">→ Day ${String(prev.id).padStart(2,'0')}</a>` : '<span></span>'}${next ? `<a href="day.html?id=${next.id}">Day ${String(next.id).padStart(2,'0')} ←</a>` : '<a href="dashboard.html">العودة للمركز</a>'}`;
+    const prev = getDay(day.id - 1);
+    const next = getDay(day.id + 1);
+    const prevLink = prev && isDayOpen(prev.id)
+      ? `<a href="day.html?id=${prev.id}">→ Day ${String(prev.id).padStart(2,'0')}</a>`
+      : '<span></span>';
+    const nextLink = next && isDayOpen(next.id)
+      ? `<a href="day.html?id=${next.id}">Day ${String(next.id).padStart(2,'0')} ←</a>`
+      : '<a href="dashboard.html">العودة للمركز</a>';
+    nav.innerHTML = `${prevLink}${nextLink}`;
     updateCompleteUI();
   </script>
 </body>
