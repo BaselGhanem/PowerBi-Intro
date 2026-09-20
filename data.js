@@ -33,7 +33,6 @@ const DAYS = [
     build: ['Open Nova Company Profile and understand the management challenge', 'Install & launch Power BI Desktop', 'Connect Nova Excel, CSV, TXT, PDF and Web sources', 'Understand Extract → Transform → Load', 'Tour the interface only after using it', 'Build Total Revenue Card', 'Build Revenue vs Target by Region', 'Add Channel Slicer and test interactions', 'Save Nova_Business_Performance_360_[Name].pbix'],
     challenge: 'الإدارة لا تريد Chart جميل فقط. ابدأ بالسؤال: أي Region أو Branch يحتاج انتباه أولاً؟',
     deliverable: 'أول نسخة من Nova Business Performance 360 + فهم واضح لـETL وواجهات Power BI الأساسية.',
-    recordingUrl: '<iframe src="https://1drv.ms/v/c/a1a27fad04d192e9/IQQ1ap9rXHqTRIOXnbs6dHSyAU4SDPKYweIgT7t9-M3ZI-M" width="1920" height="1080" frameborder="0" scrolling="no" allowfullscreen></iframe>',
     resources: [
       { name: 'Meet Nova — Company Profile', type: 'WEB', url: 'week1/day1/web/Nova_Company_Profile.html', note: 'ابدأ من هنا: الشركة، الشعار، المنتجات، نموذج العمل والتحدي الإداري.' },
       { name: 'Day 01 — Nova Source Pack', type: 'ZIP', url: 'week1/day1/downloads/Day01_CONNECT_EVERYTHING.zip', note: 'Nova Product Master + Excel ETL Reference + 120K Sales CSV + Workforce TXT + Budget PDF + Challenge' },
@@ -53,7 +52,6 @@ const DAYS = [
     build: ['Confirm the intended grain: Branch ID + Date', 'Inspect Nova dirty data before touching it', 'Fix date and numeric data types', 'Trim & clean manager and category fields', 'Standardize Region and Channel labels', 'Handle missing Revenue / Cost / Headcount intentionally', 'Remove only true duplicate rows', 'Review Applied Steps and Refresh'],
     challenge: 'بعد تنظيف Branch Performance، نظّف Nova Customer Master باستخدام الـCleaning Checklist فقط، بدون recipe خطوة بخطوة.',
     deliverable: 'Nova Branch Daily Performance + Customer Master نظيفان، Grain واضح، وقابلان للـRefresh.',
-    recordingUrl: '',
     resources: [
       { name: 'Day 02 — Nova Cleaning Lab', type: 'ZIP', url: 'week1/day2/downloads/Day02_CLEAN_DATA.zip', note: '50K logical Branch-Day rows + intentional bad duplicates + 8K Dirty Customers + Nova Cleaning Checklist' }
     ]
@@ -71,7 +69,6 @@ const DAYS = [
     build: ['Connect to Nova Monthly_Sales folder', 'Combine January–March', 'Keep Source File Name', 'Merge Nova Branch Master', 'Merge Customer Master', 'Merge Product Master', 'Load only the final analytical query', 'Drop April file and Refresh'],
     challenge: 'ابنِ العملية كاملة من Folder إلى Dataset موحد. النجاح الحقيقي: إضافة April بدون Copy/Paste أو تعديل يدوي.',
     deliverable: 'Nova monthly Sales pipeline قابلة للـRefresh وجاهزة للأشهر القادمة، مع Masters موحدة.',
-    recordingUrl: '',
     resources: [
       { name: 'Day 03 — Nova Automation Pack', type: 'ZIP', url: 'week1/day3/downloads/Day03_STOP_COPYING_FILES_LEARNER.zip', note: 'نفس 120K Rows من Day 1، الآن Jan–Mar × 40K + April refresh proof + Branch/Customer/Product Masters' }
     ]
@@ -89,7 +86,6 @@ const DAYS = [
     build: ['DimCustomer', 'DimProduct', 'DimSalesRep', 'DimTeam', 'DimDate', 'Targets & Budget Relationships'],
     challenge: 'استلم Broken Model وأصلح الأرقام بدون تعديل الـVisuals.',
     deliverable: 'Semantic Model نظيف يمكن الاعتماد عليه لبقية الدورة.',
-    recordingUrl: '',
     resources: [
       { name: '04_Broken_Model.pbix', type: 'PBIX', url: '', note: 'Model به أخطاء مقصودة' },
       { name: '04_Model_Map.pdf', type: 'PDF', url: '', note: 'مرجع العلاقات والـGrain' },
@@ -109,7 +105,6 @@ const DAYS = [
     build: ['Total Sales', 'Transactions', 'Customers', 'Average Order', 'Target', 'Achievement %', 'Budget Variance'],
     challenge: 'ابنِ CEO KPI Strip من Business Requirements فقط.',
     deliverable: 'طبقة Measures منظمة تغذي التقرير بدلاً من حسابات متفرقة.',
-    recordingUrl: '',
     resources: [
       { name: '05_DAX_KPI_Lab.pbix', type: 'PBIX', url: '', note: 'مختبر الـMeasures' },
       { name: '05_KPI_Business_Requirements.pdf', type: 'PDF', url: '', note: 'طلبات الإدارة' },
@@ -129,7 +124,6 @@ const DAYS = [
     build: ['Conditional Sales', 'Contribution %', '% of Selected Total', 'Selected KPI', 'Dynamic Title'],
     challenge: 'حدد أكثر Region مساهمة داخل الـSegment المختار مع احترام الـSlicers.',
     deliverable: 'Measures تستجيب للسياق بشكل صحيح ويمكن تفسيرها.',
-    recordingUrl: '',
     resources: [
       { name: '06_Filter_Context_Lab.pbix', type: 'PBIX', url: '', note: 'Context Lab' },
       { name: '06_DAX_Debug_Cases.pdf', type: 'PDF', url: '', note: 'Measures تبدو صحيحة لكنها ليست كذلك' },
@@ -149,7 +143,6 @@ const DAYS = [
     build: ['Actual vs PY', 'Growth %', 'YTD', 'YTD Growth', 'Rolling 12M', 'CAGR %'],
     challenge: 'الإدارة تقول: نحن أعلى من السنة الماضية. اثبت أين هذا صحيح وأين ليس صحيحاً.',
     deliverable: 'طبقة Time Intelligence تجعل الاتجاهات والمقارنات قابلة للتحليل.',
-    recordingUrl: '',
     resources: [
       { name: '07_Time_Intelligence_Lab.pbix', type: 'PBIX', url: '', note: 'Time Intelligence Lab' },
       { name: '07_Date_Table_Reference.pdf', type: 'PDF', url: '', note: 'مرجع DimDate' },
@@ -169,7 +162,6 @@ const DAYS = [
     build: ['Executive Layout', 'KPI Hierarchy', 'Navigation', 'Drill-through', 'Tooltip Pages'],
     challenge: 'نفس 5 Business Questions، لكن لكل متدرب حرية التصميم. كل Visual يجب أن يدافع عن وجوده.',
     deliverable: 'Executive-ready Report بتجربة استخدام متماسكة.',
-    recordingUrl: '',
     resources: [
       { name: '08_Executive_Report_Layout.pbix', type: 'PBIX', url: '', note: 'Layout Starter' },
       { name: '08_Visual_Selection_Cards.pdf', type: 'PDF', url: '', note: 'مرجع اختيار الـVisual' },
@@ -189,7 +181,6 @@ const DAYS = [
     build: ['What happened?', 'Where?', 'What?', 'Who?', 'Why?'],
     challenge: '10-Minute Management Meeting: 3 Findings + 1 Recommended Action.',
     deliverable: 'Report يوجّه المستخدم من الرقم إلى السبب ثم إلى الإجراء.',
-    recordingUrl: '',
     resources: [
       { name: '09_Management_Case.pbix', type: 'PBIX', url: '', note: 'Management Case' },
       { name: '09_Insight_Template.pdf', type: 'PDF', url: '', note: '3 Findings + 1 Action' },
@@ -209,7 +200,6 @@ const DAYS = [
     build: ['Final Refresh', 'Executive Dashboard', 'Root Cause Analysis', 'Boardroom Story'],
     challenge: 'Final Mission: What happened? Why? Where should management focus? What action do you recommend?',
     deliverable: 'Nova Business Performance 360 — مشروع نهائي متكامل وقابل للعرض على الإدارة.',
-    recordingUrl: '',
     resources: [
       { name: '10_Boardroom_Final_Case.zip', type: 'ZIP', url: '', note: 'البيانات الجديدة + Brief' },
       { name: '10_Final_Submission_Checklist.pdf', type: 'PDF', url: '', note: 'قائمة التحقق النهائية' },
