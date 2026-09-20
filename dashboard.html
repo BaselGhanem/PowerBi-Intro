@@ -51,6 +51,7 @@
   </main>
 
   <script src="data.js"></script>
+  <script src="videos.js"></script>
   <script>
     const student = localStorage.getItem('pbi_student_name');
     if (!student) location.href = 'login.html';
@@ -113,7 +114,7 @@
           </div>
           <div class="portal-day-bottom">
             <span class="status-chip ${runtime}"><i class="complete-dot"></i>${runtime === 'today' ? 'اليوم' : runtime === 'past' ? 'تم موعده' : day.weekday + ' • ' + formatDateAr(day.date)}</span>
-            <span class="resource-count">${day.resources.length} ملفات مخططة • ${day.recordingUrl ? 'التسجيل متاح' : 'التسجيل بانتظار الرفع'}</span>
+            <span class="resource-count">${day.resources.length} ملفات مخططة • ${hasDayVideo(day.id) ? 'التسجيل متاح' : 'التسجيل بانتظار الرفع'}</span>
           </div>`;
         card.addEventListener('click', () => location.href = `day.html?id=${day.id}`);
         grid.appendChild(card);
