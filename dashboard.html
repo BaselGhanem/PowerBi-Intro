@@ -37,7 +37,7 @@
     <section class="portal-section">
       <div class="shell">
         <div class="portal-head">
-          <div><h2>الأيام العشرة</h2><p>الخطة كاملة مفتوحة. الملفات والتسجيلات تظهر داخل كل Day عند إضافتها.</p></div>
+          <div><h2>الأيام العشرة</h2><p>الأيام تفتح تدريجياً مع تقدم الدورة، ويمكن التحكم بها يدوياً من access.js.</p></div>
           <div class="filter-row">
             <button class="filter-btn active" data-filter="all">الكل</button>
             <button class="filter-btn" data-filter="past">تم موعدها</button>
@@ -52,6 +52,7 @@
 
   <script src="data.js"></script>
   <script src="videos.js"></script>
+  <script src="access.js"></script>
   <script>
     const student = localStorage.getItem('pbi_student_name');
     if (!student) location.href = 'login.html';
@@ -73,22 +74,26 @@
     function getNextRelevantDay() {
       const today = new Date();
       const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-      return DAYS.find(d => new Date(`${d.date}T00:00:00`) >= todayOnly) || DAYS[DAYS.length - 1];
+      const openDays = DAYS.filter(day => isDayOpen(day.id));
+      return openDays.find(d => new Date(`${d.date}T00:00:00`) >= todayOnly)
+        || openDays[openDays.length - 1]
+        || DAYS[0];
     }
 
     function renderNextCard() {
       const day = getNextRelevantDay();
       const status = dayRuntimeStatus(day);
+      const open = isDayOpen(day.id);
       const liveButton = COURSE_CONFIG.liveUrl
         ? `<a class="btn btn-primary" href="${COURSE_CONFIG.liveUrl}" target="_blank" rel="noopener">دخول الجلسة المباشرة</a>`
         : `<span class="btn btn-ghost btn-disabled">رابط الجلسة يضاف قبل الموعد</span>`;
       document.getElementById('nextCard').innerHTML = `
-        <span class="next-label">${status === 'today' ? 'TODAY' : 'NEXT SESSION'}</span>
+        <span class="next-label">${status === 'today' ? 'TODAY' : 'NEXT AVAILABLE DAY'}</span>
         <h2>Day ${String(day.id).padStart(2,'0')} — ${day.titleAr}</h2>
         <p>${day.hook}</p>
         <span class="next-date">${day.weekday} • ${formatDateAr(day.date)}</span>
         <div class="live-slot">
-          <a class="btn btn-ghost" href="day.html?id=${day.id}">عرض تفاصيل اليوم</a>
+          ${open ? `<a class="btn btn-ghost" href="day.html?id=${day.id}">عرض تفاصيل اليوم</a>` : ''}
           ${liveButton}
         </div>`;
     }
@@ -102,8 +107,10 @@
         const isCompleted = done.includes(day.id);
         if (filter === 'completed' && !isCompleted) return;
         if (filter !== 'all' && filter !== 'completed' && runtime !== filter) return;
+        const open = isDayOpen(day.id);
         const card = document.createElement('article');
-        card.className = `portal-day ${isCompleted ? 'completed' : ''}`;
+        card.className = `portal-day ${isCompleted ? 'completed' : ''} ${open ? 'open' : 'locked'}`;
+        card.setAttribute('aria-disabled', open ? 'false' : 'true');
         card.innerHTML = `
           <div class="portal-day-top">
             <div class="portal-day-index">${String(day.id).padStart(2,'0')}</div>
@@ -111,12 +118,15 @@
               <h3>${day.titleAr}</h3>
               <span class="portal-en" dir="ltr">${day.title}</span>
             </div>
+            ${open ? '' : '<span class="day-lock-badge" aria-label="مقفل">LOCKED</span>'}
           </div>
           <div class="portal-day-bottom">
-            <span class="status-chip ${runtime}"><i class="complete-dot"></i>${runtime === 'today' ? 'اليوم' : runtime === 'past' ? 'تم موعده' : day.weekday + ' • ' + formatDateAr(day.date)}</span>
-            <span class="resource-count">${hasDayVideo(day.id) ? '▶ التسجيل متاح للمشاهدة' : day.resources.length + ' ملفات مخططة'}</span>
+            <span class="status-chip ${open ? runtime : 'locked'}"><i class="complete-dot"></i>${open ? (runtime === 'today' ? 'اليوم' : runtime === 'past' ? 'تم موعده' : day.weekday + ' • ' + formatDateAr(day.date)) : 'غير متاح حالياً'}</span>
+            <span class="resource-count">${open ? (hasDayVideo(day.id) ? '▶ التسجيل متاح للمشاهدة' : day.resources.length + ' ملفات مخططة') : 'يفتح مع تقدم الدورة'}</span>
           </div>`;
-        card.addEventListener('click', () => location.href = `day.html?id=${day.id}`);
+        if (open) {
+          card.addEventListener('click', () => location.href = `day.html?id=${day.id}`);
+        }
         grid.appendChild(card);
       });
     }
