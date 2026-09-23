@@ -116,6 +116,9 @@
     table.matrix td{padding:10px;border-top:1px solid rgba(255,255,255,.08);color:#b8c4cb}
     table.matrix td.hi{background:rgba(242,200,17,.95);color:#111;font-weight:800}
     .visual-caption{margin-top:12px;color:#aab7bf;font-size:12px;line-height:1.8}
+    .poster-thumb{width:100%;height:110px;object-fit:cover;object-position:center;border-radius:12px;border:1px solid rgba(255,255,255,.08);display:block}
+    .poster-wrap img{width:100%;max-width:100%;display:block;border-radius:16px;border:1px solid var(--line);box-shadow:0 12px 28px rgba(0,0,0,.22)}
+    .poster-note{margin-top:12px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);font-size:12px;line-height:1.9;color:#d7e0e4}
     .schema-large{position:relative;height:320px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,#111920,#0d1419)}
     .schema-large svg{position:absolute;inset:0;width:100%;height:100%}
     .schema-large .node{font-size:12px;padding:14px 16px}
@@ -764,17 +767,21 @@ SUMX (
         }
       },
       {
-        id:27, title:'ETL', titleAr:'استخراج وتحويل وتحميل', category:'data', kind:'flow',
-        blurb:'Extract → Transform → Load',
-        memory:'جيب، نظف، حمّل.',
-        why:'لأنه يشرح الرحلة قبل أن تصل البيانات إلى model.',
-        notice:'التحويل ليس مجرد تنظيف؛ هو أيضاً shaping للبيانات.',
-        mistake:'الظن أن ETL يعني copy-paste فقط.',
-        explain:'تسحب البيانات من Excel أو DB، تنظف الأعمدة، توحد الأنواع، تعالج الأخطاء، ثم تحمّلها إلى Power BI model.',
-        tip:'Power Query هو ساحة ETL الطبيعية داخل Power BI.',
-        warning:'إذا حملت البيانات الخام كما هي، ستدفع الثمن لاحقاً في الموديل والـ DAX.',
-        visualCaption:'مراحل الرحلة الثلاثة باختصار.',
-        visual:{ steps:['Extract','Transform','Load'] }
+        id:27, title:'ETL', titleAr:'استخراج وتحويل وتحميل', category:'data', kind:'poster',
+        blurb:'رحلة البيانات في Power BI: نسحبها، ننظفها، ثم نجهزها للتحليل.',
+        memory:'ETL = سحب → تنظيف → تحميل.',
+        why:'لأنه أول مفهوم لازم تفهمه قبل أي Modeling أو Visuals؛ هو الذي يشرح كيف تنتقل البيانات من المصدر إلى تقرير نقدر نثق فيه.',
+        notice:'لا تحفظ الاختصار فقط. Extract = جمع البيانات، Transform = تنظيف وتجهيز، Load = إدخال البيانات النظيفة إلى الموديل.',
+        mistake:'الخطأ الشائع إنك تعتبر ETL مجرد Import للملف. فعلياً Transform غالباً هو الجزء الذي يحدد جودة التحليل.',
+        explain:'تخيلها رحلة من ثلاث محطات: أولاً نسحب البيانات من Excel أو CSV أو Web أو PDF. بعدها نرتبها في Power Query: نصلح Data Types، نوحد القيم، نعالج Errors وNulls ونراجع Duplicates. بعدها نحمّل النسخة النظيفة إلى Power BI ونبدأ التحليل. نفس البيانات، لكن صارت جاهزة تعطينا نتيجة نثق فيها.',
+        tip:'قبل أي Chart اسأل: هل البيانات جاهزة فعلاً للتحليل، ولا أنا بس عملت Import؟',
+        warning:'Power Query هو المكان الطبيعي لمرحلة Transform داخل Power BI. كلما كانت هذه المرحلة أنظف، صار الـModel والـDAX والتقرير أسهل لاحقاً.',
+        visualCaption:'مرجع بصري سريع يلخص رحلة ETL كاملة مع مثال قبل/بعد.',
+        visual:{
+          image:'assets/day1-etl-poster.png',
+          alt:'اليوم 1 - ETL في Power BI',
+          quickPoints:['Extract = سحب البيانات من المصدر','Transform = تنظيف وتجهيز البيانات','Load = تحميل البيانات النظيفة إلى Power BI']
+        }
       },
       {
         id:28, title:'Data Profiling', titleAr:'فحص البيانات', category:'data', kind:'kpi',
@@ -1081,6 +1088,9 @@ SUMX (
             ...rows.map(r=>`<div class="mini-row">${r.map(v=>`<span>${v}</span>`).join('')}</div>`)
           ].join('')}</div></div>`;
         }
+        case 'poster': {
+          return `<div class="preview"><img class="poster-thumb" src="${concept.visual.image}" alt="${concept.visual.alt||concept.title}"></div>`;
+        }
         case 'schema': {
           const positions = ['left:50%;top:4%;transform:translateX(-50%)','left:2%;top:40%','right:2%;top:40%','left:50%;bottom:4%;transform:translateX(-50%)'];
           const lines = ['<line x1="50" y1="50" x2="50" y2="24" stroke="rgba(255,255,255,.18)" stroke-width="1.5"/>','<line x1="50" y1="50" x2="20" y2="50" stroke="rgba(255,255,255,.18)" stroke-width="1.5"/>','<line x1="50" y1="50" x2="80" y2="50" stroke="rgba(255,255,255,.18)" stroke-width="1.5"/>','<line x1="50" y1="50" x2="50" y2="78" stroke="rgba(255,255,255,.18)" stroke-width="1.5"/>'];
@@ -1127,6 +1137,9 @@ SUMX (
         case 'table': {
           const {headers, rows, highlight} = concept.visual;
           return `<div class="table-wrap"><table class="matrix"><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.map((row,r)=>`<tr>${row.map((cell,c)=>`<td class="${highlight && highlight[0]===r && highlight[1]===c ? 'hi':''}">${cell}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+        }
+        case 'poster': {
+          return `<div class="poster-wrap"><img src="${concept.visual.image}" alt="${concept.visual.alt||concept.title}"><div class="poster-note">${concept.visual.quickPoints.map(p=>`• ${p}`).join('<br>')}</div></div>`;
         }
         case 'schema': {
           const positions = ['left:50%;top:6%;transform:translateX(-50%)','left:4%;top:34%','right:4%;top:34%','left:50%;bottom:6%;transform:translateX(-50%)'];
