@@ -163,7 +163,7 @@
     .day-focus{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:18px 20px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(135deg,rgba(242,200,17,.06),rgba(255,255,255,.02));margin-bottom:14px}
     .day-focus h2{margin:5px 0 6px;font-size:22px}
     .day-focus p{margin:0;color:var(--muted);font-size:12px;line-height:1.8}
-    .day-focus .day-count{font:800 28px Inter;color:var(--accent);white-space:nowrap}
+    .day-focus .day-count{font-family:Almarai,sans-serif;font-size:24px;font-weight:800;line-height:1.5;color:var(--accent);white-space:nowrap}
     .empty-day{grid-column:1/-1;padding:28px;border:1px dashed rgba(255,255,255,.14);border-radius:18px;text-align:center;color:#9eafb8;background:rgba(255,255,255,.02);line-height:1.9}
     .library-head{display:flex;align-items:end;justify-content:space-between;margin:28px 0 14px}
     .library-head h2{margin:4px 0 0;font-size:22px}
@@ -1250,16 +1250,16 @@ SUMX (
     let currentMode = 'path';
 
     function isOpenDay(dayId){
-      return typeof isDayOpen === 'function' ? isDayOpen(dayId) : true;
+      // مكتبة المفاهيم مفتوحة بالكامل للاستكشاف، حتى لو يوم الدورة نفسه لم يفتح بعد.
+      return true;
     }
 
     function getDefaultDay(){
-      const today = DAYS.find(day => dayRuntimeStatus(day) === 'today' && isOpenDay(day.id));
+      const today = DAYS.find(day => dayRuntimeStatus(day) === 'today');
       if(today) return today.id;
-      const openPast = DAYS.filter(day => isOpenDay(day.id) && dayRuntimeStatus(day) !== 'upcoming');
-      if(openPast.length) return openPast[openPast.length - 1].id;
-      const firstOpen = DAYS.find(day => isOpenDay(day.id));
-      return firstOpen ? firstOpen.id : 1;
+      const courseOpen = DAYS.filter(day => typeof isDayOpen === 'function' ? isDayOpen(day.id) : dayRuntimeStatus(day) !== 'upcoming');
+      if(courseOpen.length) return courseOpen[courseOpen.length - 1].id;
+      return 1;
     }
 
     let activeDay = getDefaultDay();
@@ -1291,13 +1291,13 @@ SUMX (
     function renderPath(){
       dayNav.innerHTML = DAYS.map(day => {
         const open = isOpenDay(day.id);
-        return `<button class="day-btn ${day.id===activeDay?'active':''} ${open?'':'locked'}" data-day="${day.id}" ${open?'':'disabled'}>
+        return `<button class="day-btn ${day.id===activeDay?'active':''}" data-day="${day.id}">
           <b>Day ${String(day.id).padStart(2,'0')}</b>
-          <span>${open ? day.titleAr : 'يفتح لاحقا'}</span>
+          <span>${day.titleAr}</span>
         </button>`;
       }).join('');
 
-      [...dayNav.querySelectorAll('.day-btn:not(.locked)')].forEach(btn => btn.addEventListener('click', () => {
+      [...dayNav.querySelectorAll('.day-btn')].forEach(btn => btn.addEventListener('click', () => {
         activeDay = Number(btn.dataset.day);
         renderPath();
       }));
@@ -1315,7 +1315,7 @@ SUMX (
           <span class="eyebrow">DAY ${String(day.id).padStart(2,'0')} • ${day.phase}</span>
           <h2>${day.titleAr}</h2>
           <p>${dayConcepts.length
-            ? 'هذه هي المفاهيم الجديدة التي تحتاجها في هذا اليوم. مفاهيم الأيام السابقة تبقى متاحة من الشريط أعلاه.'
+            ? 'هذه هي المفاهيم الجديدة المرتبطة بهذا اليوم. تقدر تتنقل لأي يوم وتستكشف المفاهيم مسبقا إذا حبيت.'
             : 'هذا اليوم تطبيقي أكثر؛ سنستخدم مفاهيم الأيام السابقة بدون إضافة مصطلحات جديدة من هذه المكتبة.'}</p>
         </div>
         <div class="day-count">${dayConcepts.length} ${dayConcepts.length===1?'مفهوم جديد':'مفاهيم جديدة'}</div>
