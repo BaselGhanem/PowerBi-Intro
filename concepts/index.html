@@ -149,8 +149,45 @@
     .compare-item h4{margin:0 0 8px;font-size:14px}
     .compare-item p{margin:0;font-size:12px;line-height:1.8;color:#dce2e6}
     .footer-note{margin-top:18px;padding:14px 16px;border:1px dashed rgba(255,255,255,.15);border-radius:16px;color:#a7b6be;font-size:12px;line-height:1.9}
-    @media (max-width:1050px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{grid-template-columns:1fr}.modal-head,.stage{grid-template-columns:1fr}.meta{grid-template-columns:1fr}.kpi-board,.grid-2,.metric-board,.compare-boxes,.timeline{grid-template-columns:1fr 1fr}}
-    @media (max-width:700px){.shell{width:calc(100% - 18px)}.topbar{height:auto;padding:12px 0;gap:12px;align-items:flex-start;flex-direction:column}.grid,.kpi-board,.grid-2,.metric-board,.compare-boxes,.timeline{grid-template-columns:1fr}.toolbar{flex-direction:column}.hero-card{padding:26px 22px}.hero-card p{font-size:13px}.card h2{font-size:24px}.modal{padding:14px}.schema-large{height:360px}}
+
+    .mode-switch{display:inline-flex;gap:6px;padding:6px;border:1px solid var(--line);border-radius:15px;background:#0f161c;margin-bottom:18px}
+    .mode-btn{border:0;background:transparent;color:#9fb0ba;border-radius:10px;padding:10px 15px;font-size:11px;font-weight:800;cursor:pointer}
+    .mode-btn.active{background:var(--accent);color:#151515}
+    .day-nav{display:grid;grid-template-columns:repeat(10,minmax(72px,1fr));gap:8px;margin-bottom:14px;overflow:auto;padding-bottom:3px}
+    .day-btn{min-width:72px;border:1px solid var(--line);background:#111920;color:#95a5af;border-radius:13px;padding:10px 8px;cursor:pointer;text-align:center}
+    .day-btn b{display:block;font:800 11px Inter;color:#dce3e7}
+    .day-btn span{display:block;font-size:9px;margin-top:5px;color:#71828d}
+    .day-btn.active{border-color:rgba(242,200,17,.45);background:rgba(242,200,17,.10)}
+    .day-btn.active b{color:var(--accent)}
+    .day-btn.locked{opacity:.48;cursor:not-allowed}
+    .day-focus{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:18px 20px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(135deg,rgba(242,200,17,.06),rgba(255,255,255,.02));margin-bottom:14px}
+    .day-focus h2{margin:5px 0 6px;font-size:22px}
+    .day-focus p{margin:0;color:var(--muted);font-size:12px;line-height:1.8}
+    .day-focus .day-count{font:800 28px Inter;color:var(--accent);white-space:nowrap}
+    .empty-day{grid-column:1/-1;padding:28px;border:1px dashed rgba(255,255,255,.14);border-radius:18px;text-align:center;color:#9eafb8;background:rgba(255,255,255,.02);line-height:1.9}
+    .library-head{display:flex;align-items:end;justify-content:space-between;margin:28px 0 14px}
+    .library-head h2{margin:4px 0 0;font-size:22px}
+    .library-head p{margin:8px 0 0;color:var(--muted);font-size:12px;line-height:1.8}
+    .extra-head{padding-top:22px;border-top:1px solid var(--line)}
+    .day-tag{display:inline-flex;margin-inline-start:7px;padding:4px 7px;border-radius:999px;border:1px solid var(--line);font:800 8px Inter;color:#8fa0aa}
+    .related-wrap{margin-top:15px;padding-top:13px;border-top:1px solid var(--line)}
+    .related-wrap>span{display:block;color:#82949f;font-size:10px;font-weight:800;margin-bottom:8px}
+    .related{display:flex;gap:7px;flex-wrap:wrap}
+    .related button{border:1px solid rgba(9,153,153,.24);background:rgba(9,153,153,.08);color:#ccebea;border-radius:999px;padding:8px 10px;font-size:10px;font-weight:800;cursor:pointer}
+    .learn-more{margin-top:16px;border:1px solid var(--line);border-radius:17px;background:#0c1318;overflow:hidden}
+    .learn-more summary{cursor:pointer;padding:14px 16px;font-size:12px;font-weight:800;color:#dfe5e8;list-style:none}
+    .learn-more summary::-webkit-details-marker{display:none}
+    .learn-more summary::after{content:'+';float:left;color:var(--accent);font:800 18px Inter}
+    .learn-more[open] summary::after{content:'−'}
+    .learn-more .meta{padding:0 14px 14px;margin:0}
+    .detail-tip{margin:0 14px 14px;padding:13px 14px;border-radius:14px;background:rgba(9,153,153,.09);border:1px solid rgba(9,153,153,.22)}
+    .detail-tip span{display:block;color:#75aaa8;font-size:9px;font-weight:800;margin-bottom:7px}
+    .detail-tip b{font-size:12px;line-height:1.8}
+    .node.bridge{background:rgba(255,159,89,.12);border-color:rgba(255,159,89,.26);color:#ffc18e}
+    .relation-key{position:absolute;z-index:2;display:grid;place-items:center;width:22px;height:22px;border-radius:999px;background:#0c1318;border:1px solid var(--line);font:800 10px Inter;color:#e8edef}
+    .relation-key.many{color:var(--accent);border-color:rgba(242,200,17,.28)}
+    @media (max-width:1050px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{grid-template-columns:1fr}.modal-head,.stage{grid-template-columns:1fr}.meta{grid-template-columns:1fr}.kpi-board,.grid-2,.metric-board,.compare-boxes,.timeline{grid-template-columns:1fr 1fr}.day-nav{grid-template-columns:repeat(10,90px)}}
+    @media (max-width:700px){.shell{width:calc(100% - 18px)}.topbar{height:auto;padding:12px 0;gap:12px;align-items:flex-start;flex-direction:column}.grid,.kpi-board,.grid-2,.metric-board,.compare-boxes,.timeline{grid-template-columns:1fr}.toolbar{flex-direction:column}.hero-card{padding:26px 22px}.hero-card p{font-size:13px}.card h2{font-size:24px}.modal{padding:14px}.schema-large{height:360px}.day-focus{align-items:flex-start;flex-direction:column}.mode-switch{display:flex;width:100%}.mode-btn{flex:1}}
   </style>
 </head>
 <body>
@@ -169,10 +206,10 @@
     <section class="hero">
       <div class="hero-card">
         <span class="eyebrow">POWER BI • DATA MODELING • DAX • ANALYTICS</span>
-        <h1>افهم <em>مفاهيم Power BI</em> بصريا وعمليا.</h1>
+        <h1>مفاهيمك <em>تمشي مع الدورة</em> يوم بيوم.</h1>
         <p>
-          اختر أي مفهوم لتشوفه بمثال عملي مناسب: جدول، مخطط علاقات، Flow، KPI، أو DAX حسب طبيعة الفكرة.
-          الهدف أن تفهم المعنى بسرعة، تعرف لماذا يهم، وتنتبه للخطأ الشائع قبل تطبيقه في Power BI.
+          في كل يوم ستظهر لك فقط المفاهيم التي تحتاجها في هذه المرحلة من التدريب. ارجع لمفاهيم الأيام السابقة وقت ما بدك،
+          وإذا حبيت تتوسع أكثر افتح وضع <strong>استكشف أكثر</strong> وشاهد بقية المكتبة.
         </p>
       </div>
       <aside class="hero-side">
@@ -184,12 +221,40 @@
       </aside>
     </section>
 
-    <section class="toolbar">
-      <label class="search"><input id="searchInput" placeholder="ابحث: Grain, Fact Table, Star Schema, KPI..."></label>
-      <div class="filters" id="filters"></div>
+    <section class="mode-switch" aria-label="طريقة تصفح المفاهيم">
+      <button class="mode-btn active" data-mode="path">مساري في الدورة</button>
+      <button class="mode-btn" data-mode="explore">استكشف أكثر</button>
     </section>
 
-    <section class="grid" id="cardsGrid"></section>
+    <section id="pathView">
+      <div class="day-nav" id="dayNav"></div>
+      <div class="day-focus" id="dayFocus"></div>
+      <section class="grid" id="dayConceptGrid"></section>
+    </section>
+
+    <section id="exploreView" hidden>
+      <section class="toolbar">
+        <label class="search"><input id="searchInput" placeholder="ابحث: Grain, Fact Table, Star Schema, KPI..."></label>
+        <div class="filters" id="filters"></div>
+      </section>
+
+      <div class="library-head">
+        <div>
+          <span class="eyebrow">ضمن مسار الدورة</span>
+          <h2>المفاهيم التي نمر عليها خلال الأيام العشرة</h2>
+        </div>
+      </div>
+      <section class="grid" id="cardsGrid"></section>
+
+      <div class="library-head extra-head">
+        <div>
+          <span class="eyebrow">للفضوليين</span>
+          <h2>مفاهيم أخرى تزيد من معرفتك</h2>
+          <p>هذه المفاهيم ليست ضمن الشرح الأساسي في مسار الدورة الحالي، لكنها مفيدة إذا حبيت تتوسع أكثر.</p>
+        </div>
+      </div>
+      <section class="grid" id="extraGrid"></section>
+    </section>
   </main>
 
   <dialog id="conceptDialog">
@@ -207,29 +272,38 @@
         </div>
       </div>
 
-      <section class="meta">
-        <div class="meta-card"><span>ليش يهم؟</span><b id="dialogWhy"></b></div>
-        <div class="meta-card"><span>إيش لازم تلاحظ؟</span><b id="dialogNotice"></b></div>
-        <div class="meta-card"><span>الخطأ الشائع</span><b id="dialogMistake"></b></div>
-      </section>
-
       <section class="stage">
         <article class="visual">
-          <h3>المثال البصري</h3>
+          <h3>شوف الفكرة</h3>
           <div id="dialogVisual"></div>
           <div class="visual-caption" id="dialogVisualCaption"></div>
         </article>
         <article class="explain">
-          <h3>الشرح العملي</h3>
+          <h3>افهمها ببساطة</h3>
           <p id="dialogExplain"></p>
-          <div class="note" id="dialogTip"></div>
           <div class="warn" id="dialogWarning"></div>
-          
+          <div class="related-wrap" id="relatedWrap" hidden>
+            <span>مرتبط بـ</span>
+            <div class="related" id="relatedConcepts"></div>
+          </div>
         </article>
       </section>
+
+      <details class="learn-more">
+        <summary>اعرف أكثر عن هذا المفهوم</summary>
+        <section class="meta">
+          <div class="meta-card"><span>ليش يهم؟</span><b id="dialogWhy"></b></div>
+          <div class="meta-card"><span>إيش لازم تلاحظ؟</span><b id="dialogNotice"></b></div>
+          <div class="meta-card"><span>الخطأ الشائع</span><b id="dialogMistake"></b></div>
+        </section>
+        <div class="detail-tip"><span>نصيحة عملية</span><b id="dialogTip"></b></div>
+      </details>
     </div>
   </dialog>
 
+  <script src="../data.js"></script>
+  <script src="../videos.js"></script>
+  <script src="../access.js"></script>
   <script>
     const categoryMap = {
       foundation:{label:'FOUNDATION', color:'#f2c811'},
@@ -317,6 +391,8 @@
         visualCaption:'هذا ليس مجرد رسم جميل؛ هو قرار تصميم يؤثر على الفهم والأداء.',
         visual:{
           center:'FactSales',
+          centerType:'fact',
+          relationLabels:true,
           nodes:[
             {label:'DimDate', x:50, y:20, type:'dim'},
             {label:'DimCustomer', x:12, y:130, type:'dim'},
@@ -755,7 +831,7 @@ SUMX (
         warning:'لا تستخدم bridge فقط لأن relationship لم تعمل؛ افهم السبب أولاً.',
         visualCaption:'الجسر في الوسط يربط الكيانين المتعددين.',
         visual:{
-          center:'Bridge Product Promotion', nodes:[
+          center:'Bridge Product Promotion', centerType:'bridge', nodes:[
             {label:'DimProduct', x:12, y:130, type:'dim'},
             {label:'DimPromotion', x:78, y:130, type:'dim'},
             {label:'FactSales', x:50, y:240, type:'fact'}
@@ -1002,7 +1078,8 @@ SUMX (
           const positions = ['left:50%;top:4%;transform:translateX(-50%)','left:2%;top:40%','right:2%;top:40%','left:50%;bottom:4%;transform:translateX(-50%)'];
           const lines = ['<line x1="50" y1="50" x2="50" y2="24" stroke="rgba(255,255,255,.18)" stroke-width="1.5"/>','<line x1="50" y1="50" x2="20" y2="50" stroke="rgba(255,255,255,.18)" stroke-width="1.5"/>','<line x1="50" y1="50" x2="80" y2="50" stroke="rgba(255,255,255,.18)" stroke-width="1.5"/>','<line x1="50" y1="50" x2="50" y2="78" stroke="rgba(255,255,255,.18)" stroke-width="1.5"/>'];
           const nodes = concept.visual.nodes.map((n,i)=>`<div class="node ${n.type||'dim'}" style="${positions[i]}">${n.label}</div>`).join('');
-          return `<div class="preview"><div class="schema-mini"><svg viewBox="0 0 100 100" preserveAspectRatio="none">${lines.slice(0, concept.visual.nodes.length).join('')}</svg><div class="node fact" style="left:50%;top:50%;transform:translate(-50%,-50%)">${concept.visual.center}</div>${nodes}</div></div>`;
+          const centerType = concept.visual.centerType || 'fact';
+          return `<div class="preview"><div class="schema-mini"><svg viewBox="0 0 100 100" preserveAspectRatio="none">${lines.slice(0, concept.visual.nodes.length).join('')}</svg><div class="node ${centerType}" style="left:50%;top:50%;transform:translate(-50%,-50%)">${concept.visual.center}</div>${nodes}</div></div>`;
         }
         case 'flow': {
           return `<div class="preview"><div class="preview-flow"><div class="flowline">${concept.visual.steps.map((s,i)=>`${i?'<span class="arrow">→</span>':''}<span class="flowbox">${s}</span>`).join('')}</div></div></div>`;
@@ -1045,7 +1122,17 @@ SUMX (
           const positions = ['left:50%;top:6%;transform:translateX(-50%)','left:4%;top:34%','right:4%;top:34%','left:50%;bottom:6%;transform:translateX(-50%)'];
           const lines = ['<line x1="50" y1="50" x2="50" y2="22" stroke="rgba(255,255,255,.20)" stroke-width="1.6"/>','<line x1="50" y1="50" x2="20" y2="42" stroke="rgba(255,255,255,.20)" stroke-width="1.6"/>','<line x1="50" y1="50" x2="80" y2="42" stroke="rgba(255,255,255,.20)" stroke-width="1.6"/>','<line x1="50" y1="50" x2="50" y2="78" stroke="rgba(255,255,255,.20)" stroke-width="1.6"/>'];
           const nodes = concept.visual.nodes.map((n,i)=>`<div class="node ${n.type||'dim'}" style="${positions[i]}">${n.label}</div>`).join('');
-          return `<div class="schema-large"><svg viewBox="0 0 100 100" preserveAspectRatio="none">${lines.slice(0, concept.visual.nodes.length).join('')}</svg><div class="node fact" style="left:50%;top:50%;transform:translate(-50%,-50%)">${concept.visual.center}</div>${nodes}</div>`;
+          const centerType = concept.visual.centerType || 'fact';
+          if(concept.visual.relationLabels){
+            const starLines = [
+              '<line x1="50" y1="22" x2="50" y2="44" stroke="rgba(255,255,255,.28)" stroke-width="1.6" marker-end="url(#arr)"/>',
+              '<line x1="20" y1="42" x2="43" y2="49" stroke="rgba(255,255,255,.28)" stroke-width="1.6" marker-end="url(#arr)"/>',
+              '<line x1="80" y1="42" x2="57" y2="49" stroke="rgba(255,255,255,.28)" stroke-width="1.6" marker-end="url(#arr)"/>',
+              '<line x1="50" y1="78" x2="50" y2="57" stroke="rgba(255,255,255,.28)" stroke-width="1.6" marker-end="url(#arr)"/>'
+            ];
+            return `<div class="schema-large"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><defs><marker id="arr" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="rgba(242,200,17,.7)"/></marker></defs>${starLines.join('')}</svg><div class="node ${centerType}" style="left:50%;top:50%;transform:translate(-50%,-50%)">${concept.visual.center}</div>${nodes}<span class="relation-key" style="left:51%;top:24%">1</span><span class="relation-key" style="left:18%;top:44%">1</span><span class="relation-key" style="right:18%;top:44%">1</span><span class="relation-key" style="left:51%;bottom:23%">1</span><span class="relation-key many" style="left:48%;top:44%">*</span></div>`;
+          }
+          return `<div class="schema-large"><svg viewBox="0 0 100 100" preserveAspectRatio="none">${lines.slice(0, concept.visual.nodes.length).join('')}</svg><div class="node ${centerType}" style="left:50%;top:50%;transform:translate(-50%,-50%)">${concept.visual.center}</div>${nodes}</div>`;
         }
         case 'flow': {
           return `<div class="flow-large">${concept.visual.steps.map((s,i)=>`${i?'<span class="arrow">→</span>':''}<span class="flowbox">${s}</span>`).join('')}</div>`;
@@ -1088,20 +1175,91 @@ SUMX (
       {id:'analysis', label:'Analysis'}
     ];
 
+    // المفهوم يظهر في أول يوم نحتاجه فيه ضمن مسار الدورة.
+    const conceptDays = {
+      1:[27],
+      2:[1,26,28],
+      3:[25],
+      4:[2,3,4,5,6,7,24,33,34,35],
+      5:[11,12,14,16,36,37,38],
+      6:[8,39],
+      7:[18,19,40,41],
+      8:[],
+      9:[],
+      10:[]
+    };
+
+    const conceptToDay = Object.fromEntries(
+      Object.entries(conceptDays).flatMap(([day, ids]) => ids.map(id => [Number(id), Number(day)]))
+    );
+    const courseConceptIds = new Set(Object.keys(conceptToDay).map(Number));
+    const extraConceptIds = concepts.filter(c => !courseConceptIds.has(c.id)).map(c => c.id);
+
+    // روابط صغيرة فقط بين المفاهيم القريبة؛ لا تظهر إلا عند فتح Card.
+    const relatedMap = {
+      1:[2,3,4],
+      2:[3,4,5],
+      3:[2,4,5],
+      4:[2,3,6],
+      5:[6,34],
+      6:[5,7,31],
+      7:[6,8],
+      8:[11,39],
+      11:[12,8],
+      12:[11,9],
+      14:[11,16],
+      16:[14,11],
+      18:[19,40,41],
+      19:[18,40],
+      25:[27,35],
+      27:[25,26],
+      33:[19,32],
+      34:[5,6],
+      35:[4,2],
+      36:[37,38],
+      37:[36,39],
+      38:[36,40],
+      39:[8,37],
+      40:[18,41],
+      41:[18,40]
+    };
+
     const grid = document.getElementById('cardsGrid');
+    const extraGrid = document.getElementById('extraGrid');
+    const dayConceptGrid = document.getElementById('dayConceptGrid');
     const filtersWrap = document.getElementById('filters');
     const searchInput = document.getElementById('searchInput');
     const dialog = document.getElementById('conceptDialog');
+    const dayNav = document.getElementById('dayNav');
+    const dayFocus = document.getElementById('dayFocus');
 
     let activeFilter = 'all';
+    let currentMode = 'path';
 
-    function renderCards(){
-      const q = searchInput.value.trim().toLowerCase();
-      const list = concepts.filter(c => (activeFilter === 'all' || c.category === activeFilter) && `${c.title} ${c.titleAr} ${c.blurb}`.toLowerCase().includes(q));
-      grid.innerHTML = list.map(c => `
+    function isOpenDay(dayId){
+      return typeof isDayOpen === 'function' ? isDayOpen(dayId) : true;
+    }
+
+    function getDefaultDay(){
+      const today = DAYS.find(day => dayRuntimeStatus(day) === 'today' && isOpenDay(day.id));
+      if(today) return today.id;
+      const openPast = DAYS.filter(day => isOpenDay(day.id) && dayRuntimeStatus(day) !== 'upcoming');
+      if(openPast.length) return openPast[openPast.length - 1].id;
+      const firstOpen = DAYS.find(day => isOpenDay(day.id));
+      return firstOpen ? firstOpen.id : 1;
+    }
+
+    let activeDay = getDefaultDay();
+
+    function conceptCard(c, scope='course'){
+      const day = conceptToDay[c.id];
+      const meta = scope === 'extra'
+        ? '<span class="day-tag">معرفة إضافية</span>'
+        : (day ? '<span class="day-tag">Day '+day+'</span>' : '');
+      return `
         <article class="card" data-id="${c.id}" style="--card-color:${categoryMap[c.category].color}">
           <div class="card-top">
-            <span class="pill">${categoryMap[c.category].label}</span>
+            <span><span class="pill">${categoryMap[c.category].label}</span>${meta}</span>
             <span class="count">#${String(c.id).padStart(2,'0')}</span>
           </div>
           <h2>${c.title}</h2>
@@ -1110,8 +1268,46 @@ SUMX (
           ${createMiniPreview(c)}
           <div class="cta"><span>مثال عملي</span><b>افتح الشرح ←</b></div>
         </article>
-      `).join('');
-      [...grid.querySelectorAll('.card')].forEach(card => card.addEventListener('click', () => openConcept(Number(card.dataset.id))));
+      `;
+    }
+
+    function wireCards(root){
+      [...root.querySelectorAll('.card')].forEach(card => card.addEventListener('click', () => openConcept(Number(card.dataset.id))));
+    }
+
+    function renderPath(){
+      dayNav.innerHTML = DAYS.map(day => {
+        const open = isOpenDay(day.id);
+        return `<button class="day-btn ${day.id===activeDay?'active':''} ${open?'':'locked'}" data-day="${day.id}" ${open?'':'disabled'}>
+          <b>Day ${String(day.id).padStart(2,'0')}</b>
+          <span>${open ? day.titleAr : 'يفتح لاحقا'}</span>
+        </button>`;
+      }).join('');
+
+      [...dayNav.querySelectorAll('.day-btn:not(.locked)')].forEach(btn => btn.addEventListener('click', () => {
+        activeDay = Number(btn.dataset.day);
+        renderPath();
+      }));
+
+      const day = DAYS.find(d => d.id === activeDay) || DAYS[0];
+      const ids = conceptDays[activeDay] || [];
+      const dayConcepts = ids.map(id => concepts.find(c => c.id === id)).filter(Boolean);
+
+      dayFocus.innerHTML = `
+        <div>
+          <span class="eyebrow">DAY ${String(day.id).padStart(2,'0')} • ${day.phase}</span>
+          <h2>${day.titleAr}</h2>
+          <p>${dayConcepts.length
+            ? 'هذه هي المفاهيم الجديدة التي تحتاجها في هذا اليوم. مفاهيم الأيام السابقة تبقى متاحة من الشريط أعلاه.'
+            : 'هذا اليوم تطبيقي أكثر؛ سنستخدم مفاهيم الأيام السابقة بدون إضافة مصطلحات جديدة من هذه المكتبة.'}</p>
+        </div>
+        <div class="day-count">${dayConcepts.length} ${dayConcepts.length===1?'مفهوم جديد':'مفاهيم جديدة'}</div>
+      `;
+
+      dayConceptGrid.innerHTML = dayConcepts.length
+        ? dayConcepts.map(c => conceptCard(c,'course')).join('')
+        : '<div class="empty-day">لا توجد Concepts جديدة اليوم. ركّز على التطبيق العملي وربط ما تعلمته في الأيام السابقة.</div>';
+      wireCards(dayConceptGrid);
     }
 
     function renderFilters(){
@@ -1119,8 +1315,40 @@ SUMX (
       [...filtersWrap.querySelectorAll('.filter')].forEach(btn => btn.addEventListener('click', () => {
         activeFilter = btn.dataset.filter;
         renderFilters();
-        renderCards();
+        renderExplore();
       }));
+    }
+
+    function matchesExplore(c){
+      const q = searchInput.value.trim().toLowerCase();
+      return (activeFilter === 'all' || c.category === activeFilter)
+        && `${c.title} ${c.titleAr} ${c.blurb}`.toLowerCase().includes(q);
+    }
+
+    function renderExplore(){
+      const courseList = concepts.filter(c => courseConceptIds.has(c.id) && matchesExplore(c));
+      const extraList = concepts.filter(c => extraConceptIds.includes(c.id) && matchesExplore(c));
+      grid.innerHTML = courseList.map(c => conceptCard(c,'course')).join('');
+      extraGrid.innerHTML = extraList.map(c => conceptCard(c,'extra')).join('');
+      wireCards(grid);
+      wireCards(extraGrid);
+    }
+
+    function renderRelated(c){
+      const ids = (relatedMap[c.id] || []).slice(0,3);
+      const wrap = document.getElementById('relatedWrap');
+      const box = document.getElementById('relatedConcepts');
+      if(!ids.length){
+        wrap.hidden = true;
+        box.innerHTML = '';
+        return;
+      }
+      box.innerHTML = ids.map(id => {
+        const item = concepts.find(x => x.id === id);
+        return item ? `<button data-related="${item.id}">${item.title}</button>` : '';
+      }).join('');
+      wrap.hidden = !box.innerHTML;
+      [...box.querySelectorAll('button')].forEach(btn => btn.addEventListener('click', () => openConcept(Number(btn.dataset.related))));
     }
 
     function openConcept(id){
@@ -1138,15 +1366,26 @@ SUMX (
       document.getElementById('dialogWarning').textContent = c.warning;
       document.getElementById('dialogVisual').innerHTML = renderVisual(c);
       document.getElementById('dialogVisualCaption').textContent = c.visualCaption;
-      dialog.showModal();
+      renderRelated(c);
+      dialog.querySelector('.learn-more').open = false;
+      if(!dialog.open) dialog.showModal();
     }
 
-    searchInput.addEventListener('input', renderCards);
+    document.querySelectorAll('.mode-btn').forEach(btn => btn.addEventListener('click', () => {
+      currentMode = btn.dataset.mode;
+      document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b === btn));
+      document.getElementById('pathView').hidden = currentMode !== 'path';
+      document.getElementById('exploreView').hidden = currentMode !== 'explore';
+      if(currentMode === 'explore') renderExplore();
+      else renderPath();
+    }));
+
+    searchInput.addEventListener('input', renderExplore);
     document.getElementById('closeDialog').addEventListener('click', () => dialog.close());
     dialog.addEventListener('click', (e) => { if(e.target === dialog) dialog.close(); });
 
     renderFilters();
-    renderCards();
+    renderPath();
   </script>
 </body>
 </html>
