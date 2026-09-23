@@ -186,6 +186,13 @@
     .node.bridge{background:rgba(255,159,89,.12);border-color:rgba(255,159,89,.26);color:#ffc18e}
     .relation-key{position:absolute;z-index:2;display:grid;place-items:center;width:22px;height:22px;border-radius:999px;background:#0c1318;border:1px solid var(--line);font:800 10px Inter;color:#e8edef}
     .relation-key.many{color:var(--accent);border-color:rgba(242,200,17,.28)}
+    .relationship-viz{min-height:230px;display:flex;align-items:center;justify-content:center;gap:16px}
+    .rel-table{min-width:165px;padding:18px 16px;border:1px solid var(--line);border-radius:15px;background:#131d24;text-align:center;font:800 12px Inter}
+    .rel-line{flex:1;max-width:230px;height:2px;background:rgba(255,255,255,.22);position:relative}
+    .rel-line .one,.rel-line .many{position:absolute;top:-25px;font:800 15px Inter;color:var(--accent)}
+    .rel-line .one{left:0}.rel-line .many{right:0}
+    .rel-line.single::after{content:"→";position:absolute;top:-18px;left:50%;transform:translateX(-50%);font:800 24px Inter;color:#77d1d1}
+    .rel-caption{position:absolute;top:12px;left:50%;transform:translateX(-50%);font-size:9px;color:#7fd0d0;white-space:nowrap}
     @media (max-width:1050px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{grid-template-columns:1fr}.modal-head,.stage{grid-template-columns:1fr}.meta{grid-template-columns:1fr}.kpi-board,.grid-2,.metric-board,.compare-boxes,.timeline{grid-template-columns:1fr 1fr}.day-nav{grid-template-columns:repeat(10,90px)}}
     @media (max-width:700px){.shell{width:calc(100% - 18px)}.topbar{height:auto;padding:12px 0;gap:12px;align-items:flex-start;flex-direction:column}.grid,.kpi-board,.grid-2,.metric-board,.compare-boxes,.timeline{grid-template-columns:1fr}.toolbar{flex-direction:column}.hero-card{padding:26px 22px}.hero-card p{font-size:13px}.card h2{font-size:24px}.modal{padding:14px}.schema-large{height:360px}.day-focus{align-items:flex-start;flex-direction:column}.mode-switch{display:flex;width:100%}.mode-btn{flex:1}}
   </style>
@@ -223,7 +230,7 @@
 
     <section class="mode-switch" aria-label="طريقة تصفح المفاهيم">
       <button class="mode-btn active" data-mode="path">مساري في الدورة</button>
-      <button class="mode-btn" data-mode="explore">استكشف أكثر</button>
+      <button class="mode-btn" data-mode="explore">استكشف أكثر <small>اختياري</small></button>
     </section>
 
     <section id="pathView">
@@ -420,7 +427,7 @@
         }
       },
       {
-        id:6, title:'Cardinality', titleAr:'نوع العلاقة', category:'modeling', kind:'split',
+        id:6, title:'Cardinality', titleAr:'نوع العلاقة', category:'modeling', kind:'relationship',
         blurb:'هل العلاقة 1:* أو *:*؟ هذا يغير المنطق كله.',
         memory:'اسأل: كم من هذا يقابل كم من ذاك؟',
         why:'لأنها تحدد من يفلتر من، وكيف تتصرف النتائج.',
@@ -431,11 +438,11 @@
         warning:'Many-to-Many ليست خطأ دائماً، لكنها تحتاج تصميم واعٍ جداً.',
         visualCaption:'اليسار يبيّن جهة الواحد، واليمين جهة الكثير.',
         visual:{
-          boxes:['1 Customer','→','Many Sales Rows']
+          left:'DimCustomer', right:'FactSales', leftMark:'1', rightMark:'*', direction:'none'
         }
       },
       {
-        id:7, title:'Filter Direction', titleAr:'اتجاه الفلترة', category:'modeling', kind:'flow',
+        id:7, title:'Filter Direction', titleAr:'اتجاه الفلترة', category:'modeling', kind:'relationship',
         blurb:'مين يرسل الفلتر لمن؟ غالباً Dimension → Fact.',
         memory:'Slicer على الـ Dimension يفلتر الـ Fact.',
         why:'لأنه يحدد ماذا يحصل حين تختار قيمة من slicer.',
@@ -446,7 +453,7 @@
         warning:'Bidirectional قد يحل مشكلة صغيرة لكنه يخلق تعقيداً كبيراً لاحقاً.',
         visualCaption:'المسار الطبيعي للفلترة واضح: وصف → حدث → Measure.',
         visual:{
-          steps:['DimCustomer','FactSales','[Total Sales]']
+          left:'DimCustomer', right:'FactSales', leftMark:'1', rightMark:'*', direction:'single'
         }
       },
       {
@@ -1081,6 +1088,9 @@ SUMX (
           const centerType = concept.visual.centerType || 'fact';
           return `<div class="preview"><div class="schema-mini"><svg viewBox="0 0 100 100" preserveAspectRatio="none">${lines.slice(0, concept.visual.nodes.length).join('')}</svg><div class="node ${centerType}" style="left:50%;top:50%;transform:translate(-50%,-50%)">${concept.visual.center}</div>${nodes}</div></div>`;
         }
+        case 'relationship': {
+          return `<div class="preview"><div class="relationship-viz" style="min-height:76px"><div class="rel-table" style="min-width:105px;padding:10px">${concept.visual.left}</div><div class="rel-line ${concept.visual.direction==='single'?'single':''}"><span class="one">${concept.visual.leftMark}</span><span class="many">${concept.visual.rightMark}</span></div><div class="rel-table" style="min-width:105px;padding:10px">${concept.visual.right}</div></div></div>`;
+        }
         case 'flow': {
           return `<div class="preview"><div class="preview-flow"><div class="flowline">${concept.visual.steps.map((s,i)=>`${i?'<span class="arrow">→</span>':''}<span class="flowbox">${s}</span>`).join('')}</div></div></div>`;
         }
@@ -1134,6 +1144,9 @@ SUMX (
           }
           return `<div class="schema-large"><svg viewBox="0 0 100 100" preserveAspectRatio="none">${lines.slice(0, concept.visual.nodes.length).join('')}</svg><div class="node ${centerType}" style="left:50%;top:50%;transform:translate(-50%,-50%)">${concept.visual.center}</div>${nodes}</div>`;
         }
+        case 'relationship': {
+          return `<div class="relationship-viz"><div class="rel-table">${concept.visual.left}</div><div class="rel-line ${concept.visual.direction==='single'?'single':''}">${concept.visual.direction==='single'?'<span class="rel-caption">Filter Direction</span>':''}<span class="one">${concept.visual.leftMark}</span><span class="many">${concept.visual.rightMark}</span></div><div class="rel-table">${concept.visual.right}</div></div>`;
+        }
         case 'flow': {
           return `<div class="flow-large">${concept.visual.steps.map((s,i)=>`${i?'<span class="arrow">→</span>':''}<span class="flowbox">${s}</span>`).join('')}</div>`;
         }
@@ -1180,8 +1193,8 @@ SUMX (
       1:[27],
       2:[1,26,28],
       3:[25],
-      4:[2,3,4,5,6,7,24,33,34,35],
-      5:[11,12,14,16,36,37,38],
+      4:[2,3,4,5,6,7,33,35],
+      5:[11,12,14,16,36,38],
       6:[8,39],
       7:[18,19,40,41],
       8:[],
@@ -1293,6 +1306,10 @@ SUMX (
       const ids = conceptDays[activeDay] || [];
       const dayConcepts = ids.map(id => concepts.find(c => c.id === id)).filter(Boolean);
 
+      document.getElementById('conceptCount').textContent = dayConcepts.length;
+      document.querySelector('.hero-side span').textContent = dayConcepts.length === 1 ? 'مفهوم هذا اليوم' : 'مفاهيم هذا اليوم';
+      document.querySelector('.hero-side small').textContent = 'ركز على هذه المرحلة فقط؛ التوسع اختياري من استكشف أكثر';
+
       dayFocus.innerHTML = `
         <div>
           <span class="eyebrow">DAY ${String(day.id).padStart(2,'0')} • ${day.phase}</span>
@@ -1326,6 +1343,9 @@ SUMX (
     }
 
     function renderExplore(){
+      document.getElementById('conceptCount').textContent = concepts.length;
+      document.querySelector('.hero-side span').textContent = 'مفهوم في المكتبة';
+      document.querySelector('.hero-side small').textContent = 'هذا الوضع اختياري للتوسع خارج ما تحتاجه الآن';
       const courseList = concepts.filter(c => courseConceptIds.has(c.id) && matchesExplore(c));
       const extraList = concepts.filter(c => extraConceptIds.includes(c.id) && matchesExplore(c));
       grid.innerHTML = courseList.map(c => conceptCard(c,'course')).join('');
