@@ -155,21 +155,21 @@
 </head>
 <body>
   <header class="shell topbar">
-    <a class="brand" href="#">
+    <a class="brand" href="../dashboard.html">
       <span class="brand-mark"><i></i><i></i><i></i></span>
       <span>
         <strong>POWER BI CONCEPT STUDIO</strong>
-        <small>VISUAL EXPLANATIONS • JORDANIAN ARABIC • PREMIUM CARDS</small>
+        <small>POWER BI FUNDAMENTALS • VISUAL LEARNING • PRACTICAL EXAMPLES</small>
       </span>
     </a>
-    <div class="top-actions"><a href="#">Concepts Review v2</a></div>
+    <div class="top-actions"><a href="../dashboard.html">العودة للدورة</a></div>
   </header>
 
   <main class="shell">
     <section class="hero">
       <div class="hero-card">
         <span class="eyebrow">POWER BI • DATA MODELING • DAX • ANALYTICS</span>
-        <h1>هذه المرة، <em>كل مفهوم</em> يأخذ المثال المناسب له.</h1>
+        <h1>افهم <em>مفاهيم Power BI</em> بصريا وعمليا.</h1>
         <p>
           ليس كل شيء لازم ينشرح بجدول. بعض المفاهيم تُفهم من جدول، وبعضها من Star Schema، وبعضها من Flow أو KPI Card أو DAX Snippet أو Diagram.
           لذلك أعدت بناء الصفحة على منطق جديد: <strong>نوع المثال يتبع طبيعة المفهوم</strong>، والشرح يركز على: ماذا ترى؟ لماذا يهم؟ وما الخطأ الشائع؟
@@ -179,7 +179,7 @@
         <div>
           <strong id="conceptCount">46</strong>
           <span>مفهوم أساسي</span>
-          <small>كل Card تحتوي شرح مبسط، مثال بصري مناسب، ملاحظة عملية، وخطأ شائع</small>
+          <small>شرح مبسط + مثال عملي + أهم ملاحظة + الخطأ الشائع</small>
         </div>
       </aside>
     </section>
@@ -224,7 +224,7 @@
           <p id="dialogExplain"></p>
           <div class="note" id="dialogTip"></div>
           <div class="warn" id="dialogWarning"></div>
-          <div class="footer-note">هذه الصفحة مصممة للتعلّم السريع داخل دورة Power BI: افتح أي Card، افهم الفكرة، ثم ارجع جرّبها في Power BI على Dataset حقيقي.</div>
+          
         </article>
       </section>
     </div>
@@ -1108,7 +1108,7 @@ SUMX (
           <div class="subtitle">${c.titleAr}</div>
           <p class="blurb">${c.blurb}</p>
           ${createMiniPreview(c)}
-          <div class="cta"><span>${c.kind.toUpperCase()} EXAMPLE</span><b>Open Card →</b></div>
+          <div class="cta"><span>مثال عملي</span><b>افتح الشرح ←</b></div>
         </article>
       `).join('');
       [...grid.querySelectorAll('.card')].forEach(card => card.addEventListener('click', () => openConcept(Number(card.dataset.id))));
