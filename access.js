@@ -25,7 +25,7 @@
 // ============================================================
 
 const ACCESS_CONFIG = {
-  agenda: "ON", // غيّرها إلى "OFF" إذا أردت index.html يحول مباشرة إلى login.html.
+  agenda: "OFF", // غيّرها إلى "OFF" إذا أردت index.html يحول مباشرة إلى login.html.
 
   days: {
     "Day 1": "AUTO",  // AUTO / ON / OFF
