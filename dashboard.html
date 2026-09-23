@@ -38,7 +38,7 @@
     <section class="portal-section">
       <div class="shell">
         <div class="portal-head">
-          <div><h2>الأيام العشرة</h2><p>الأيام تفتح تدريجياً مع تقدم الدورة، ويمكن التحكم بها يدوياً من access.js.</p></div>
+          <div><h2>الأيام العشرة</h2><p>الأيام تفتح تدريجياً مع تقدم الدورة.</p></div>
           <div class="filter-row">
             <button class="filter-btn active" data-filter="all">الكل</button>
             <button class="filter-btn" data-filter="past">تم موعدها</button>
@@ -123,7 +123,7 @@
           </div>
           <div class="portal-day-bottom">
             <span class="status-chip ${open ? runtime : 'locked'}"><i class="complete-dot"></i>${open ? (runtime === 'today' ? 'اليوم' : runtime === 'past' ? 'تم موعده' : day.weekday + ' • ' + formatDateAr(day.date)) : 'غير متاح حالياً'}</span>
-            <span class="resource-count">${open ? (hasDayVideo(day.id) ? '▶ التسجيل متاح للمشاهدة' : day.resources.length + ' ملفات مخططة') : 'يفتح مع تقدم الدورة'}</span>
+            <span class="resource-count">${open ? (hasDayVideo(day.id) ? '▶ التسجيل متاح للمشاهدة' : day.resources.length + ' مواد متاحة لليوم') : 'يفتح مع تقدم الدورة'}</span>
           </div>`;
         if (open) {
           card.addEventListener('click', () => location.href = `day.html?id=${day.id}`);
