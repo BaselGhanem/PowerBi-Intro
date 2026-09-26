@@ -86,8 +86,14 @@ const DAYS = [
     build: ['Review Merge = Add Columns', 'Review Append = Add Rows', 'Combine monthly Excel files from Folder and refresh May', 'Load FactSales + DimProduct + DimCustomer + DimBranch + DimDate', 'Define the grain of each table', 'Check unique keys in dimensions', 'Create 1:* relationships', 'Use single filter direction from Dimensions to Fact', 'Arrange the model as a Star Schema', 'Test slicers and confirm filters reach FactSales'],
     challenge: 'ابنِ العلاقات من Relationship Map بدون الاعتماد على Auto Detect، ثم اثبت أن Product وBranch وCustomer وDate كلها تفلتر FactSales بشكل صحيح.',
     deliverable: 'Nova Star Schema نظيف من FactSales + 4 Dimensions، جاهز لبناء Measures في Day 5.',
+    visualGuide: {
+      image: 'concepts/assets/day4-learner-overview.webp',
+      title: 'Day 4 — Learner Visual Guide',
+      note: 'ملخص بصري للمتدرب يربط مراجعة Merge وAppend وFolder مع Fact vs Dimension والعلاقات وStar Schema واختبار النموذج.'
+    },
     resources: [
       { name: 'Day 04 — Model the Business Lab', type: 'ZIP', url: 'week2/day4/downloads/Day04_MODEL_THE_BUSINESS.zip', note: 'Excel review for Merge / Append / Folder + May refresh proof + Nova Model Lab + relationship checklist' },
+      { name: 'Day 04 — Learner Visual Guide', type: 'IMAGE', url: 'concepts/assets/day4-learner-overview.webp', note: 'الصورة المختصرة التي تلخص رحلة Day 4 للمتدرب من المراجعة حتى Star Schema.' },
       { name: 'Day 04 — Process Flow', type: 'FLOW', url: 'concepts/assets/day4-process-flow.svg', note: 'Review → Fact/Dimensions → Relationships → Star Schema → Test Filters → Ready for DAX' },
       { name: 'Day 04 — Concept Studio', type: 'WEB', url: 'concepts/index.html', note: 'Fact vs Dimension + Relationships + Star Schema' }
     ]

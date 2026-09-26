@@ -346,3 +346,32 @@ img { max-width: 100%; display: block; }
 .status-chip.locked .complete-dot{background:#555c66}
 
 .access-pending{visibility:hidden}
+
+
+/* DAY VISUAL GUIDE */
+.visual-guide-panel{
+  overflow:hidden;
+  border-color:rgba(9,153,153,.2);
+  background:linear-gradient(145deg,rgba(9,153,153,.055),rgba(255,255,255,.018));
+}
+.visual-guide-panel .panel-kicker{color:#6fd2cf}
+.visual-guide-panel>p{margin-bottom:0}
+.visual-guide-link{
+  display:block;
+  margin-top:18px;
+  border:1px solid var(--border-strong);
+  border-radius:18px;
+  overflow:hidden;
+  background:#f7f8fa;
+  box-shadow:0 16px 42px rgba(0,0,0,.24);
+  transition:transform .22s var(--ease),border-color .22s var(--ease);
+}
+.visual-guide-link:hover{transform:translateY(-2px);border-color:rgba(9,153,153,.42)}
+.visual-guide-link img{display:block;width:100%;height:auto}
+.visual-guide-hint{
+  display:block;
+  margin-top:10px;
+  color:var(--muted-2);
+  font-size:.68rem;
+  text-align:center
+}

@@ -79,6 +79,16 @@
             <div class="steps" id="buildSteps"></div>
           </article>
 
+          <article class="panel visual-guide-panel" id="visualGuidePanel" hidden>
+            <span class="panel-kicker">DAY VISUAL GUIDE</span>
+            <h2 id="visualGuideTitle">ملخص اليوم بصريا</h2>
+            <p id="visualGuideNote"></p>
+            <a class="visual-guide-link" id="visualGuideLink" target="_blank" rel="noopener" aria-label="فتح صورة ملخص اليوم بالحجم الكامل">
+              <img id="visualGuideImage" alt="">
+            </a>
+            <small class="visual-guide-hint">اضغط على الصورة لفتحها بالحجم الكامل</small>
+          </article>
+
           <article class="panel challenge-panel">
             <span class="panel-kicker">YOUR TURN</span>
             <h2>تحدي اليوم</h2>
@@ -166,6 +176,17 @@
     document.getElementById('topics').innerHTML = day.topics.map(t => `<div class="topic-item">${t}</div>`).join('');
     document.getElementById('buildSteps').innerHTML = day.build.map((t,i) => `<div class="step"><span class="step-num">${String(i+1).padStart(2,'0')}</span><span>${t}</span></div>`).join('');
 
+    const visualGuidePanel = document.getElementById('visualGuidePanel');
+    if (day.visualGuide?.image) {
+      visualGuidePanel.hidden = false;
+      document.getElementById('visualGuideTitle').textContent = day.visualGuide.title || 'ملخص اليوم بصريا';
+      document.getElementById('visualGuideNote').textContent = day.visualGuide.note || '';
+      const visualGuideImage = document.getElementById('visualGuideImage');
+      visualGuideImage.src = day.visualGuide.image;
+      visualGuideImage.alt = day.visualGuide.title || day.title;
+      document.getElementById('visualGuideLink').href = day.visualGuide.image;
+    }
+
     const recordingHeroWrap = document.getElementById('recordingHeroWrap');
     const videoBox = document.getElementById('videoBox');
     const videoEmbed = getDayVideo(day.id).trim();
@@ -179,7 +200,7 @@
       recordingHeroWrap.hidden = true;
     }
 
-    const typeIcon = {PBIX:'PBI',Excel:'XLSX',PDF:'PDF',ZIP:'ZIP',Challenge:'LAB',Guide:'DOC',WEB:'WEB'};
+    const typeIcon = {PBIX:'PBI',Excel:'XLSX',PDF:'PDF',ZIP:'ZIP',Challenge:'LAB',Guide:'DOC',WEB:'WEB',FLOW:'FLOW',IMAGE:'IMG'};
     document.getElementById('resources').innerHTML = day.resources.map(r => {
       const available = Boolean(r.url);
       return `<${available ? 'a' : 'div'} class="resource ${available ? '' : 'pending'}" ${available ? `href="${r.url}" target="_blank" rel="noopener"` : ''}>
