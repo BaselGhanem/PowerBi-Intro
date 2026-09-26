@@ -1075,6 +1075,45 @@ SUMX (
         warning:'إذا نظرت إلى lagging فقط، قد تعرف المشكلة متأخراً جداً.',
         visualCaption:'تقسيم بسيط للمؤشرين.',
         visual:{ metric:'Indicators', dimensions:['Leading: Visits','Leading: Pipeline','Lagging: Sales','Lagging: Profit'] }
+      },
+      {
+        id:47, title:'Fact vs Dimension', titleAr:'Fact مقابل Dimension', category:'modeling', kind:'poster',
+        blurb:'ابدأ بالسؤال: ما الذي حدث؟ ثم اسأل: بماذا أصفه؟',
+        memory:'Fact = الحدث والأرقام • Dimension = الوصف والسياق.',
+        why:'لأن فصل الأحداث عن الوصف هو أساس Model واضح وسهل التحليل.',
+        notice:'FactSales يحتوي Transactions وRevenue وQuantity والمفاتيح. DimProduct وDimCustomer وDimBranch وDimDate تصف هذه الأحداث.',
+        mistake:'وضع كل الأسماء والفئات والخصائص المتكررة داخل FactSales فقط لأن هذا أسهل لحظياً.',
+        explain:'في Nova، كل صف في FactSales يمثل Transaction واحدة. المنتج والعميل والفرع والتاريخ ليسوا أحداثاً جديدة؛ هم Dimensions تصف الـTransaction وتستخدم للفلاتر والتجميع.',
+        tip:'اسأل دائماً: هل هذا الجدول يسجل حدثاً، أم يصف شيئاً؟',
+        warning:'إذا لم تحدد Grain أولاً ستصبح الحدود بين Fact وDimension غير واضحة.',
+        visualCaption:'Fact في الوسط يسجل ما حدث، والDimensions تضيف معنى وسياقاً.',
+        visual:{ image:'assets/day4-fact-vs-dimension.svg', alt:'Fact Table vs Dimension Table', quickPoints:['Fact = What happened','Dimension = Describe what happened','FactSales grain = one transaction'] }
+      },
+      {
+        id:48, title:'Relationships', titleAr:'العلاقات بين الجداول', category:'modeling', kind:'poster',
+        blurb:'اربط Dimension بالـFact باستخدام Key واضح وعلاقة One-to-Many.',
+        memory:'1 في Dimension → * في Fact.',
+        why:'لأن العلاقة الصحيحة هي الطريق الذي يسافر عبره الـFilter.',
+        notice:'DimProduct[Product ID] يجب أن يكون Unique، بينما FactSales[Product ID] يتكرر عبر آلاف Transactions.',
+        mistake:'ربط الجداول بالأسماء أو استخدام Many-to-Many بدون فهم السبب.',
+        explain:'Primary/Unique Key يعيش في جهة 1. Foreign Key يتكرر في جهة *. في النموذج الأول اجعل Filter Direction من Dimension إلى Fact.',
+        tip:'إذا Power BI أعطاك *:* اسأل أولاً: هل Dimension Key فعلاً Unique؟',
+        warning:'Relationship تبدو صحيحة بصرياً لكنها قد تعطي نتائج خاطئة إذا كان الـKey غير فريد.',
+        visualCaption:'Product ID يربط DimProduct جهة 1 مع FactSales جهة * ويتيح للـProduct filters الوصول للمبيعات.',
+        visual:{ image:'assets/day4-relationships.svg', alt:'One-to-many relationships in Power BI', quickPoints:['Unique Key on the 1 side','Foreign Key on the * side','Single filter: Dimension → Fact'] }
+      },
+      {
+        id:49, title:'Star Schema', titleAr:'النموذج النجمي', category:'modeling', kind:'poster',
+        blurb:'FactSales في الوسط وDimensions حوله: نموذج بسيط يفهمه Power BI ويفهمه المحلل.',
+        memory:'Fact in the center • Dimensions around it.',
+        why:'لأنه يجعل الفلاتر والعلاقات وDAX لاحقاً أبسط وأكثر قابلية للتفسير.',
+        notice:'Nova Day 4 يستخدم FactSales + DimProduct + DimCustomer + DimBranch + DimDate.',
+        mistake:'تحويل كل شيء إلى Flat Table ضخمة ثم محاولة إصلاح التعقيد بالـDAX.',
+        explain:'كل Dimension لها Grain واضح وKey فريد، وتتصل مباشرة بالـFact. هذا يمنع سلاسل العلاقات غير الضرورية ويجعل مسار الفلترة واضحاً.',
+        tip:'بعد رسم النجمة جرّب Slicer من كل Dimension وتأكد أنه يفلتر Revenue في FactSales.',
+        warning:'Star Schema لا يعني أن كل مشروع حرفياً نجمة واحدة، لكنه أفضل نقطة بداية لهذا المستوى.',
+        visualCaption:'أربع Dimensions تصف FactSales وتفلترها باتجاه واحد.',
+        visual:{ image:'assets/day4-star-schema.svg', alt:'Nova Star Schema', quickPoints:['FactSales in the center','4 Dimensions around it','1:* relationships toward FactSales'] }
       }
     ];
 
@@ -1206,7 +1245,7 @@ SUMX (
       1:[27],
       2:[1,26,28],
       3:[25],
-      4:[2,3,4,5,6,7,33,35],
+      4:[47,48,49],
       5:[11,12,14,16,36,38],
       6:[8,39],
       7:[18,19,40,41],
@@ -1223,6 +1262,9 @@ SUMX (
 
     // روابط صغيرة فقط بين المفاهيم القريبة؛ لا تظهر إلا عند فتح Card.
     const relatedMap = {
+      47:[2,3,5],
+      48:[5,6,7],
+      49:[4,47,48],
       1:[2,3,4],
       2:[3,4,5],
       3:[2,4,5],

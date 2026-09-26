@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+<rect width="1600" height="900" fill="#0b1116"/><rect x="60" y="55" width="1480" height="790" rx="36" fill="#121a21" stroke="#27343d"/>
+<text x="110" y="125" fill="#099999" font-size="28" font-family="Arial" font-weight="700">DAY 4 • RELATIONSHIPS</text>
+<text x="110" y="185" fill="#fff" font-size="58" font-family="Arial" font-weight="800">One-to-Many Relationship</text>
+<text x="110" y="230" fill="#9eb0bc" font-size="28" font-family="Arial">Unique Key on 1 side • Foreign Key on * side • Filter Dimension → Fact</text>
+<rect x="150" y="335" width="440" height="260" rx="26" fill="#0d292b" stroke="#099999" stroke-width="3"/>
+<text x="195" y="400" fill="#6edbd7" font-size="38" font-family="Arial" font-weight="800">DimProduct</text>
+<text x="195" y="465" fill="#fff" font-size="28" font-family="Arial">Product ID</text><text x="195" y="515" fill="#9eb0bc" font-size="24" font-family="Arial">P001 appears once</text>
+<rect x="1010" y="335" width="440" height="260" rx="26" fill="#211f12" stroke="#f2c811" stroke-width="3"/>
+<text x="1055" y="400" fill="#f2c811" font-size="38" font-family="Arial" font-weight="800">FactSales</text>
+<text x="1055" y="465" fill="#fff" font-size="28" font-family="Arial">Product ID</text><text x="1055" y="515" fill="#9eb0bc" font-size="24" font-family="Arial">P001 repeats in transactions</text>
+<line x1="590" y1="465" x2="1010" y2="465" stroke="#c8d1d6" stroke-width="6"/><polygon points="1010,465 980,447 980,483" fill="#c8d1d6"/>
+<circle cx="640" cy="465" r="35" fill="#099999"/><text x="640" y="478" text-anchor="middle" fill="#fff" font-size="30" font-family="Arial" font-weight="800">1</text>
+<circle cx="960" cy="465" r="35" fill="#f2c811"/><text x="960" y="480" text-anchor="middle" fill="#111" font-size="34" font-family="Arial" font-weight="800">*</text>
+<text x="800" y="420" text-anchor="middle" fill="#6edbd7" font-size="24" font-family="Arial" font-weight="700">Filter Direction →</text>
+<g font-family="Arial"><text x="150" y="695" fill="#fff" font-size="28" font-weight="700">Primary / Unique Key</text><text x="550" y="695" fill="#fff" font-size="28" font-weight="700">Foreign Key</text><text x="890" y="695" fill="#fff" font-size="28" font-weight="700">Cardinality 1:*</text><text x="1190" y="695" fill="#fff" font-size="28" font-weight="700">Single Filter</text></g>
+<text x="800" y="790" text-anchor="middle" fill="#fff" font-size="34" font-family="Arial" font-weight="700">إذا ظهرت *:* اسأل أولا: هل المفتاح في الـDimension فريد؟</text>
+</svg>

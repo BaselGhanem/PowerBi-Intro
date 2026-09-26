@@ -78,18 +78,18 @@ const DAYS = [
     date: '2026-09-27',
     weekday: 'الأحد',
     phase: 'MODEL',
-    title: 'Your Numbers Are Wrong',
-    titleAr: 'الرقم شكله صح… لكنه غلط',
-    hook: 'Dashboard ممتاز بصرياً، لكن Total Target تضاعف. أين المشكلة؟',
-    mission: 'افهم الـGrain والعلاقات وابنِ Star Schema يجعل الأرقام موثوقة.',
-    topics: ['Fact vs Dimension', 'Grain', 'Unique Keys', 'One-to-Many', 'Filter Direction', 'Active Relationships', 'Star Schema'],
-    build: ['DimCustomer', 'DimProduct', 'DimSalesRep', 'DimTeam', 'DimDate', 'Targets & Budget Relationships'],
-    challenge: 'استلم Broken Model وأصلح الأرقام بدون تعديل الـVisuals.',
-    deliverable: 'Semantic Model نظيف يمكن الاعتماد عليه لبقية الدورة.',
+    title: 'Model the Business',
+    titleAr: 'ابنِ نموذج البيانات',
+    hook: 'البيانات صارت نظيفة وتتحدث تلقائياً… لكن الجداول ما زالت تحتاج Model واضح حتى تتكلم مع بعضها بدون أرقام مضللة.',
+    mission: 'ثبّت Merge وAppend وFolder باستخدام Excel، ثم حوّل Nova Sales إلى Star Schema واضح: FactSales في الوسط وDimensions حوله.',
+    topics: ['Merge vs Append Review', 'Excel Files from Folder', 'Fact vs Dimension', 'Grain', 'Relationships', 'Primary & Foreign Keys', 'One-to-Many', 'Filter Direction', 'Star Schema'],
+    build: ['Review Merge = Add Columns', 'Review Append = Add Rows', 'Combine monthly Excel files from Folder and refresh May', 'Load FactSales + DimProduct + DimCustomer + DimBranch + DimDate', 'Define the grain of each table', 'Check unique keys in dimensions', 'Create 1:* relationships', 'Use single filter direction from Dimensions to Fact', 'Arrange the model as a Star Schema', 'Test slicers and confirm filters reach FactSales'],
+    challenge: 'ابنِ العلاقات من Relationship Map بدون الاعتماد على Auto Detect، ثم اثبت أن Product وBranch وCustomer وDate كلها تفلتر FactSales بشكل صحيح.',
+    deliverable: 'Nova Star Schema نظيف من FactSales + 4 Dimensions، جاهز لبناء Measures في Day 5.',
     resources: [
-      { name: '04_Broken_Model.pbix', type: 'PBIX', url: '', note: 'Model به أخطاء مقصودة' },
-      { name: '04_Model_Map.pdf', type: 'PDF', url: '', note: 'مرجع العلاقات والـGrain' },
-      { name: 'Day 04 — Make the Numbers Trustworthy', type: 'Challenge', url: '', note: 'Model Challenge' }
+      { name: 'Day 04 — Model the Business Lab', type: 'ZIP', url: 'week2/day4/downloads/Day04_MODEL_THE_BUSINESS.zip', note: 'Excel review for Merge / Append / Folder + May refresh proof + Nova Model Lab + relationship checklist' },
+      { name: 'Day 04 — Process Flow', type: 'FLOW', url: 'concepts/assets/day4-process-flow.svg', note: 'Review → Fact/Dimensions → Relationships → Star Schema → Test Filters → Ready for DAX' },
+      { name: 'Day 04 — Concept Studio', type: 'WEB', url: 'concepts/index.html', note: 'Fact vs Dimension + Relationships + Star Schema' }
     ]
   },
   {
