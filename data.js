@@ -83,8 +83,8 @@ const DAYS = [
     hook: 'البيانات صارت نظيفة وتتحدث تلقائياً… لكن الجداول ما زالت تحتاج Model واضح حتى تتكلم مع بعضها بدون أرقام مضللة.',
     mission: 'ثبّت Merge وAppend وFolder باستخدام Excel، ثم حوّل Nova Sales إلى Star Schema واضح: FactSales في الوسط وDimensions حوله.',
     topics: ['Merge vs Append Review', 'Excel Files from Folder', 'Fact vs Dimension', 'Grain', 'Relationships', 'Primary & Foreign Keys', 'One-to-Many', 'Filter Direction', 'Star Schema'],
-    build: ['Review Merge = Add Columns', 'Review Append = Add Rows', 'Combine monthly Excel files from Folder and refresh May', 'Load FactSales + DimProduct + DimCustomer + DimBranch + DimDate', 'Define the grain of each table', 'Check unique keys in dimensions', 'Create 1:* relationships', 'Use single filter direction from Dimensions to Fact', 'Arrange the model as a Star Schema', 'Test slicers and confirm filters reach FactSales'],
-    challenge: 'ابنِ العلاقات من Relationship Map بدون الاعتماد على Auto Detect، ثم اثبت أن Product وBranch وCustomer وDate كلها تفلتر FactSales بشكل صحيح.',
+    build: ['Review Merge = Add Columns', 'Review Append = Add Rows', 'Combine monthly Excel files from Folder and refresh May', 'Load FactSales + DimProduct + DimCustomer + DimBranch + DimDate', 'Define the grain of each table', 'Check unique keys in dimensions', 'Run Auto Detect and inspect what Power BI found', 'Manually connect DimCustomer[Customer Code] → FactSales[Customer ID]', 'Manually connect DimDate[Date] → FactSales[Order Date]', 'Confirm 1:* cardinality and single filter direction', 'Arrange the model as a Star Schema', 'Test slicers and confirm filters reach FactSales'],
+    challenge: 'شغّل Auto Detect أولا وراجع ما اكتشفه Power BI بدل قبول كل شيء مباشرة. بعد ذلك أنشئ العلاقات الناقصة يدويا، خصوصا Customer Code ↔ Customer ID وDate ↔ Order Date، ثم اثبت أن كل Dimension تفلتر FactSales بشكل صحيح.',
     deliverable: 'Nova Star Schema نظيف من FactSales + 4 Dimensions، جاهز لبناء Measures في Day 5.',
     visualGuide: {
       image: 'concepts/assets/day4-learner-overview.webp',

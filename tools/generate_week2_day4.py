@@ -52,14 +52,14 @@ def add_sheet(wb, title, header, rows):
 def model_workbook(path, fact, products, customers, branches):
     wb = Workbook()
     wb.remove(wb.active)
-    fact_header = ['Transaction ID','Date','Customer ID','Product ID','Branch ID','Quantity','Unit Price','Discount %','Revenue']
+    fact_header = ['Transaction ID','Order Date','Customer ID','Product ID','Branch ID','Quantity','Unit Price','Discount %','Revenue']
     add_sheet(wb, 'FactSales', fact_header, fact)
 
     product_rows = [[p['product_id'],p['product_name'],p['category'],p['subcategory'],p['brand'],p['unit_cost'],p['list_price'],p['status']] for p in products]
     add_sheet(wb, 'DimProduct', ['Product ID','Product Name','Category','Subcategory','Brand','Unit Cost','List Price','Status'], product_rows)
 
     customer_rows = [[c['customer_id'],c['customer_name'],c['city'],c['region'],c['segment'],c['customer_type'],c['status']] for c in customers]
-    add_sheet(wb, 'DimCustomer', ['Customer ID','Customer Name','City','Region','Segment','Customer Type','Status'], customer_rows)
+    add_sheet(wb, 'DimCustomer', ['Customer Code','Customer Name','City','Region','Segment','Customer Type','Status'], customer_rows)
 
     branch_rows = [[b['branch_id'],b['branch_name'],b['city'],b['region'],b['channel'],b['manager'],b['status']] for b in branches]
     add_sheet(wb, 'DimBranch', ['Branch ID','Branch Name','City','Region','Channel','Branch Manager','Status'], branch_rows)
@@ -122,19 +122,20 @@ def build():
         ('Model Steps', [
             ['Step','What to do','Proof'],
             ['1','Identify FactSales grain','One row = one transaction'],
-            ['2','Check dimension keys','Product ID / Customer ID / Branch ID / Date are unique in their dimensions'],
-            ['3','Create relationships','Each Dimension 1 → * FactSales'],
-            ['4','Set filter direction','Single: Dimension → Fact'],
-            ['5','Arrange Star Schema','FactSales center, Dimensions around it'],
-            ['6','Test filters','Slicers from each Dimension change Sales results'],
-            ['7','Finish','Model is Ready for DAX']
+            ['2','Check dimension keys','Product ID / Customer Code / Branch ID / Date are unique in their dimensions'],
+            ['3','Try Auto Detect first','Inspect what Power BI detects automatically; do not assume every relationship will be created'],
+            ['4','Create missing relationships manually','Customer Code → Customer ID and Date → Order Date'],
+            ['5','Set filter direction','Single: Dimension → Fact'],
+            ['6','Arrange Star Schema','FactSales center, Dimensions around it'],
+            ['7','Test filters','Slicers from each Dimension change Sales results'],
+            ['8','Finish','Model is Ready for DAX']
         ]),
         ('Relationship Map', [
-            ['Dimension','Key (1 side)','Fact column (* side)','Cardinality','Filter Direction'],
-            ['DimProduct','Product ID','FactSales[Product ID]','1:*','Single → FactSales'],
-            ['DimCustomer','Customer ID','FactSales[Customer ID]','1:*','Single → FactSales'],
-            ['DimBranch','Branch ID','FactSales[Branch ID]','1:*','Single → FactSales'],
-            ['DimDate','Date','FactSales[Date]','1:*','Single → FactSales']
+            ['Dimension','Key (1 side)','Fact column (* side)','Cardinality','Filter Direction','Training Intent'],
+            ['DimProduct','Product ID','FactSales[Product ID]','1:*','Single → FactSales','Same name — inspect Auto Detect'],
+            ['DimBranch','Branch ID','FactSales[Branch ID]','1:*','Single → FactSales','Same name — inspect Auto Detect'],
+            ['DimCustomer','Customer Code','FactSales[Customer ID]','1:*','Single → FactSales','Different names — create manually'],
+            ['DimDate','Date','FactSales[Order Date]','1:*','Single → FactSales','Different names — create manually']
         ]),
         ('Memory', [
             ['Concept','Remember'],
@@ -166,7 +167,9 @@ def build():
         '03_REVIEW_FOLDER: Connect to Monthly_Sales_Excel as Folder, combine Jan-Apr, then move Sales_May.xlsx into the folder and Refresh.\n\n'
         'PART B — MODEL\n'
         'Open 04_MODEL_LAB/Nova_Day04_Model_Lab.xlsx and load FactSales, DimProduct, DimCustomer, DimBranch and DimDate.\n'
-        'Build 1:* relationships from each Dimension to FactSales. Use single filter direction. Arrange a Star Schema and test filters.\n\n'
+        'First run Auto Detect and inspect what Power BI found. Product ID and Branch ID use matching names; Customer and Date intentionally use different key names.\n'
+        'Create the missing relationships manually: DimCustomer[Customer Code] → FactSales[Customer ID] and DimDate[Date] → FactSales[Order Date].\n'
+        'Use 1:* cardinality and single filter direction from Dimension to FactSales. Arrange a Star Schema and test filters.\n\n'
         'SUCCESS = FactSales + 4 Dimensions + working filters + READY FOR DAX.\n',
         encoding='utf-8'
     )
