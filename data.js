@@ -103,18 +103,16 @@ const DAYS = [
     date: '2026-09-29',
     weekday: 'الثلاثاء',
     phase: 'MEASURE',
-    title: 'DAX Without Fear',
-    titleAr: 'DAX بدون رهبة',
-    hook: 'الإدارة تريد 6 KPIs والتقرير الحالي لا يملك الأرقام.',
-    mission: 'ابنِ Measures واضحة وافهم لماذا نفس الـMeasure يتغير حسب السياق.',
-    topics: ['Measures vs Calculated Columns', 'SUM', 'COUNTROWS', 'DISTINCTCOUNT', 'DIVIDE', 'Measure Formatting', 'Basic Context'],
-    build: ['Total Sales', 'Transactions', 'Customers', 'Average Order', 'Target', 'Achievement %', 'Budget Variance'],
-    challenge: 'ابنِ CEO KPI Strip من Business Requirements فقط.',
-    deliverable: 'طبقة Measures منظمة تغذي التقرير بدلاً من حسابات متفرقة.',
+    title: 'Calculate & Visualize',
+    titleAr: 'احسب وابنِ أول Report',
+    hook: 'الـModel صار جاهز. اليوم سنحوّل الصفوف إلى KPIs، والـKPIs إلى أول Sales Overview حقيقي.',
+    mission: 'أضف 3 Calculated Columns بسيطة داخل Power Query، ثم ابنِ Measures أساسية واستخدمها في KPIs وVisuals وSlicers.',
+    topics: ['Power Query Custom Column', 'Gross Sales', 'Discount Amount', 'if...then...else', 'Measure vs Column', 'SUM', 'COUNTROWS', 'DISTINCTCOUNT', 'DIVIDE', 'KPI Cards', 'Line & Bar Charts', 'Slicers', 'Report Formatting'],
+    build: ['Continue from Day 4 PBIX — no new dataset', 'Power Query: Gross Sales = Quantity × Unit Price', 'Power Query: Discount Amount = Gross Sales - Revenue', 'Power Query: Discount Status using if...then...else', 'Close & Apply', 'Create Total Revenue', 'Create Total Quantity', 'Create Transactions with COUNTROWS', 'Create Customers with DISTINCTCOUNT', 'Create Average Transaction Value with DIVIDE', 'Build 4 KPI Cards', 'Build Revenue Trend by Month and sort Month correctly', 'Build Revenue by Category', 'Build Top 10 Branches by Revenue', 'Build Discount Analysis', 'Add Month / Branch / Category Slicers', 'Format and align the report', 'Test filters and observe Measures changing'],
+    challenge: 'ابنِ Sales Overview يحتوي 4 KPIs وTrend وCategory وBranch وDiscount Analysis و3 Slicers على الأقل، ثم اشرح لماذا نفس الـMeasures تغيرت بدون تعديل الـDAX.',
+    deliverable: 'أول Nova Sales Overview فعلي: Power Query calculations + DAX Measures + KPIs + Charts + Slicers، جاهز لـFilter Context في Day 6.',
     resources: [
-      { name: '05_DAX_KPI_Lab.pbix', type: 'PBIX', url: '', note: 'مختبر الـMeasures' },
-      { name: '05_KPI_Business_Requirements.pdf', type: 'PDF', url: '', note: 'طلبات الإدارة' },
-      { name: 'Day 05 — CEO KPI Strip', type: 'Challenge', url: '', note: 'DAX Challenge' }
+      { name: 'Day 05 — Calculate & Visualize Pack', type: 'ZIP', url: 'week2/day5/downloads/Day05_CALCULATE_VISUALIZE.zip', note: 'لا يحتوي أي Dataset مكرر من Day 4: فقط Power Query Lab + DAX Lab + Report Blueprint + Analyst Challenge' }
     ]
   },
   {

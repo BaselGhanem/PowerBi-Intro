@@ -1,0 +1,37 @@
+name: Generate Week 2 Day 5
+
+on:
+  push:
+    paths:
+      - 'tools/generate_week2_day5.py'
+      - '.github/workflows/generate-week2-day5.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install openpyxl
+      - name: Generate Day 5 pack
+        run: python tools/generate_week2_day5.py
+      - name: Commit generated Day 5 pack
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add week2/day5/downloads/Day05_CALCULATE_VISUALIZE.zip
+          if git diff --cached --quiet; then
+            echo "No Day 5 changes."
+            exit 0
+          fi
+          git commit -m "Generate Day 5 calculate and visualize pack"
+          git push
