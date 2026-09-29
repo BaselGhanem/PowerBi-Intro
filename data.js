@@ -129,8 +129,14 @@ const DAYS = [
     build: ['Open the completed Day 5 PBIX reference', 'Prove that [Total Revenue] changes with Month / Region / Category without editing DAX', 'Define Filter Context as Measure + current filters = result', 'Create Discounted Revenue with CALCULATE', 'Create Full Price Revenue with CALCULATE', 'Create Retail Revenue using DimBranch[Channel]', 'Create Revenue All Categories with REMOVEFILTERS', 'Create Category Contribution % with DIVIDE', 'Build a Context Lab page with Cards + Region + Category Matrix + Trend', 'Use Month / Region / Category slicers', 'Test cross-filtering by clicking charts', 'Use Edit interactions and intentionally set one interaction to None', 'Explain the final result using Filter Context'],
     challenge: 'ابن Context Analysis من الملف المرجعي: Measures المطلوبة + 4 Cards + Category Contribution + Revenue by Region + 3 Slicers، ثم غير Interaction واحدة عمدا واشرح لماذا تغيرت كل نتيجة.',
     deliverable: 'Context Lab عملي يثبت فهم Filter Context وCALCULATE وREMOVEFILTERS وVisual Interactions، جاهز للانتقال إلى Time Intelligence في Day 7.',
+    visualGuide: {
+      image: 'concepts/assets/day6-learner-overview.webp',
+      title: 'Day 6 — Learner Visual Guide',
+      note: 'ملخص بصري لرحلة Day 6 من مراجعة Day 5 إلى Filter Context وCALCULATE وREMOVEFILTERS وContribution ثم Visual Interactions.'
+    },
     resources: [
       { name: 'Day 06 — Context & CALCULATE Pack', type: 'ZIP', url: 'week2/day6/downloads/Day06_CONTEXT_AND_CALCULATE.zip', note: 'Completed Day 5 PBIX reference + Filter Context Lab + CALCULATE Measures + Context Report Blueprint + Analyst Challenge' },
+      { name: 'Day 06 — Learner Visual Guide', type: 'IMAGE', url: 'concepts/assets/day6-learner-overview.webp', note: 'الصورة المختصرة التي تلخص رحلة Day 6 كاملة للمتدرب.' },
       { name: 'Day 06 — Process Flow', type: 'FLOW', url: 'concepts/assets/day6-process-flow.svg', note: 'Review → Filter Context → CALCULATE → REMOVEFILTERS → Contribution → Interactions → Context Lab' },
       { name: 'Day 06 — Concept Studio', type: 'WEB', url: 'concepts/index.html', note: 'Filter Context + CALCULATE + REMOVEFILTERS & Contribution + Visual Interactions' }
     ]
