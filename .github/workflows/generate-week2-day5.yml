@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'tools/generate_week2_day5.py'
+      - 'tools/day5_pbix_parts/**'
       - '.github/workflows/generate-week2-day5.yml'
   workflow_dispatch:
 

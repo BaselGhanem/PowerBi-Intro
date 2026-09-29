@@ -1,5 +1,5 @@
 from pathlib import Path
-import shutil, zipfile
+import base64, shutil, zipfile
 
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Border, Side, Alignment
@@ -8,6 +8,7 @@ from openpyxl.utils import get_column_letter
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / 'week2' / 'day5' / 'downloads' / 'Day05_CALCULATE_VISUALIZE.zip'
 WORK = ROOT / 'week2' / 'day5' / '_generated_day5'
+PBIX_PARTS = ROOT / 'tools' / 'day5_pbix_parts'
 
 TEAL='099999'
 NAVY='13233B'
@@ -182,16 +183,24 @@ def save_challenge(path):
     path.parent.mkdir(parents=True,exist_ok=True)
     wb.save(path)
 
+def restore_start_pbix(path):
+    parts = sorted(PBIX_PARTS.glob('part*.b64'))
+    if not parts:
+        raise FileNotFoundError(f'No PBIX base64 parts found in {PBIX_PARTS}')
+    payload = ''.join(p.read_text(encoding='utf-8').strip() for p in parts)
+    path.write_bytes(base64.b64decode(payload))
+
 def build():
     if WORK.exists():
         shutil.rmtree(WORK)
     WORK.mkdir(parents=True)
+    restore_start_pbix(WORK/'01_Nova_Day05_Start.pbix')
 
     (WORK/'00_START_HERE.txt').write_text(
       'NOVA DISTRIBUTION GROUP — DAY 05: CALCULATE & VISUALIZE\n\n'
       'IMPORTANT\n'
-      'There is NO new dataset in Day 5. Continue from your Day 4 PBIX / Star Schema.\n'
-      'Day 5 contains only new learning material that did not exist in Day 4.\n\n'
+      'There is NO new dataset in Day 5. Start from the included Nova_Day05_Start.pbix, which is the Day 4 model supplied by the trainer.\n'
+      'The rest of the pack contains only the new Day 5 learning material.\n\n'
       'TODAY\n'
       '1) Add 3 Power Query columns to FactSales: Gross Sales, Discount Amount, Discount Status.\n'
       '2) Close & Apply.\n'
@@ -199,18 +208,19 @@ def build():
       '4) Build the first Sales Overview report.\n'
       '5) Add Slicers and test how the same Measures change with filters.\n\n'
       'FILES\n'
-      '01_Power_Query_Calculations.xlsx\n'
-      '02_First_DAX_Measures.xlsx\n'
-      '03_Sales_Overview_Blueprint.xlsx\n'
-      '04_Day05_Analyst_Challenge.xlsx\n\n'
+      '01_Nova_Day05_Start.pbix\n'
+      '02_Power_Query_Calculations.xlsx\n'
+      '03_First_DAX_Measures.xlsx\n'
+      '04_Sales_Overview_Blueprint.xlsx\n'
+      '05_Day05_Analyst_Challenge.xlsx\n\n'
       'SUCCESS = Clean model from Day 4 + new Power Query columns + Measures + first working report.\n',
       encoding='utf-8'
     )
 
-    save_power_query(WORK/'01_Power_Query_Calculations.xlsx')
-    save_dax(WORK/'02_First_DAX_Measures.xlsx')
-    save_report(WORK/'03_Sales_Overview_Blueprint.xlsx')
-    save_challenge(WORK/'04_Day05_Analyst_Challenge.xlsx')
+    save_power_query(WORK/'02_Power_Query_Calculations.xlsx')
+    save_dax(WORK/'03_First_DAX_Measures.xlsx')
+    save_report(WORK/'04_Sales_Overview_Blueprint.xlsx')
+    save_challenge(WORK/'05_Day05_Analyst_Challenge.xlsx')
 
     OUT.parent.mkdir(parents=True,exist_ok=True)
     if OUT.exists(): OUT.unlink()

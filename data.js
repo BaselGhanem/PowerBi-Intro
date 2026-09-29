@@ -112,7 +112,7 @@ const DAYS = [
     challenge: 'ابنِ Sales Overview يحتوي 4 KPIs وTrend وCategory وBranch وDiscount Analysis و3 Slicers على الأقل، ثم اشرح لماذا نفس الـMeasures تغيرت بدون تعديل الـDAX.',
     deliverable: 'أول Nova Sales Overview فعلي: Power Query calculations + DAX Measures + KPIs + Charts + Slicers، جاهز لـFilter Context في Day 6.',
     resources: [
-      { name: 'Day 05 — Calculate & Visualize Pack', type: 'ZIP', url: 'week2/day5/downloads/Day05_CALCULATE_VISUALIZE.zip', note: 'لا يحتوي أي Dataset مكرر من Day 4: فقط Power Query Lab + DAX Lab + Report Blueprint + Analyst Challenge' },
+      { name: 'Day 05 — Calculate & Visualize Pack', type: 'ZIP', url: 'week2/day5/downloads/Day05_CALCULATE_VISUALIZE.zip', note: 'يتضمن Nova_Day05_Start.pbix كبداية موحدة من نهاية Day 4، ثم Power Query Lab + DAX Lab + Report Blueprint + Analyst Challenge' },
       { name: 'Day 05 — Concept Studio', type: 'WEB', url: 'concepts/index.html', note: 'Power Query Custom Column + Measure vs Column + Basic DAX Aggregations + DIVIDE' }
     ]
   },
