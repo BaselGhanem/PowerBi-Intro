@@ -1166,6 +1166,58 @@ SUMX (
         warning:'DIVIDE لا تجعل المنطق صحيحا تلقائيا؛ تأكد أن numerator وdenominator يمثلان سؤال البزنس فعلا.',
         visualCaption:'Measure فوق Measure: Revenue وTransactions يدخلان إلى DIVIDE وينتجان Average Transaction Value.',
         visual:{ image:'assets/day5-divide.svg', alt:'DAX DIVIDE measure flow', quickPoints:['Reuse existing Measures','Handles zero/blank denominator better','Result responds to report Filters'] }
+      },
+      {
+        id:54, title:'Filter Context', titleAr:'سياق الفلترة', category:'dax', kind:'poster',
+        blurb:'نفس الـMeasure تعطي نتيجة مختلفة لأن كل Visual وSlicer يرسل مجموعة Filters مختلفة.',
+        memory:'Measure + current filters = result.',
+        why:'لأن هذه هي الفكرة التي تفسر سلوك DAX كله تقريبا.',
+        notice:'[Total Revenue] نفسها تتغير مع Month وRegion وCategory وحتى عند الضغط على Bar داخل Visual.',
+        mistake:'التعامل مع الـMeasure كأنها رقم ثابت مثل خلية Excel.',
+        explain:'Power BI لا يخزن قيمة واحدة لـ[Total Revenue]. عند كل Visual يعيد تقييمها تحت الفلاتر الحالية. لذلك All Data وAmman وMarch وHealth & Wellness كلها تعطي أرقاما مختلفة بنفس صيغة DAX.',
+        tip:'قبل أن تسأل لماذا الرقم خطأ، اسأل: ما الـFilters الحالية على هذا Visual؟',
+        warning:'إذا لم تفهم Filter Context ستصبح CALCULATE وTime Intelligence مجرد معادلات محفوظة.',
+        visualCaption:'نفس [Total Revenue]، لكن كل Context يطلب إجابة مختلفة.',
+        visual:{ image:'assets/day6-filter-context.svg', alt:'Filter context changes the result of the same measure', quickPoints:['Same Measure','Different Filters','Different Result'] }
+      },
+      {
+        id:55, title:'CALCULATE', titleAr:'تعديل السياق باستخدام CALCULATE', category:'dax', kind:'poster',
+        blurb:'خذ Measure موجودة، عدل Filter Context، ثم احسبها من جديد.',
+        memory:'CALCULATE = Re-evaluate a Measure under modified filters.',
+        why:'لأنها الطريقة الأساسية لطرح أسئلة مثل Revenue المخفض أو Revenue لقناة معينة.',
+        notice:'Discounted Revenue لا تعيد بناء SUM؛ تستخدم [Total Revenue] وتضيف Discount Status = Discounted Price.',
+        mistake:'اعتبار CALCULATE مجرد Wrapper حول أي معادلة بدون فهم الفلتر الذي تضيفه أو تستبدله.',
+        explain:'عندما نكتب CALCULATE([Total Revenue], FactSales[Discount Status] = "Discounted Price") فإننا نستخدم نفس Measure Day 5 لكن تحت Context جديد يفرض Discounted Price، مع بقاء Month وRegion وCategory وغيرها.',
+        tip:'اقرأ CALCULATE بصوتك: احسب هذه الـMeasure ولكن تحت هذه الشروط.',
+        warning:'CALCULATE تغير Context؛ إذا كان لديك Filter على نفس العمود فقد تستبدله بالشرط الجديد.',
+        visualCaption:'Base Measure تدخل CALCULATE، يضاف Filter، وتخرج إجابة Business جديدة.',
+        visual:{ image:'assets/day6-calculate.svg', alt:'CALCULATE modifies filter context', quickPoints:['Reuse [Total Revenue]','Add Discount Status filter','Keep other report filters'] }
+      },
+      {
+        id:56, title:'REMOVEFILTERS & Contribution', titleAr:'ازالة فلتر وحساب المساهمة', category:'dax', kind:'poster',
+        blurb:'ازل فقط Filter الفئة من المقام لتقارن Revenue الفئة بإجمالي الفئات داخل نفس السياق.',
+        memory:'Remove Category only • Keep Month, Region and other filters.',
+        why:'لأن النسبة الصحيحة تحتاج Numerator تحت Category وDenominator بدون Category فقط.',
+        notice:'Revenue All Categories تستخدم REMOVEFILTERS(DimProduct[Category]) ثم Category Contribution % تقسم Revenue الحالي على هذا الإجمالي.',
+        mistake:'مسح كل Filters ثم الحصول على نسبة لا تحترم اختيار Month أو Region.',
+        explain:'داخل Matrix حسب Category، [Total Revenue] تتأثر بصف Category. نزيل Category فقط في المقام، لكن نبقي Month وRegion وبقية الصفحة. هكذا تصبح النسبة حصة الفئة داخل الاختيار الحالي.',
+        tip:'حدد بالضبط أي Filter تريد تجاهله، ولا تمسح Context أكثر مما تحتاج.',
+        warning:'REMOVEFILTERS ليس Reset كامل للتقرير إلا إذا طلبت منه ذلك.',
+        visualCaption:'Category Revenue في البسط، All Categories تحت نفس السياق في المقام، ثم DIVIDE يعطي Contribution %.',
+        visual:{ image:'assets/day6-removefilters-contribution.svg', alt:'REMOVEFILTERS used for category contribution percentage', quickPoints:['Remove Category only','Keep other slicers','Contribution % stays contextual'] }
+      },
+      {
+        id:57, title:'Visual Interactions', titleAr:'تفاعل الـVisuals', category:'analysis', kind:'poster',
+        blurb:'الضغط على Chart ليس مجرد تحديد بصري؛ قد يغير Filter Context لبقية الصفحة.',
+        memory:'A visual can Filter, Highlight or do Nothing.',
+        why:'لأن التقرير التفاعلي يحتاج سلوكا مقصودا، وليس كل Visual لازم يؤثر على كل شيء.',
+        notice:'اختر Category أو Region ثم راقب Cards وTrend وCharts. بعد ذلك استخدم Edit interactions لتغيير سلوك هدف واحد.',
+        mistake:'ترك كل interactions افتراضية حتى لو كانت تربك قصة التقرير.',
+        explain:'Power BI يربط الـVisuals تلقائيا غالبا. باستخدام Edit interactions تستطيع اختيار Filter أو Highlight أو None لكل Visual مستهدف، وبذلك تصمم كيف ينتقل Context داخل الصفحة.',
+        tip:'غير Interaction فقط عندما تستطيع شرح لماذا هذا السلوك أفضل للمستخدم.',
+        warning:'None ليست حلا لمشكلة DAX؛ هي قرار UX وتحليل.',
+        visualCaption:'مصدر واحد يمكن أن يفلتر Visual، يسلط عليه Highlight، أو لا يؤثر عليه.',
+        visual:{ image:'assets/day6-visual-interactions.svg', alt:'Power BI visual interactions filter highlight none', quickPoints:['Filter','Highlight','None'] }
       }
     ];
 
@@ -1299,7 +1351,7 @@ SUMX (
       3:[25],
       4:[47,48,49],
       5:[50,51,52,53],
-      6:[8,39],
+      6:[54,55,56,57],
       7:[18,19,40,41],
       8:[],
       9:[],
@@ -1321,6 +1373,10 @@ SUMX (
       51:[50,52,11],
       52:[51,53,16],
       53:[52,11,8],
+      54:[55,51,48],
+      55:[54,56,53],
+      56:[55,39,53],
+      57:[54,55,37],
       1:[2,3,4],
       2:[3,4,5],
       3:[2,4,5],

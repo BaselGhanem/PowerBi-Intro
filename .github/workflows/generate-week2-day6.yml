@@ -1,0 +1,38 @@
+name: Generate Week 2 Day 6
+
+on:
+  push:
+    paths:
+      - 'tools/generate_week2_day6.py'
+      - 'tools/day6_pbix_parts/**'
+      - '.github/workflows/generate-week2-day6.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install openpyxl
+      - name: Generate Day 6 pack
+        run: python tools/generate_week2_day6.py
+      - name: Commit generated Day 6 pack
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add week2/day6/downloads/Day06_CONTEXT_AND_CALCULATE.zip
+          if git diff --cached --quiet; then
+            echo "No Day 6 changes."
+            exit 0
+          fi
+          git commit -m "Generate Day 6 context and calculate pack"
+          git push
