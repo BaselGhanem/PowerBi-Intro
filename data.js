@@ -156,6 +156,7 @@ const DAYS = [
     deliverable: `أربع لوحات: Sales / Operations / Finance / Workforce، مع مقارنة زمنية وفلاتر وأرقام قابلة للتحقق.`,
     visualGuide: { image: `concepts/assets/day7-learner-overview.webp`, title: `Day 7 — Learner Visual Guide`, note: `الأدوار الأربعة والمقارنة الزمنية وبناء اللوحة ونقاط التحقق.` },
     resources: [
+      { name: `Day 07 — DAX Foundations`, type: `WEB`, url: `week3/day7/web/DAX_FOUNDATIONS.html`, note: `شرح الدوال الجديدة خطوة بخطوة مع مختبرات تفاعلية وزر نسخ لكل صيغة` },
       { name: `Day 07 — START`, type: `PBIX`, url: `week3/day7/downloads/Nova_Day07_START.pbix`, note: `ملف البداية المباشر للمتدربين — البيانات مدمجة` },
       { name: `Mahmoud — Sales`, type: `WEB`, url: `week3/day7/web/MAHMOUD_SALES.html`, note: `إيراد ومقارنة ونمو وفئات وعملاء.` },
       { name: `Somaya — Operations`, type: `WEB`, url: `week3/day7/web/SOMAYA_OPERATIONS.html`, note: `طلبات وإنجاز والتزام بالمهلة ودورة التشغيل.` },

@@ -213,6 +213,7 @@ DAX_COPY_ASSETS='<style>.dax-copy{display:block;margin:0 0 8px auto;padding:8px 
 def document(title,body):return f'<!doctype html><html lang="ar" dir="rtl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{html.escape(title)}</title><style>{CSS}</style><main><header><h1>{title}</h1><p class="en">X Academy · Power BI Specialist · Day 7</p></header>{body}</main>{DAX_COPY_ASSETS}</html>'
 def build_guides():
  guide=WORK/'03_GUIDES';guide.mkdir(parents=True)
+ (guide/'DAX_FOUNDATIONS.html').write_text((ROOT/'week3/day7/web/DAX_FOUNDATIONS.html').read_text().replace('../../../dashboard.html','../00_START_HERE.html'),encoding='utf-8')
  for r in ROLES:
   tab=r['table'];sections=f'<div class="card"><h2>المهمة</h2><p>{r["question"]}</p><p>اختار سنة 2026. للمقارنة الشهرية اختار شهرا واحدا: مارس أو أبريل.</p><p>ابدأ ببطاقات الأرقام، ثم المقارنة، ثم الرسوم. الصيغ الأساسية موجودة في نسخة البداية؛ أنشئ صيغ المقارنة الزمنية الجديدة في جدول القطاع المناسب. احذف صندوق التعليمات من مكان الرسم ثم ضع الرسم مكانه.</p></div>'
   sections+='<div class="card"><h2>ما يجب بناؤه</h2><table><tr><th>العنصر</th><th>الحقول</th></tr>'
@@ -225,6 +226,7 @@ def build_guides():
   image=r['name'].lower()+'-'+r['domain'].lower()
   reference=f'../05_VISUAL_REFERENCES/{image}.webp'
   sections=f'<div class="card"><h2>اللوحة المتوقعة — {r["ar"]}</h2><p>مرجع للشكل النهائي المطلوب. اضغط على الصورة لعرضها بالحجم الكامل.</p><a href="{reference}" target="_blank" rel="noopener"><img src="{reference}" alt="اللوحة المتوقعة — {r["ar"]}" style="display:block;width:100%;height:auto;border-radius:12px" decoding="async"></a><p><a href="{reference}" download>تنزيل صورة اللوحة</a></p></div>'+sections
+  sections+='<div class="card"><h2>قبل كتابة الصيغ</h2><p><a href="DAX_FOUNDATIONS.html">افهم الدوال الجديدة في مختبر الصيغ التفاعلي ↗</a></p></div>'
   sections+='<h2>الصيغ المطلوبة</h2>'
   for m in MEAS[tab]:
    status='موجود في نسخة البداية' if m['level']=='base' else 'أنشئه أثناء التطبيق'
