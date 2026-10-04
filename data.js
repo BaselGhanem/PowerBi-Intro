@@ -151,8 +151,8 @@ const DAYS = [
     hook: `محمود للمبيعات، سمية للعمليات، هشام للمالية، وإيناس للموارد والتخطيط. نفس المهارات، وأسئلة تناسب عمل كل متدرب.`,
     mission: `ابدأ بمثال مشترك للمقارنة الشهرية، ثم ابن لوحة خاصة بدورك باستخدام البيانات والصيغ والتعليمات الجاهزة.`,
     topics: [`Date Table`, `Previous Month`, `MoM Growth %`, `Previous Year`, `YoY Growth %`, `YTD`, `KPI Cards`, `Line / Bar / Matrix`, `Slicers`, `Visual vs Page Filters`, `Conditional Formatting`, `Sorting`],
-    build: [`Open Nova_Day07_START.pbix and Refresh`, `Use BASEL DEMO to compare March and April`, `Open your named page and learner guide`, `Build 4 KPI Cards`, `Apply time comparison measures`, `Build Actual vs Previous Year trend`, `Build sorted Bar Chart and comparison Matrix`, `Add Year / Year Month / role-specific Slicers`, `Test page filters and visual filters`, `Apply conditional formatting`, `Validate one result against Expected_Results.csv`, `Explain one finding and save your PBIX`],
-    challenge: `كل متدرب يقدم استنتاجا واحدا وإجراء مرتبطا بدوره. نقاط تحقق بعد 15 و30 و45 دقيقة، ونسخة متابعة لمن يتعطل.`,
+    build: [`Open Nova_Day07_START.pbix and Refresh`, `Use BASEL DEMO to compare March and April`, `Open your named page and learner guide`, `Build 4 KPI Cards`, `Apply time comparison measures`, `Build Actual vs Previous Year trend`, `Build sorted Bar Chart and comparison Matrix`, `Add Year / Year Month / role-specific Slicers`, `Test page filters and visual filters`, `Apply conditional formatting`, `Validate one result with the trainer during class`, `Explain one finding and save your PBIX`],
+    challenge: `كل متدرب يقدم استنتاجا واحدا وإجراء مرتبطا بدوره. نقاط تحقق بعد 15 و30 و45 دقيقة، ومساعدة مباشرة من المدرب عند التعطل.`,
     deliverable: `أربع لوحات: Sales / Operations / Finance / Workforce، مع مقارنة زمنية وفلاتر وأرقام قابلة للتحقق.`,
     visualGuide: { image: `concepts/assets/day7-learner-overview.webp`, title: `Day 7 — Learner Visual Guide`, note: `الأدوار الأربعة والمقارنة الزمنية وبناء اللوحة ونقاط التحقق.` },
     resources: [
