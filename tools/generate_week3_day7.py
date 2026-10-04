@@ -226,7 +226,7 @@ def build_guides():
   image=r['name'].lower()+'-'+r['domain'].lower()
   reference=f'../05_VISUAL_REFERENCES/{image}.webp'
   sections=f'<div class="card"><h2>اللوحة المتوقعة — {r["ar"]}</h2><p>مرجع للشكل النهائي المطلوب. اضغط على الصورة لعرضها بالحجم الكامل.</p><a href="{reference}" target="_blank" rel="noopener"><img src="{reference}" alt="اللوحة المتوقعة — {r["ar"]}" style="display:block;width:100%;height:auto;border-radius:12px" decoding="async"></a><p><a href="{reference}" download>تنزيل صورة اللوحة</a></p></div>'+sections
-  sections+='<div class="card"><h2>قبل كتابة الصيغ</h2><p><a href="DAX_FOUNDATIONS.html">افهم الدوال الجديدة في مختبر الصيغ التفاعلي ↗</a></p></div>'
+  sections+='<div class="card"><h2>قبل كتابة الصيغ</h2><p><a href="DAX_FOUNDATIONS.html">افهم الدوال الجديدة في دليل شرح الصيغ ↗</a></p></div>'
   sections+='<h2>الصيغ المطلوبة</h2>'
   for m in MEAS[tab]:
    status='موجود في نسخة البداية' if m['level']=='base' else 'أنشئه أثناء التطبيق'
