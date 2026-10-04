@@ -7,7 +7,7 @@ const DAY_VIDEOS = {
   3: `<iframe src="https://1drv.ms/v/c/a1a27fad04d192e9/IQQbURQVtjzYTamX2kGOJUrYAb6y8D--6S4kD2mVi-nQhao" width="320" height="320" frameborder="0" scrolling="no" allowfullscreen></iframe>`,
   4: `<iframe src="https://1drv.ms/v/c/a1a27fad04d192e9/IQTeSmYgUTlvRJNAhC5MOPkXAWcguZovui8VamiwwKBRkgY" width="1920" height="1080" frameborder="0" scrolling="no" allowfullscreen></iframe>`,
   5: `<iframe src="https://1drv.ms/v/c/a1a27fad04d192e9/IQS3hrZmuNiZRZfNXGpV5aKSAVbJ-WXMggnKrb-G6xdGgfo" width="320" height="320" frameborder="0" scrolling="no" allowfullscreen></iframe>`,
-  6: ``,
+  6: `<iframe src="https://1drv.ms/v/c/a1a27fad04d192e9/IQS3hrZmuNiZRZfNXGpV5aKSAVbJ-WXMggnKrb-G6xdGgfo" width="320" height="320" frameborder="0" scrolling="no" allowfullscreen></iframe>`,
   7: ``,
   8: ``,
   9: ``,
