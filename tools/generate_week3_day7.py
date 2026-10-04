@@ -221,6 +221,9 @@ def build_guides():
   sections+=''.join('<tr><td class="en">'+html.escape(a)+'</td><td class="en">'+html.escape(b)+'</td></tr>' for a,b in pairs)+'</table></div>'
   if tab=='FactWorkforce':sections+='<div class="card"><h2>قاعدة مهمة</h2><p>عدد الموظفين لقطة شهرية. استخدم آخر لقطة متاحة ضمن الفترة، ولا تجمع موظفي يناير وفبراير ومارس. المقارنة السابقة تعني آخر لقطة في الفترة السابقة.</p><p>لا نستخدم مجموع الموظفين منذ بداية السنة. قياس العجز سالب عند نقص الموظفين.</p></div>'
   if tab=='FactOperations':sections+='<div class="card"><h2>تعريف الالتزام</h2><p>عدد الطلبات المنجزة ضمن المهلة مقسوما على جميع الطلبات المنجزة فقط. الطلبات المفتوحة والملغاة خارج المقام. الاتجاه يعتمد تاريخ إنشاء الطلب.</p><p>الفرق بين نسبتين يعرض كنقاط مئوية؛ ارتفاع النسبة من 80% إلى 85% يعني 5 نقاط مئوية.</p></div>'
+  image=r['name'].lower()+'-'+r['domain'].lower()
+  reference=f'../05_VISUAL_REFERENCES/{image}.webp'
+  sections=f'<div class="card"><h2>اللوحة المتوقعة — {r["ar"]}</h2><p>مرجع للشكل النهائي المطلوب. اضغط على الصورة لعرضها بالحجم الكامل.</p><a href="{reference}" target="_blank" rel="noopener"><img src="{reference}" alt="اللوحة المتوقعة — {r["ar"]}" style="display:block;width:100%;height:auto;border-radius:12px" decoding="async"></a><p><a href="{reference}" download>تنزيل صورة اللوحة</a></p></div>'+sections
   sections+='<h2>الصيغ المطلوبة</h2>'
   for m in MEAS[tab]:
    status='موجود في نسخة البداية' if m['level']=='base' else 'أنشئه أثناء التطبيق'
@@ -241,7 +244,7 @@ Table tools → Mark as date table → DimDate[Date]</pre><p>اختر سنة 202
  # Web copies use relative guide links within their own published folder.
  web=ROOT/'week3/day7/web';web.mkdir(parents=True,exist_ok=True)
  (web/'index.html').write_text(document('اليوم السابع — أربع لوحات وأربع قرارات',sources.replace('03_GUIDES/','').replace('05_VISUAL_REFERENCES/gallery.html','gallery.html')),encoding='utf-8')
- for p in guide.glob('*.html'):shutil.copy2(p,web/p.name)
+ for p in guide.glob('*.html'):(web/p.name).write_text(p.read_text().replace('../05_VISUAL_REFERENCES/','../images/').replace('.webp','.png'),encoding='utf-8')
 
 
 def validate(original):
