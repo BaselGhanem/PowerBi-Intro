@@ -157,11 +157,6 @@ const DAYS = [
     visualGuide: { image: `concepts/assets/day7-learner-overview.webp`, title: `Day 7 — Learner Visual Guide`, note: `الأدوار الأربعة والمقارنة الزمنية وبناء اللوحة ونقاط التحقق.` },
     resources: [
       { name: `Day 07 — START`, type: `PBIX`, url: `week3/day7/downloads/Nova_Day07_START.pbix`, note: `ملف البداية المباشر للمتدربين — البيانات مدمجة` },
-      { name: `Day 07 — Trainer References`, type: `ZIP`, url: `week3/day7/downloads/Day07_TRAINER_REFERENCES.zip`, note: `CHECKPOINT / FINAL_REFERENCE PBIP projects — for trainer use` },
-      { name: `Day 07 — Four Dashboards Pack`, type: `ZIP`, url: `week3/day7/downloads/Day07_FOUR_DASHBOARDS.zip`, note: `START PBIX + Original Day 4 Excel + 9 CSV tables + 4 learner guides + DAX + expected results. Trainer references are a separate download.` },
-      { name: `Day 07 — Four Dashboard References`, type: `WEB`, url: `week3/day7/web/gallery.html`, note: `أربع صور مستقلة للوحات محمود وسمية وهشام وإيناس، مع التكبير والتنزيل.` },
-      { name: `Day 07 — Concept Studio`, type: `WEB`, url: `concepts/index.html?day=7`, note: `جدول التاريخ والمقارنات الشهرية والسنوية والتراكم والفلاتر والتنسيق واللقطات الشهرية.` },
-      { name: `Day 07 — Start Here & Trainer Guide`, type: `WEB`, url: `week3/day7/web/index.html`, note: `خطوات التشغيل وخطة الساعتين ونقاط التحقق وتعريف البيانات.` },
       { name: `Mahmoud — Sales`, type: `WEB`, url: `week3/day7/web/MAHMOUD_SALES.html`, note: `إيراد ومقارنة ونمو وفئات وعملاء.` },
       { name: `Somaya — Operations`, type: `WEB`, url: `week3/day7/web/SOMAYA_OPERATIONS.html`, note: `طلبات وإنجاز والتزام بالمهلة ودورة التشغيل.` },
       { name: `Hisham — Finance`, type: `WEB`, url: `week3/day7/web/HISHAM_FINANCE.html`, note: `إيراد وتكلفة وربح وموازنة.` },
