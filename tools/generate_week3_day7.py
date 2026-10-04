@@ -232,7 +232,9 @@ def build_guides():
    status='موجود في نسخة البداية' if m['level']=='base' else 'أنشئه أثناء التطبيق'
    sections+=f'<div class="card"><p>{status}</p><h3 class="en">{html.escape(m["name"])}</h3><pre>{html.escape(m["name"]+" =\n"+m["expression"])}</pre><small class="en">Format: {html.escape(m["formatString"])}'+(' · '+html.escape(m['meaning']) if m['meaning'] else '')+'</small></div>'
   sections+='<div class="card"><h2>نقاط التحقق</h2><p>15 دقيقة: بطاقات الأرقام تستجيب لفلتر السنة.</p><p>30 دقيقة: المقارنة الشهرية تتغير عند اختيار مارس وأبريل، والفترة الأولى تظهر بدون مقارنة سابقة.</p><p>45 دقيقة: الاتجاه والرسم والأرقام متسقة، وفرز الأشهر صحيح.</p><p>النهاية: فلتر صفحة وفلتر رسم، تنسيق شرطي، واستنتاج واحد مرتبط برقم. تحقق من إحدى النتائج مع المدرب أثناء المحاضرة.</p><p>إذا تعطلت: اطلب مساعدة المدرب أثناء المحاضرة، وراجع معه الصيغة أو الرسم ثم واصل التطبيق.</p></div>'
-  (guide/f'{r["name"]}_{r["domain"]}.html').write_text(document(r['ar']+' — '+r['domain'],sections),encoding='utf-8')
+  curated=ROOT/'week3/day7/web'/f'{r["name"]}_{r["domain"]}.html'
+  content=curated.read_text().replace('../images/','../05_VISUAL_REFERENCES/').replace('.png','.webp')
+  (guide/curated.name).write_text(content,encoding='utf-8')
   (guide/f'{r["name"]}_DAX.txt').write_text('\n\n'.join(m['name']+' =\n'+m['expression'] for m in MEAS[tab]),encoding='utf-8')
  sources='''<div class="card"><h2>بداية التشغيل</h2><p>افتح ملف البداية مباشرة داخل باور بي آي، ثم انتقل إلى الصفحة التي تحمل اسمك واتبع دليل التدريب. البيانات مدمجة داخل الملف ولا تحتاج إرفاق ملفات المصدر لفتحه.</p><pre>02_PROJECTS/START/Nova_Day07_START.pbix</pre><p>للتحديث والتحقق قبل المحاضرة:</p><pre>Home → Refresh
 Table tools → Mark as date table → DimDate[Date]</pre><p>اختر سنة 2026. استخدم إصدارا حديثا من البرنامج؛ التحويل لا يضمن التوافق مع الإصدارات القديمة.</p><p>ملف البداية محول ومحفوظ بواسطة المدرب. فحصنا سلامة الحزمة والصفحات الست ووجود نموذج البيانات؛ اختبار الحسابات والتحديث داخل البرنامج يبقى ضمن مراجعة المدرب.</p><p>نسختا المتابعة والمرجع متاحتان للمدرب في حزمة منفصلة بصيغة المشروع، وتحتاجان الفتح والتحويل داخل البرنامج.</p><pre>Day07_TRAINER_REFERENCES.zip</pre></div>'''
