@@ -233,7 +233,7 @@ def build_guides():
    sections+=f'<div class="card"><p>{status}</p><h3 class="en">{html.escape(m["name"])}</h3><pre>{html.escape(m["name"]+" =\n"+m["expression"])}</pre><small class="en">Format: {html.escape(m["formatString"])}'+(' · '+html.escape(m['meaning']) if m['meaning'] else '')+'</small></div>'
   sections+='<div class="card"><h2>نقاط التحقق</h2><p>15 دقيقة: بطاقات الأرقام تستجيب لفلتر السنة.</p><p>30 دقيقة: المقارنة الشهرية تتغير عند اختيار مارس وأبريل، والفترة الأولى تظهر بدون مقارنة سابقة.</p><p>45 دقيقة: الاتجاه والرسم والأرقام متسقة، وفرز الأشهر صحيح.</p><p>النهاية: فلتر صفحة وفلتر رسم، تنسيق شرطي، واستنتاج واحد مرتبط برقم. تحقق من إحدى النتائج مع المدرب أثناء المحاضرة.</p><p>إذا تعطلت: اطلب مساعدة المدرب أثناء المحاضرة، وراجع معه الصيغة أو الرسم ثم واصل التطبيق.</p></div>'
   curated=ROOT/'week3/day7/web'/f'{r["name"]}_{r["domain"]}.html'
-  content=curated.read_text().replace('../images/','../05_VISUAL_REFERENCES/').replace('.png','.webp')
+  content=curated.read_text().replace('../images/','../05_VISUAL_REFERENCES/').replace('../icons/','../06_ICONS/').replace('.png','.webp')
   (guide/curated.name).write_text(content,encoding='utf-8')
   (guide/f'{r["name"]}_DAX.txt').write_text('\n\n'.join(m['name']+' =\n'+m['expression'] for m in MEAS[tab]),encoding='utf-8')
  sources='''<div class="card"><h2>بداية التشغيل</h2><p>افتح ملف البداية مباشرة داخل باور بي آي، ثم انتقل إلى الصفحة التي تحمل اسمك واتبع دليل التدريب. البيانات مدمجة داخل الملف ولا تحتاج إرفاق ملفات المصدر لفتحه.</p><pre>02_PROJECTS/START/Nova_Day07_START.pbix</pre><p>للتحديث والتحقق قبل المحاضرة:</p><pre>Home → Refresh
@@ -249,7 +249,7 @@ Table tools → Mark as date table → DimDate[Date]</pre><p>اختر سنة 202
  # Web copies use relative guide links within their own published folder.
  web=ROOT/'week3/day7/web';web.mkdir(parents=True,exist_ok=True)
  (web/'index.html').write_text(document('اليوم السابع — أربع لوحات وأربع قرارات',sources.replace('03_GUIDES/','').replace('05_VISUAL_REFERENCES/gallery.html','gallery.html')),encoding='utf-8')
- for p in guide.glob('*.html'):(web/p.name).write_text(p.read_text().replace('../05_VISUAL_REFERENCES/','../images/').replace('.webp','.png'),encoding='utf-8')
+ for p in guide.glob('*.html'):(web/p.name).write_text(p.read_text().replace('../05_VISUAL_REFERENCES/','../images/').replace('../06_ICONS/','../icons/').replace('.webp','.png'),encoding='utf-8')
 
 
 def validate(original):
@@ -296,7 +296,7 @@ def main():
  original=build_data();build_measures()
  for stage in ['START','CHECKPOINT','FINAL_REFERENCE']:
   folder=WORK/'02_PROJECTS'/stage;build_model(folder,stage);build_report(folder,stage)
- build_guides();controls=validate(original)
+ build_guides();shutil.copytree(ROOT/'week3/day7/icons',WORK/'06_ICONS',dirs_exist_ok=True);controls=validate(original)
  visuals=WORK/'05_VISUAL_REFERENCES';visuals.mkdir(parents=True,exist_ok=True)
  for image in (ROOT/'week3/day7/images').glob('*.png'):
   Image.open(image).save(visuals/(image.stem+'.webp'),format='WEBP',quality=96,method=6)
