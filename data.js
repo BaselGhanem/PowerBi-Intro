@@ -179,8 +179,8 @@ const DAYS = [
     deliverable: 'Executive-ready Report بتجربة استخدام متماسكة.',
     resources: [
       { name: 'Day 08 — Unified Executive PBIR Starter', type: 'ZIP', url: 'week3/day8/downloads/Nova_Day08_Executive_360_PBIR.zip', note: 'مشروع PBIR مع الصفحات الأربع المكتملة ونموذج البيانات الأصلي وصفحة انطلاق اليوم الثامن' },
-      { name: '08_Visual_Selection_Cards.pdf', type: 'PDF', url: '', note: 'مرجع اختيار الـVisual' },
-      { name: 'Day 08 — Every Visual Earns Its Place', type: 'Challenge', url: '', note: 'Design Challenge' }
+      { name: '08 — Visual Selection Cards', type: 'PDF', url: 'week3/day8/downloads/08_Visual_Selection_Cards.pdf', note: '5 صفحات: اختيار 8 أنواع من الرسومات وأمثلة من لوحات محمود وسمية وهشام وإيناس' },
+      { name: 'Day 08 — Every Visual Earns Its Place', type: 'Challenge', url: 'week3/day8/web/Day08_Every_Visual_Earns_Its_Place.html', note: 'تحدي 10–15 دقيقة: Audit وImprove وInteractions وInsight مع PDF للطباعة' }
     ]
   },
   {
