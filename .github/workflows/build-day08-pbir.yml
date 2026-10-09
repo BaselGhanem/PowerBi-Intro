@@ -1,0 +1,29 @@
+name: Build Day 8 PBIR pack
+
+on:
+  push:
+    paths:
+      - "week3/day8/BUILD_DAY8.txt"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Prepare Day 8 package from existing Day 7 reference
+        run: python3 tools/build_week3_day8.py
+      - name: Commit generated Day 8 starter
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add week3/day8/downloads/Nova_Day08_Executive_360_PBIR.zip
+          if ! git diff --cached --quiet; then
+            git commit -m "Build Day 8 unified PBIR four-dashboard starter"
+            git push
+          fi
