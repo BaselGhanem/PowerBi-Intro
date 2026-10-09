@@ -181,7 +181,7 @@ const DAYS = [
     build: ['Executive Layout', 'KPI Hierarchy', 'Navigation', 'Drill-through', 'Tooltip Pages'],
     challenge: 'نفس 5 Business Questions، لكن لكل متدرب حرية التصميم. كل Visual يجب أن يدافع عن وجوده.',
     deliverable: 'Executive-ready Report بتجربة استخدام متماسكة.',
-    visualGuide: { image: 'concepts/assets/day8-learner-overview.svg', title: 'Day 8 — Learner Visual Guide', note: 'توحيد اللوحات وتحسين التصميم وEdit Interactions وDrillthrough وTooltips وBookmarks' },
+    visualGuide: { image: 'concepts/assets/day8-learner-overview.webp', title: 'Day 8 — Learner Visual Guide', note: 'توحيد اللوحات وتحسين التصميم وEdit Interactions وDrillthrough وTooltips وBookmarks' },
     resources: [
       { name: 'Day 08 — Unified Executive PBIR Starter', type: 'ZIP', url: 'week3/day8/downloads/Nova_Day08_Executive_360_PBIR.zip', note: 'مشروع PBIR مع الصفحات الأربع المكتملة ونموذج البيانات الأصلي وصفحة انطلاق اليوم الثامن' },
       { name: '08 — Visual Selection Cards', type: 'PDF', url: 'week3/day8/downloads/08_Visual_Selection_Cards.pdf', note: '5 صفحات: اختيار 8 أنواع من الرسومات وأمثلة من لوحات محمود وسمية وهشام وإيناس' },
@@ -201,7 +201,7 @@ const DAYS = [
     build: ['What happened?', 'Where?', 'What?', 'Who?', 'Why?'],
     challenge: '10-Minute Management Meeting: 3 Findings + 1 Recommended Action.',
     deliverable: 'Report يوجّه المستخدم من الرقم إلى السبب ثم إلى الإجراء.',
-    visualGuide: { image: 'concepts/assets/day9-learner-overview.svg', title: 'Day 9 — Learner Visual Guide', note: 'What / Where / Who / Why وStorytelling وثلاثة Insights وتوصية' },
+    visualGuide: { image: 'concepts/assets/day9-learner-overview.webp', title: 'Day 9 — Learner Visual Guide', note: 'What / Where / Who / Why وStorytelling وثلاثة Insights وتوصية' },
     resources: [
       { name: '09_Management_Case.pbix', type: 'PBIX', url: '', note: 'Management Case' },
       { name: '09_Insight_Template.pdf', type: 'PDF', url: '', note: '3 Findings + 1 Action' },
@@ -221,7 +221,7 @@ const DAYS = [
     build: ['Final Refresh', 'Executive Dashboard', 'Root Cause Analysis', 'Boardroom Story'],
     challenge: 'Final Mission: What happened? Why? Where should management focus? What action do you recommend?',
     deliverable: 'Nova Business Performance 360 — مشروع نهائي متكامل وقابل للعرض على الإدارة.',
-    visualGuide: { image: 'concepts/assets/day10-learner-overview.svg', title: 'Day 10 — Learner Visual Guide', note: 'Refresh وValidation وExecutive View وRoot Cause والعرض النهائي' },
+    visualGuide: { image: 'concepts/assets/day10-learner-overview.webp', title: 'Day 10 — Learner Visual Guide', note: 'Refresh وValidation وExecutive View وRoot Cause والعرض النهائي' },
     resources: [
       { name: '10_Boardroom_Final_Case.zip', type: 'ZIP', url: '', note: 'البيانات الجديدة + Brief' },
       { name: '10_Final_Submission_Checklist.pdf', type: 'PDF', url: '', note: 'قائمة التحقق النهائية' },
