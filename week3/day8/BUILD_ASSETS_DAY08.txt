@@ -1,0 +1,1 @@
+Generate the completed Day 08 Visual Selection Cards and Every Visual Earns Its Place files from tools/day08_asset_source.br.b64.
