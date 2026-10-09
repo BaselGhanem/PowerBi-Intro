@@ -33,6 +33,7 @@ const DAYS = [
     build: ['Open Nova Company Profile and understand the management challenge', 'Install & launch Power BI Desktop', 'Connect Nova Excel, CSV, TXT, PDF and Web sources', 'Understand Extract → Transform → Load', 'Tour the interface only after using it', 'Build Total Revenue Card', 'Build Revenue vs Target by Region', 'Add Channel Slicer and test interactions', 'Save Nova_Business_Performance_360_[Name].pbix'],
     challenge: 'الإدارة لا تريد Chart جميل فقط. ابدأ بالسؤال: أي Region أو Branch يحتاج انتباه أولاً؟',
     deliverable: 'أول نسخة من Nova Business Performance 360 + فهم واضح لـETL وواجهات Power BI الأساسية.',
+    visualGuide: { image: 'concepts/assets/day1-etl-poster.png', title: 'Day 1 — Learner Visual Guide', note: 'رحلة الاتصال بالمصادر وETL وبناء أول تقرير' },
     resources: [
       { name: 'Meet Nova — Company Profile', type: 'WEB', url: 'week1/day1/web/Nova_Company_Profile.html', note: 'ابدأ من هنا: الشركة، الشعار، المنتجات، نموذج العمل والتحدي الإداري.' },
       { name: 'Day 01 — Nova Source Pack', type: 'ZIP', url: 'week1/day1/downloads/Day01_CONNECT_EVERYTHING.zip', note: 'Nova Product Master + Excel ETL Reference + 120K Sales CSV + Workforce TXT + Budget PDF + Challenge' },
@@ -52,6 +53,7 @@ const DAYS = [
     build: ['Confirm the intended grain: Branch ID + Date', 'Inspect Nova dirty data before touching it', 'Fix date and numeric data types', 'Trim & clean manager and category fields', 'Standardize Region and Channel labels', 'Handle missing Revenue / Cost / Headcount intentionally', 'Remove only true duplicate rows', 'Review Applied Steps and Refresh'],
     challenge: 'بعد تنظيف Branch Performance، نظّف Nova Customer Master باستخدام الـCleaning Checklist فقط، بدون recipe خطوة بخطوة.',
     deliverable: 'Nova Branch Daily Performance + Customer Master نظيفان، Grain واضح، وقابلان للـRefresh.',
+    visualGuide: { image: 'concepts/assets/day2-learner-overview.svg', title: 'Day 2 — Learner Visual Guide', note: 'Power Query: تنظيف القيم والأنواع والأخطاء والتحقق' },
     resources: [
       { name: 'Day 02 — Nova Cleaning Lab', type: 'ZIP', url: 'week1/day2/downloads/Day02_CLEAN_DATA.zip', note: '50K logical Branch-Day rows + intentional bad duplicates + 8K Dirty Customers + Nova Cleaning Checklist' }
     ]
@@ -69,6 +71,7 @@ const DAYS = [
     build: ['Connect to Nova Monthly_Sales folder', 'Combine January–March', 'Keep Source File Name', 'Merge Nova Branch Master', 'Merge Customer Master', 'Merge Product Master', 'Load only the final analytical query', 'Drop April file and Refresh'],
     challenge: 'ابنِ العملية كاملة من Folder إلى Dataset موحد. النجاح الحقيقي: إضافة April بدون Copy/Paste أو تعديل يدوي.',
     deliverable: 'Nova monthly Sales pipeline قابلة للـRefresh وجاهزة للأشهر القادمة، مع Masters موحدة.',
+    visualGuide: { image: 'concepts/assets/day3-learner-overview.svg', title: 'Day 3 — Learner Visual Guide', note: 'Folder Connector وCombine وAppend وMerge وRefresh' },
     resources: [
       { name: 'Day 03 — Nova Automation Pack', type: 'ZIP', url: 'week1/day3/downloads/Day03_STOP_COPYING_FILES_LEARNER.zip', note: 'نفس 120K Rows من Day 1، الآن Jan–Mar × 40K + April refresh proof + Branch/Customer/Product Masters' }
     ]
@@ -111,6 +114,7 @@ const DAYS = [
     build: ['Continue from Day 4 PBIX — no new dataset', 'Power Query: Gross Sales = Quantity × Unit Price', 'Power Query: Discount Amount = Gross Sales - Revenue', 'Power Query: Discount Status using if...then...else', 'Close & Apply', 'Create Total Revenue', 'Create Total Quantity', 'Create Transactions with COUNTROWS', 'Create Customers with DISTINCTCOUNT', 'Create Average Transaction Value with DIVIDE', 'Build 4 KPI Cards', 'Build Revenue Trend by Month and sort Month correctly', 'Build Revenue by Category', 'Build Top 10 Branches by Revenue', 'Build Discount Analysis', 'Add Month / Branch / Category Slicers', 'Format and align the report', 'Test filters and observe Measures changing'],
     challenge: 'ابنِ Sales Overview يحتوي 4 KPIs وTrend وCategory وBranch وDiscount Analysis و3 Slicers على الأقل، ثم اشرح لماذا نفس الـMeasures تغيرت بدون تعديل الـDAX.',
     deliverable: 'أول Nova Sales Overview فعلي: Power Query calculations + DAX Measures + KPIs + Charts + Slicers، جاهز لـFilter Context في Day 6.',
+    visualGuide: { image: 'concepts/assets/day5-learner-overview.svg', title: 'Day 5 — Learner Visual Guide', note: 'Power Query Custom Column وDAX Measures وبناء التقرير' },
     resources: [
       { name: 'Day 05 — Calculate & Visualize Pack', type: 'ZIP', url: 'week2/day5/downloads/Day05_CALCULATE_VISUALIZE.zip', note: 'يتضمن Nova_Day05_Start.pbix كبداية موحدة من نهاية Day 4، ثم Power Query Lab + DAX Lab + Report Blueprint + Analyst Challenge' },
       { name: 'Day 05 — Concept Studio', type: 'WEB', url: 'concepts/index.html', note: 'Power Query Custom Column + Measure vs Column + Basic DAX Aggregations + DIVIDE' }
@@ -177,6 +181,7 @@ const DAYS = [
     build: ['Executive Layout', 'KPI Hierarchy', 'Navigation', 'Drill-through', 'Tooltip Pages'],
     challenge: 'نفس 5 Business Questions، لكن لكل متدرب حرية التصميم. كل Visual يجب أن يدافع عن وجوده.',
     deliverable: 'Executive-ready Report بتجربة استخدام متماسكة.',
+    visualGuide: { image: 'concepts/assets/day8-learner-overview.svg', title: 'Day 8 — Learner Visual Guide', note: 'توحيد اللوحات وتحسين التصميم وEdit Interactions وDrillthrough وTooltips وBookmarks' },
     resources: [
       { name: 'Day 08 — Unified Executive PBIR Starter', type: 'ZIP', url: 'week3/day8/downloads/Nova_Day08_Executive_360_PBIR.zip', note: 'مشروع PBIR مع الصفحات الأربع المكتملة ونموذج البيانات الأصلي وصفحة انطلاق اليوم الثامن' },
       { name: '08 — Visual Selection Cards', type: 'PDF', url: 'week3/day8/downloads/08_Visual_Selection_Cards.pdf', note: '5 صفحات: اختيار 8 أنواع من الرسومات وأمثلة من لوحات محمود وسمية وهشام وإيناس' },
@@ -196,6 +201,7 @@ const DAYS = [
     build: ['What happened?', 'Where?', 'What?', 'Who?', 'Why?'],
     challenge: '10-Minute Management Meeting: 3 Findings + 1 Recommended Action.',
     deliverable: 'Report يوجّه المستخدم من الرقم إلى السبب ثم إلى الإجراء.',
+    visualGuide: { image: 'concepts/assets/day9-learner-overview.svg', title: 'Day 9 — Learner Visual Guide', note: 'What / Where / Who / Why وStorytelling وثلاثة Insights وتوصية' },
     resources: [
       { name: '09_Management_Case.pbix', type: 'PBIX', url: '', note: 'Management Case' },
       { name: '09_Insight_Template.pdf', type: 'PDF', url: '', note: '3 Findings + 1 Action' },
@@ -215,6 +221,7 @@ const DAYS = [
     build: ['Final Refresh', 'Executive Dashboard', 'Root Cause Analysis', 'Boardroom Story'],
     challenge: 'Final Mission: What happened? Why? Where should management focus? What action do you recommend?',
     deliverable: 'Nova Business Performance 360 — مشروع نهائي متكامل وقابل للعرض على الإدارة.',
+    visualGuide: { image: 'concepts/assets/day10-learner-overview.svg', title: 'Day 10 — Learner Visual Guide', note: 'Refresh وValidation وExecutive View وRoot Cause والعرض النهائي' },
     resources: [
       { name: '10_Boardroom_Final_Case.zip', type: 'ZIP', url: '', note: 'البيانات الجديدة + Brief' },
       { name: '10_Final_Submission_Checklist.pdf', type: 'PDF', url: '', note: 'قائمة التحقق النهائية' },
