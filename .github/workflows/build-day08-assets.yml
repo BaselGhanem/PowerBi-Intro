@@ -1,0 +1,68 @@
+name: Build Day 8 visual cards and challenge
+
+on:
+  push:
+    paths:
+      - "week3/day8/BUILD_ASSETS_DAY08.txt"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install PDF and Arabic typography dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends fonts-noto-core libpango-1.0-0 libpangoft2-1.0-0
+          python -m pip install --quiet --user brotli weasyprint pypdf
+      - name: Decode course handouts and render searchable PDFs
+        run: |
+          python - <<'PY'
+          import base64, brotli
+          from pathlib import Path
+          from weasyprint import HTML
+          from pypdf import PdfReader
+
+          root=Path('week3/day8')
+          web=root/'web'; downloads=root/'downloads'
+          web.mkdir(parents=True,exist_ok=True); downloads.mkdir(parents=True,exist_ok=True)
+          encoded=Path('tools/day08_asset_source.br.b64').read_text(encoding='utf-8')
+          source=brotli.decompress(base64.b64decode(encoded))
+          names=['08_Visual_Selection_Cards.html','Day08_Every_Visual_Earns_Its_Place.html']
+          parts={}
+          for name in names:
+              head,separator,rest=source.partition(b'\n')
+              assert separator and head.isdigit(), f'Malformed content length for {name}'
+              length=int(head.decode())
+              assert length>5000 and len(rest)>=length, f'Content too short: {name}'
+              body=rest[:length]
+              assert b'<html' in body, f'Invalid HTML: {name}'
+              parts[name]=body.decode('utf-8')
+              source=rest[length:]
+          assert not source, 'Unexpected bytes after final HTML source'
+          for name,html in parts.items():
+              (web/name).write_text(html,encoding='utf-8')
+              pdf=downloads/Path(name).with_suffix('.pdf').name
+              HTML(string=html,base_url=web.resolve().as_uri()+'/').write_pdf(pdf)
+              reader=PdfReader(str(pdf))
+              print(f'{name}: PDF pages={len(reader.pages)}, bytes={pdf.stat().st_size}')
+              assert pdf.stat().st_size>20000
+              assert 2<=len(reader.pages)<=9
+          assert 'visual-card' in parts[names[0]]
+          assert 'challenge-role' in parts[names[1]]
+          PY
+      - name: Commit finished learner materials
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add week3/day8/web/08_Visual_Selection_Cards.html week3/day8/web/Day08_Every_Visual_Earns_Its_Place.html
+          git add week3/day8/downloads/08_Visual_Selection_Cards.pdf week3/day8/downloads/Day08_Every_Visual_Earns_Its_Place.pdf
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish Day 8 chart selection reference and visual design challenge"
+            git push
+          fi
