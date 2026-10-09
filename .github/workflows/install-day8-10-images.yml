@@ -1,0 +1,30 @@
+name: Install original approved Day 8–10 images
+
+on:
+  push:
+    paths:
+      - "Day08_09_10_Original_Designs_GitHub_Ready.zip"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Validate and extract the exact approved designs
+        run: python3 tools/install_approved_day8_10_images.py
+      - name: Commit WebP artwork and update course page links
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data.js concepts/assets/day8-learner-overview.webp concepts/assets/day9-learner-overview.webp concepts/assets/day10-learner-overview.webp
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish exact approved Day 8–10 image guides"
+            git push
+          fi
