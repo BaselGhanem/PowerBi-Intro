@@ -178,7 +178,7 @@ const DAYS = [
     challenge: 'نفس 5 Business Questions، لكن لكل متدرب حرية التصميم. كل Visual يجب أن يدافع عن وجوده.',
     deliverable: 'Executive-ready Report بتجربة استخدام متماسكة.',
     resources: [
-      { name: '08_Executive_Report_Layout.pbix', type: 'PBIX', url: '', note: 'Layout Starter' },
+      { name: 'Day 08 — Unified Executive PBIR Starter', type: 'ZIP', url: 'week3/day8/downloads/Nova_Day08_Executive_360_PBIR.zip', note: 'مشروع PBIR مع الصفحات الأربع المكتملة ونموذج البيانات الأصلي وصفحة انطلاق اليوم الثامن' },
       { name: '08_Visual_Selection_Cards.pdf', type: 'PDF', url: '', note: 'مرجع اختيار الـVisual' },
       { name: 'Day 08 — Every Visual Earns Its Place', type: 'Challenge', url: '', note: 'Design Challenge' }
     ]
