@@ -9,8 +9,6 @@
 
 | File | Purpose |
 | --- | --- |
-| `day09.html` | Standalone, mobile-responsive training studio with timeline, interactive concept demos, four missions, trainer notes and live progress checklist |
-| `DAY09_TRAINER_GUIDE.md` | Complete minute-by-minute trainer script, exact Power BI UI steps, checkpoint and recovery workflow |
 | `DAY09_STUDENT_MISSIONS.md` | All-trainee requirements and role-specific Sales / Operations / Finance / Workforce missions |
 | `DAY09_CHECKLIST.md` | Final QA checklist and mini assessment |
 | `Nova_Day09_Theme.json` | Valid basic Power BI report theme |
@@ -19,11 +17,10 @@
 
 ## Required course file
 
-Use the **actual Day 7/8 Nova Business 360 PBIX** with the existing four trainee pages. **This pack does not contain a PBIX**, because the working model and actual field names are not available in the supplied files. Do not recreate or invent models. Make a separate copy: `Nova_Business_360_Day09_START.pbix` and, after the workshop, save `Nova_Business_360_Day09_COMPLETED.pbix`.
+Use the **actual Day 7/8 Nova Business 360 PBIX** with the existing four trainee pages. **The original PBIX is available at `downloads/Nova_Day09_Executive_360.pbix`; the first iteration of this pack did not contain a PBIX**, because the working model and actual field names are not available in the supplied files. Do not recreate or invent models. Make a separate copy: `Nova_Business_360_Day09_START.pbix` and, after the workshop, save `Nova_Business_360_Day09_COMPLETED.pbix`.
 
 ## Use
 
-1. Open `day09.html` locally in a modern browser. The page works offline; Almarai loads when internet is available.
 2. Load the actual Day 7/8 `.pbix` in Power BI Desktop.
 3. Work through the shared example first, then each learner finishes their own page.
 4. Import `Nova_Day09_Theme.json` via **View > Themes > Browse for themes** if the existing report design does not already have a coherent theme.
@@ -31,7 +28,7 @@ Use the **actual Day 7/8 Nova Business 360 PBIX** with the existing four trainee
 
 ## Website integration
 
-The current repository contains `week3/day9/.gitkeep` but `data.js` still describes the **old Day 9**. This training pack is now published to GitHub. The online poster is an SVG counterpart; the original PNG and full ZIP are available in the conversation. To integrate, upload the files into `week3/day9/` and update `data.js` with the text in `DAY09_SITE_COPY.md` while keeping the site's current route/access setup.
+Day 9 is configured in `data.js` as **Master the Dashboard**. Day 9 student materials are published to GitHub. The online poster is an SVG counterpart; the original PNG and full ZIP are available in the conversation. To integrate, upload the files into `week3/day9/` and update `data.js` with the text in `DAY09_SITE_COPY.md` while keeping the site's current route/access setup.
 
 ## Important Power BI technical notes
 

@@ -203,12 +203,10 @@ const DAYS = [
     deliverable: 'Nova Business 360 — Dashboard تفاعلي فيه لوحة فلاتر قابلة للاخفاء، Field Parameters، Dynamic Title وتحكم بالرسومات.',
     visualGuide: { image: 'week3/day9/assets/Day09_Plan_Poster.svg', title: 'Day 09 — Master the Dashboard', note: 'Filter Scopes وSync Slicers وBookmarks وField Parameters' },
     resources: [
-      { name: 'DAY 09 — INTERACTIVE STUDIO', type: 'WEB', url: 'week3/day9/day09.html', note: 'تجربة تفاعلية مع شرح المفاهيم وتمارين سريعة' },
       { name: 'DAY 09 — STUDENT MISSIONS', type: 'Guide', url: 'week3/day9/DAY09_STUDENT_MISSIONS.md', note: 'مهام محمود وسمية وهشام وايناس' },
-      { name: 'DAY 09 — TRAINER GUIDE', type: 'Guide', url: 'week3/day9/DAY09_TRAINER_GUIDE.md', note: 'خطوات المحاضرة وسيناريو الشرح' },
       { name: 'DAY 09 — FINAL CHECKLIST', type: 'Guide', url: 'week3/day9/DAY09_CHECKLIST.md', note: 'قائمة الفحص والتقييم' },
       { name: 'DAY 09 — NOVA THEME', type: 'Guide', url: 'week3/day9/Nova_Day09_Theme.json', note: 'الوان التقرير بصيغة Power BI Theme' },
-      { name: 'DAY 09 — STARTER PBIX', type: 'PBIX', url: '', note: 'بانتظار نسخة PBIX الاخيرة' }
+      { name: 'NOVA — DAY 09 EXECUTIVE 360', type: 'PBIX', url: 'week3/day9/downloads/Nova_Day09_Executive_360.pbix', note: 'الملف الاصلي للتطبيق في Power BI Desktop' }
     ]
   },
   {

@@ -37,8 +37,7 @@ Existing `PowerBi-Intro/data.js` currently shows the **previous** Day 9 `From Da
 **Suggested resources:**
 
 - `Day09_Training_Pack.zip` — الملف الكامل
-- `day09.html` — شرح تفاعلي
 - `DAY09_STUDENT_MISSIONS.md` — المهام
 - `assets/Day09_Plan_Poster.svg` — صورة الخطة
 
-**Portal note:** لا تضع رابط PBIX ما تم رفعه والتحقق منه. استخدم ملف اليوم الثامن الفعلي من موقع الدورة كـStarting point.
+**Portal note:** تم رفع ملف PBIX الأصلي وربطه من صفحة اليوم التاسع. استخدم ملف اليوم الثامن الفعلي من موقع الدورة كـStarting point.
