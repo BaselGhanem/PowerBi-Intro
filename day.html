@@ -32,6 +32,17 @@
       </div>
     </section>
 
+    <nav class="day-quick-nav-wrap" aria-label="وصول سريع لمحتوى اليوم">
+      <div class="shell day-quick-nav" id="dayQuickNav">
+        <span class="day-quick-label">وصول سريع</span>
+        <a class="day-quick-link day-quick-video" id="dayQuickVideo" href="#recordingHeroWrap" hidden><span aria-hidden="true">▶</span> التسجيل</a>
+        <a class="day-quick-link day-quick-primary" href="#filesPanel">ملفات اليوم</a>
+        <a class="day-quick-link" href="#buildPanel">خطوات التطبيق</a>
+        <a class="day-quick-link" href="#challengePanel">التحدي</a>
+        <a class="day-quick-link" href="concepts/">مكتبة المفاهيم <span aria-hidden="true">↗</span></a>
+      </div>
+    </nav>
+
     <section class="recording-hero-wrap" id="recordingHeroWrap" hidden>
       <div class="shell">
         <article class="recording-hero-panel">
@@ -67,16 +78,18 @@
             </article>
           </div>
 
-          <article class="panel">
+          <article class="panel" id="topicsPanel">
             <span class="panel-kicker">WHAT WE WILL USE</span>
             <h2>الأدوات والمفاهيم</h2>
             <div class="topic-grid" id="topics"></div>
+            <button class="day-expand-btn" id="topicsToggle" type="button" aria-controls="topics" aria-expanded="false" hidden>عرض بقية المفاهيم</button>
           </article>
 
-          <article class="panel">
+          <article class="panel" id="buildPanel">
             <span class="panel-kicker">BUILD WITH ME</span>
             <h2>ماذا سنبني أثناء الجلسة؟</h2>
             <div class="steps" id="buildSteps"></div>
+            <button class="day-expand-btn" id="stepsToggle" type="button" aria-controls="buildSteps" aria-expanded="false" hidden>عرض بقية الخطوات</button>
           </article>
 
           <article class="panel visual-guide-panel" id="visualGuidePanel" hidden>
@@ -89,7 +102,7 @@
             <small class="visual-guide-hint">اضغط على الصورة لفتحها بالحجم الكامل</small>
           </article>
 
-          <article class="panel challenge-panel">
+          <article class="panel challenge-panel" id="challengePanel">
             <span class="panel-kicker">YOUR TURN</span>
             <h2>تحدي اليوم</h2>
             <p id="challenge"></p>
@@ -112,7 +125,7 @@
             <a class="btn btn-primary full-btn" id="downloadPowerBiBtn" target="_blank" rel="noopener">DOWNLOAD POWER BI DESKTOP ↗</a>
           </article>
 
-          <article class="panel files-panel">
+          <article class="panel files-panel" id="filesPanel">
             <span class="panel-kicker">DAY FILES</span>
             <h2>ملفات اليوم</h2>
             <div class="resource-list" id="resources"></div>
@@ -173,8 +186,28 @@
       document.getElementById('downloadPowerBiBtn').href = COURSE_CONFIG.powerBiDownloadUrl;
     }
 
-    document.getElementById('topics').innerHTML = day.topics.map(t => `<div class="topic-item">${t}</div>`).join('');
-    document.getElementById('buildSteps').innerHTML = day.build.map((t,i) => `<div class="step"><span class="step-num">${String(i+1).padStart(2,'0')}</span><span>${t}</span></div>`).join('');
+    const topicLimit = 6;
+    const stepLimit = 5;
+    document.getElementById('topics').innerHTML = day.topics.map((t,i) => `<div class="topic-item day-topic-item" ${i >= topicLimit ? 'hidden' : ''}>${t}</div>`).join('');
+    document.getElementById('buildSteps').innerHTML = day.build.map((t,i) => `<div class="step day-step-item" ${i >= stepLimit ? 'hidden' : ''}><span class="step-num">${String(i+1).padStart(2,'0')}</span><span>${t}</span></div>`).join('');
+
+    function setupDayExpander(buttonId, itemSelector, limit) {
+      const button = document.getElementById(buttonId);
+      const items = Array.from(document.querySelectorAll(itemSelector));
+      if (items.length <= limit) return;
+      let expanded = false;
+      const collapsedLabel = `عرض البقية (+${items.length - limit})`;
+      button.hidden = false;
+      button.textContent = collapsedLabel;
+      button.addEventListener('click', () => {
+        expanded = !expanded;
+        items.forEach((el, i) => { if (i >= limit) el.hidden = !expanded; });
+        button.textContent = expanded ? 'عرض اقل' : collapsedLabel;
+        button.setAttribute('aria-expanded', String(expanded));
+      });
+    }
+    setupDayExpander('topicsToggle', '.day-topic-item', topicLimit);
+    setupDayExpander('stepsToggle', '.day-step-item', stepLimit);
 
     const visualGuidePanel = document.getElementById('visualGuidePanel');
     if (day.visualGuide?.image) {
@@ -195,6 +228,7 @@
     if (videoEmbed) {
       videoBox.innerHTML = videoEmbed;
       recordingHeroWrap.hidden = false;
+      document.getElementById('dayQuickVideo').hidden = false;
     } else {
       videoBox.replaceChildren();
       recordingHeroWrap.hidden = true;

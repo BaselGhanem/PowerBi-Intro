@@ -375,3 +375,139 @@ img { max-width: 100%; display: block; }
   font-size:.68rem;
   text-align:center
 }
+
+
+/* ───────────────────────────────────────────────────────────
+   COURSE UX REFINEMENT — consistent readability & navigation
+   Scope: course hub and day pages, keeps all existing content.
+   ─────────────────────────────────────────────────────────── */
+html { scroll-padding-top: 146px; }
+.day-hero { padding-bottom: 22px; }
+.day-quick-nav-wrap {
+  position: sticky;
+  top: 72px;
+  z-index: 42;
+  border-block: 1px solid rgba(255,255,255,.065);
+  background: rgba(12,15,19,.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.day-quick-nav {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding-block: 11px;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.day-quick-nav::-webkit-scrollbar { display: none; }
+.day-quick-label {
+  flex-shrink: 0;
+  color: #96abb4;
+  font-weight: 700;
+  font-size: .75rem;
+  margin-inline-end: 9px;
+}
+.day-quick-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  padding: 10px 15px;
+  border: 1px solid rgba(255,255,255,.105);
+  border-radius: 100px;
+  background: rgba(255,255,255,.035);
+  color: #dee9ed;
+  font-weight: 700;
+  font-size: .82rem;
+  line-height: 1.5;
+  transition: background .22s var(--ease), color .22s var(--ease), border-color .22s var(--ease), transform .22s var(--ease);
+}
+.day-quick-link:hover {
+  background: rgba(9,153,153,.12);
+  border-color: rgba(9,153,153,.48);
+  color: #f4ffff;
+  transform: translateY(-1px);
+}
+.day-quick-primary {
+  background: #099999;
+  border-color: #099999;
+  color: white;
+}
+.day-quick-primary:hover { background: #087d7d; }
+.day-quick-video { color: #f3d75d; }
+.day-quick-video[hidden], .day-expand-btn[hidden], .day-topic-item[hidden], .day-step-item[hidden] { display: none !important; }
+#recordingHeroWrap, #filesPanel, #buildPanel, #challengePanel, #topicsPanel { scroll-margin-top: 150px; }
+
+.day-expand-btn {
+  margin-top: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(9,153,153,.34);
+  border-radius: 12px;
+  padding: 10px 16px;
+  background: rgba(9,153,153,.075);
+  color: #70d6d2;
+  font-size: .85rem;
+  font-weight: 800;
+  transition: background .2s var(--ease), border-color .2s var(--ease);
+}
+.day-expand-btn:hover { background: rgba(9,153,153,.15); border-color: rgba(9,153,153,.6); }
+
+.day-layout .panel {
+  border-color: rgba(255,255,255,.09);
+  background-color: #14181d;
+}
+.day-main-stack .panel, .day-sidebar .panel { padding: clamp(18px,2.2vw,25px); }
+.day-intro-grid .panel { padding: clamp(18px,2.2vw,25px); }
+.day-main-stack .panel h2, .day-sidebar .panel h2 { font-size: clamp(1.15rem,2vw,1.38rem); line-height: 1.55; }
+.day-layout .panel p { font-size: .93rem; line-height: 1.9; }
+.day-layout .panel-kicker { font-size: .75rem; letter-spacing: .08em; line-height: 1.5; }
+.day-layout .topic-item { font-size: .89rem; line-height: 1.8; padding: 13px; color: #dee7eb; border-radius: 13px; }
+.day-layout .step { padding: 14px; border-radius: 13px; align-items: flex-start; }
+.day-layout .step span:not(.step-num) { font-size: .9rem; line-height: 1.85; color: #d9e5e9; }
+.day-layout .step-num { width: 30px; height: 30px; border-radius: 10px; font-size: .73rem; }
+.day-layout .resource { padding: 13px; border-radius: 14px; min-height: 66px; transition: border-color .2s var(--ease), background .2s var(--ease); }
+.day-layout a.resource:hover { border-color: rgba(9,153,153,.45); background: rgba(9,153,153,.055); }
+.day-layout .resource-copy strong { font-size: .86rem; line-height: 1.5; overflow-wrap: anywhere; white-space: normal; }
+.day-layout .resource-copy small { font-size: .77rem; line-height: 1.7; color: #a9b9c4; }
+.day-layout .resource-action { font-size: .8rem; }
+.day-layout .resource-icon { width: 43px; height: 43px; flex: 0 0 43px; font-size: .71rem; }
+.day-layout .day-nav a { font-size: .85rem; padding: 12px; }
+.portal-day .portal-en { font-size: .76rem; line-height: 1.6; }
+.portal-day .resource-count { font-size: .77rem; }
+.portal-day h3 { font-size: 1.12rem; }
+.welcome-card p { font-size: .94rem; line-height: 1.9; }
+.portal-day:hover { box-shadow: 0 14px 28px rgba(0,0,0,.18); }
+
+button:focus-visible, a:focus-visible { outline: 2px solid #60d5d0; outline-offset: 3px; }
+@media (max-width: 900px) {
+  .day-layout { display: flex; flex-direction: column; gap: 14px; }
+  .day-sidebar { display: contents; }
+  .day-sidebar .files-panel { order: 1; }
+  .day-main-stack { order: 2; }
+  .day-sidebar .live-session-panel { order: 3; }
+  .day-sidebar .install-panel { order: 4; }
+  .day-sidebar .complete-box { order: 5; }
+  .day-sidebar .day-nav { order: 6; margin-top: 0; }
+  .day-intro-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 620px) {
+  html { scroll-padding-top: 130px; }
+  .day-quick-nav-wrap { top: 64px; }
+  .day-quick-nav { padding-block: 9px; gap: 7px; }
+  .day-quick-label { display: none; }
+  .day-quick-link { font-size: .8rem; padding: 9px 12px; }
+  #recordingHeroWrap, #filesPanel, #buildPanel, #challengePanel, #topicsPanel { scroll-margin-top: 132px; }
+  .day-layout .resource { gap: 10px; padding: 12px; }
+  .day-layout .resource-copy strong { font-size: .81rem; }
+  .day-layout .panel p { font-size: .91rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .day-quick-link, .day-expand-btn, .portal-day, .day-layout .resource { transition: none; }
+}
