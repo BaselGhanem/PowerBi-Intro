@@ -220,6 +220,23 @@ small.tip{color:var(--soft);font-size:11px}
 @media(max-width:880px){.safety-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:620px){.safety-grid,.repair-body{grid-template-columns:1fr}.repair-body,.repair-head{padding:16px}.repair-head h3{font-size:20px}.repair-actions{grid-column:auto}.repair-actions button{width:100%}.preview-check{align-items:stretch}.preview-check button{width:100%}}
 
+
+/* Day 10 learning-path and in-context teaching tools */
+.lab-journey{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:22px 0 2px}
+.lab-journey a{border:1px solid rgba(99,224,220,.19);border-radius:15px;padding:15px 11px;background:linear-gradient(145deg,#18313a,#10222c);min-width:0;transition:transform .2s ease,border-color .2s ease}
+.lab-journey a:hover{border-color:#54dcd2;transform:translateY(-2px)}.lab-journey strong{font:800 11px/1.5 Inter,Arial;display:block;color:#b6f0eb}.lab-journey small{display:block;color:#9fbac2;font-size:11px;margin-top:6px;line-height:1.6}
+.lab-help{margin-top:0;border:1px solid rgba(99,224,220,.18);border-radius:10px;background:#0b272b;padding:8px 11px}
+.lab-help summary{list-style:none;cursor:pointer;color:#87d9d2;font-size:11px;font-weight:800}
+.lab-help summary::-webkit-details-marker{display:none}.lab-help summary:after{content:" +";color:#e7f7f4}
+.lab-help[open] summary:after{content:" −"}.lab-help p{color:#bfdae0;font-size:11px;line-height:1.8;margin:7px 0}
+.lab-help code{color:#ffe29b;font-size:11px;overflow-wrap:anywhere;direction:ltr;unicode-bidi:plaintext}
+.safe-switch{margin:17px 0 3px;padding:16px;border:1px solid rgba(100,224,186,.43);border-radius:15px;background:linear-gradient(125deg,rgba(16,110,94,.27),rgba(9,153,153,.08))}
+.safe-switch label{display:flex;gap:10px;align-items:start;font-size:13px;font-weight:800;cursor:pointer}
+.safe-switch input{width:18px;height:18px;accent-color:#0baa9e;margin-top:5px;flex-shrink:0}
+.safe-switch p{color:#a4d4ce;font-size:11px;margin:7px 0 0}
+@media(max-width:880px){.lab-journey{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:620px){.lab-journey{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.lab-journey a{padding:12px 9px}}
+
 </style>
 </head>
 <body>
@@ -238,7 +255,13 @@ small.tip{color:var(--soft);font-size:11px}
 </div>
 <div class="hero-demo" aria-hidden="true"><div class="mock-bar"><span class="en">NOVA / EXECUTIVE INTELLIGENCE</span><span class="mock-dot"></span></div><div class="mock-card"><div class="mock-top"><span>SALES PERFORMANCE</span><span class="en">LIVE DESIGN CONCEPT</span></div><div class="mock-value">$842,500 <small>↗ +12.8%</small></div><div class="mini-bars"><i style="--h:39%"></i><i style="--h:62%"></i><i style="--h:49%"></i><i style="--h:78%"></i><i style="--h:68%"></i><i style="--h:91%"></i></div><div class="mock-bottom"><span>JAN</span><span>FEB</span><span>MAR</span><span>APR</span><span>MAY</span><span>JUN</span></div></div><div class="mock-glow"></div></div>
 </div></section>
-
+<div class="wrap"><nav class="lab-journey" aria-label="مراحل اليوم العاشر">
+ <a href="before-after.html"><strong>01 · DISCOVER</strong><small>Before &amp; After</small></a>
+ <a href="prompt-anatomy.html"><strong>02 · LEARN</strong><small>Prompt Anatomy</small></a>
+ <a href="#studio"><strong>03 · CREATE</strong><small>AI Prompt Builder</small></a>
+ <a href="#repairMode"><strong>04 · VALIDATE</strong><small>Visual Rescue Mode</small></a>
+ <a href="student-missions.html"><strong>05 · APPLY</strong><small>Personal Missions</small></a>
+</nav></div>
 <section class="section" id="studio"><div class="wrap">
 <div class="section-head"><div><span class="kicker">THE DESIGN WORKBENCH</span><h2>ابنِ الـPrompt خطوة بخطوة</h2><p>اختار، جرّب، راجع المعاينة، وانسخ وصف جاهز ومفصل للـAI</p></div><button class="secondary" type="button" id="resetButton">↺ بدء من جديد</button></div>
 <div class="workbench">
@@ -252,7 +275,8 @@ small.tip{color:var(--soft);font-size:11px}
 </div>
 <section class="step-panel" id="step0" role="tabpanel" aria-labelledby="tab0">
 <h3>01 — اشرح للـAI شو بدك تحلل</h3><p>أهم خطوة. لا تبدأ بالحركة قبل ما تحدد السؤال والبيانات الصحيحة</p>
-<div class="group-label">أمثلة جاهزة حسب مجال المتدرب</div><div class="presets" id="rolePresets">
+<div class="group-label">أمثلة جاهزة حسب مجال المتدرب</div>
+<div class="note" style="margin:11px 0">كيف تجيب أسماء الحقول الصحيحة؟ افتح <b>Data / Fields Pane</b> داخل Power BI، وانسخ اسم الـMeasure كما هو (مثال <span dir="ltr">[Total Revenue]</span>) واسم العمود مع اسم الجدول (مثال <span dir="ltr">DimProduct[Category]</span>). أسماء الـMeasures تحت أي جدول ما بتغير طريقة استخدامها داخل Measure.</div><div class="presets" id="rolePresets">
 <button class="preset" type="button" data-role="sales">محمود · Sales</button><button class="preset" type="button" data-role="ops">سمية · Operations</button><button class="preset" type="button" data-role="finance">هشام · Finance</button><button class="preset" type="button" data-role="workforce">ايناس · Workforce</button>
 </div>
 <div class="fields">
@@ -306,6 +330,7 @@ small.tip{color:var(--soft);font-size:11px}
 <div class="field"><label for="language">اتجاه النص</label><select id="language" data-prompt><option value="Arabic RTL labels and LTR technical terms/numbers">Arabic RTL + Numbers LTR</option><option value="English LTR">English LTR</option><option value="Bilingual labels, explicit direction per element">Arabic / English</option></select></div>
 <div class="field"><label for="maxRows">الحد الأقصى للفئات المعروضة</label><input id="maxRows" type="number" min="1" max="300" value="20" data-prompt></div>
 <div class="field span2"><label for="edgeCases">القيم الفارغة والسالبة والـZero</label><select id="edgeCases" data-prompt><option value="Distinguish BLANK from zero, display an empty-state message, preserve negative values">فرّق بين Blank وZero</option><option value="Replace blanks with a visible em dash only; never silently alter the underlying number">اعرض — للفراغات</option><option value="Hide categories with blank primary measure; keep real zeros and negatives">أخفِ الفئات ذات القيمة الفارغة فقط</option></select></div>
+<div class="field span2"><div class="safe-switch"><label><input id="safeMode" type="checkbox" checked data-prompt><span>Safe Mode — ابدأ بنسخة Static قبل الـPremium</span></label><p>لما يكون مفعل، رح يطلب من الـAI نسخة ثابتة كاملة وسليمة أولاً، وبعدها يضيف تأثير بصري غير مؤثر على طول الأعمدة أو ظهور القيم. الخيار الأفضل للعرض المباشر.</p></div></div>
 <div class="field span2"><label for="technicalNotes">شروط إضافية للكود</label><textarea id="technicalNotes" placeholder="مثال: لا تستخدم JavaScript، لا تعتمد على CDN، لا تفترض أن HTML Hover = Native Cross Filter" data-prompt></textarea></div>
 <div class="field span2"><label>مرجع بصري اختياري — Screenshot</label>
 <div class="ref-drop" id="referenceDrop">
@@ -495,6 +520,8 @@ var lines=[
 "Target host: "+v("target"),
 "Output format: "+v("output"),
 "Return complete paste-ready code with all relevant DAX VAR declarations and final RETURN. Use FORMAT/COALESCE/conditional formatting only when semantically appropriate.",
+"SAFE MODE: "+(v("safeMode")?"ENABLED. Return TWO complete DAX measures: first a fully visible STATIC baseline with no animations, then the premium enhancement. Both must display identical data and filter context; premium motion must affect decorative layers only.":"OFF. Return one complete premium measure, but the same static-visibility and data-accuracy requirements remain mandatory."),
+
 "Do not use fake business data or hard-coded KPI numbers. Mockup values are not actual report values.",
 "Distinguish BLANK, 0 and negative values. Rule: "+v("edgeCases"),
 "Use valid HTML/SVG markup, safe escaping of text/labels, self-contained CSS and safe animation. No external libraries/CDNs unless I explicitly approve.",
@@ -626,6 +653,35 @@ $("referenceDrop").addEventListener("dragleave",function(){this.classList.remove
 $("referenceDrop").addEventListener("drop",function(e){e.preventDefault();this.classList.remove("drag");readReference(e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0]);});
 try{var saved=JSON.parse(localStorage.getItem("day10_nova_visual_lab_v1")||"null");if(saved&&typeof saved==="object"){suppressSave=true;document.querySelectorAll("[data-prompt]").forEach(function(e){if(Object.prototype.hasOwnProperty.call(saved,e.id)){if(e.type==="checkbox")e.checked=!!saved[e.id];else e.value=String(saved[e.id]);}});selectedEffect=Number.isInteger(saved.effect)&&saved.effect>=0&&saved.effect<effects.length?saved.effect:0;document.querySelectorAll(".fx-option").forEach(function(x){x.setAttribute("aria-pressed",String(Number(x.dataset.effect)===selectedEffect));});suppressSave=false;}}catch(e){}
 window.addEventListener("beforeunload",function(){if(referenceURL)URL.revokeObjectURL(referenceURL);});
+// Contextual help for the highest-impact prompt decisions.
+var helpTexts={
+ business:["حدد السؤال الإداري، مش مجرد اسم الرسم.","مثال: Which category has highest revenue?"],
+ measures:["اكتب أسماء الـMeasures الحالية. بدونهم الـAI ممكن يخمن حسابات غلط.","مثال: [Total Revenue], [Revenue YoY %]"],
+ dimension:["Dimension بتحدد تجميع البيانات؛ انسخ الاسم الدقيق من Model Pane.","مثال: DimProduct[Category]"],
+ period:["هل النتيجة شهرية أم يومية أم آخر Snapshot؟","مثال: Latest monthly workforce snapshot only"],
+ chart:["اختيار نوع الرسم يعتمد على السؤال وعدد الفئات.","مثال: Horizontal Bar لعرض ترتيب Categories"],
+ topN:["إذا الصفحة صغيرة، تقليل الفئات أفضل من قص النصوص أو تصغيرها كثيرا.","مثال: 474x271 -> Top 5 rather than Top 8"],
+ sort:["TOPN لوحدها ما بتضمن عرض الصفوف بنفس الترتيب؛ لازم ترتيب CONCATENATEX أيضا.","مثال: Revenue DESC, Category ASC"],
+ width:["حجم الـVisual داخل Power BI Desktop، مش حجم شاشة الكمبيوتر.","مثال: 474px width, 271px height"],
+ height:["احسب صفوف الرسم مع Header وPadding وAxis.","مثال: 8 rows may need ~321px"],
+ primaryColor:["اختار لون متناسق مع هوية التقرير، وخلي لون الخط مقروء.","مثال: #099999"],
+ bg:["Transparent تعني الخلفية لا تحتوي لون معبأ، لكن العنصر ممكن يكون له Border.","مثال: Transparent + readable contrast"],
+ intensity:["الحركة ما لازم تكون جزء من حساب أو ظهور البيانات.","مثال: animated shimmer above static bar"],
+ speed:["وضح مدة الحركة وكم مرة تتكرر؛ الحركة القصيرة غالبا أقل تشتيتا.","مثال: 3s, once, decorative only"],
+ target:["Regular وSecure ممكن يختلفوا بالقيود. اختبر على نسخة الـVisual عندك.","مثال: CSS-only before scripts"],
+ output:["اطلب DAX Measure كاملة، مع RETURN، مش مقتطفات CSS فقط.","مثال: Complete paste-ready DAX measure"],
+ maxRows:["حط سقف حتى ما يختفي النص أو يصير الرسم بطيئا.","مثال: max 10 categories when space allows"],
+ edgeCases:["BLANK مش نفسه 0؛ السالب بده محور مناسب.","مثال: show real 0, hide BLANK only"]
+};
+Object.keys(helpTexts).forEach(function(id){
+ var target=$(id);if(!target)return;
+ var field=target.closest(".field");if(!field)return;
+ var help=document.createElement("details");help.className="lab-help";
+ var sum=document.createElement("summary");sum.textContent="ليش هذا الخيار مهم؟";
+ var note=document.createElement("p");note.textContent=helpTexts[id][0];
+ var code=document.createElement("code");code.textContent=helpTexts[id][1];
+ help.append(sum,note,code);field.appendChild(help);
+});
 selectStep(0);update();
 })();
 </script>
