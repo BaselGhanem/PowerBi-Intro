@@ -440,13 +440,12 @@ function renderPreview(){
  else if(chart==="Treemap"){svg='<rect x="15" y="13" width="160" height="135" rx="7" fill="var(--accent)"/><rect x="182" y="13" width="153" height="65" rx="7" fill="#225e63"/><rect x="182" y="85" width="75" height="63" rx="7" fill="var(--accent2)"/><rect x="264" y="85" width="71" height="63" rx="7" fill="#287b7d"/>';}
  else svg=bars(true);
  $("chartSvg").innerHTML=svgWrap(svg);
+ var previousQA=$("qaRows");if(previousQA)previousQA.remove();
  if(qaPreview){
    stage.classList.add("qa-mode");
    stage.style.animation="none";
    $("previewChartType").textContent="BAR SCALE CHECK · ILLUSTRATIVE";
    $("chartSvg").insertAdjacentHTML("afterend",'<div class="qa-rows" id="qaRows"><div class="qa-row"><span>MAX</span><div class="qa-track"><i class="qa-bar" style="--fraction:100%"></i></div><label>100%</label></div><div class="qa-row"><span>SECOND</span><div class="qa-track"><i class="qa-bar" style="--fraction:90%"></i></div><label>90%</label></div><div class="qa-row"><span>ZERO</span><div class="qa-track"><i class="qa-bar" style="--fraction:0%"></i></div><label>0%</label></div></div>');
- }else{
-   var qa=$("qaRows");if(qa)qa.remove();
  }
 }
 function spec(){
@@ -490,6 +489,7 @@ var lines=[
 "Tooltip within HTML: "+(v("tooltip")?"requested if supported":"not required"),
 "Respect prefers-reduced-motion: "+(v("reduced")?"yes":"not explicitly requested; still avoid inaccessible motion"),
 "Extra design directions: "+(v("designNotes")||"Premium and restrained; readable at actual visual size."),
+"Interpret vague requests such as Ultimate Design as: balanced visual hierarchy, excellent readability at the requested size, precise alignment, subtle restrained motion and clear values. Do not sacrifice data visibility for visual flair.",
 "",
 "5) TECHNICAL CONTRACT",
 "Target host: "+v("target"),
