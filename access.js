@@ -36,7 +36,7 @@ const ACCESS_CONFIG = {
     "Day 6": "AUTO",  // AUTO / ON / OFF
     "Day 7": "AUTO",  // AUTO / ON / OFF
     "Day 8": "AUTO",  // AUTO / ON / OFF
-    "Day 9": "AUTO",  // AUTO / ON / OFF
+    "Day 9": "ON",    // AUTO / ON / OFF
     "Day 10": "AUTO"  // AUTO / ON / OFF
   }
 };
