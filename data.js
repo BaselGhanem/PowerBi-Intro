@@ -214,17 +214,23 @@ const DAYS = [
     date: '2026-10-11',
     weekday: 'الأحد',
     phase: 'CREATE',
-    title: 'AI Visual Design Lab',
-    titleAr: 'حوّل أي Visual إلى HTML بالذكاء الاصطناعي',
-    hook: 'بدل ما تسأل AI اعمل رسم حلو، اعطيه البيانات والحجم والألوان والحركة والتفاعل والحدود التقنية بالضبط.',
-    mission: 'اتعلم تكتب Prompt احترافي يحول Visual مناسبة إلى HTML/SVG داخل Power BI باستخدام DAX Measure حقيقية.',
-    topics: ['AI Prompt Engineering', 'Business Question & DAX Measures', 'Visual Chart Types', 'Dimensions & Responsive Layout', '20 Motion & Visual Effects', 'Brand Identity', 'HTML Content Visual', 'Hover & Tooltip Limitations', 'AI Code Debugging', 'Data Validation'],
-    build: ['Open AI Visual Design Lab', 'Choose a role and real business question', 'Provide existing Measures and Dimensions', 'Select Chart Type and size', 'Choose colors and one animation from 20 effects', 'Define Power BI HTML Content edition and technical limits', 'Copy the generated Prompt into AI', 'Verify generated DAX and Visual values against the native report', 'Customize one HTML Visual and save'],
-    challenge: 'حوّل Visual واحدة من صفحتك إلى HTML تصميمها من اختيارك، واحكي ليش اخترت النوع والحركة وكيف تأكدت من صحة الأرقام.',
-    deliverable: 'Prompt متكامل قابل لإعادة الاستخدام + DAX HTML Visual مخصصة لمشروع Nova + اختبار صحة الأرقام.',
+    title: 'AI Visual Design Masterclass',
+    titleAr: 'من Native Visual الى تجربة HTML احترافية',
+    hook: 'الشكل الجميل لحاله مش كفاية. لازم توصف البيانات والحركة والابعاد للـAI، وبعدين تتأكد إن كل رقم وشريط صح.',
+    mission: 'من خلال AI Visual Design Lab رح تتعلم تحوّل فكرة تحليلية الى DAX HTML/SVG Visual مناسبة لمجالك، وتراجع الناتج وتصلح أخطاء التصميم والبيانات.',
+    topics: ['Before & After — Native vs HTML', 'Prompt Anatomy — 16 Decisions', 'Existing Measures & Dimensions', 'Filter Context & Data Grain', '19 Chart Types', '20 Design Effects', 'Safe Mode & Static-first Motion', 'Canvas Size & Responsive Layout', 'DAX HTML Content & Technical Limits', 'Visual Rescue & Quality Assurance'],
+    build: ['Watch the Before & After showcase', 'Learn what each Prompt field actually means', 'Open the AI Visual Design Lab and pick a role preset', 'Copy actual Measures and Dimensions from Nova', 'Choose chart, Top N, size, brand colors and visual effect', 'Keep Safe Mode ON and generate a complete DAX Measure', 'Compare with the original Native Visual using the same slicers', 'Try the Visual Rescue Mode when an effect clips or hides data', 'Finish your own role mission and explain your design decision'],
+    challenge: 'حوّل Visual من صفحتك الى HTML داخل Power BI. بدنا نفس الأرقام والفلترة، شكل واضح، وبيانات تضل ظاهرة حتى لو وقفت الـAnimation.',
+    deliverable: 'Prompt احترافي + HTML/DAX Measure + نفس الأرقام في Native Visual + نتيجة مخصصة من اختيارك + QA مكتملة.',
+    visualGuide: { image: 'week3/day10/assets/Day10_Studio_Roadmap.svg', title: 'Day 10 — AI Visual Design Masterclass', note: 'Discover → Learn → Create → Validate → Apply، مع خمس محطات ونقاط تحقق.' },
     resources: [
-      { name: 'DAY 10 — AI VISUAL DESIGN LAB', type: 'WEB', url: 'week3/day10/ai-visual-design-lab.html', note: 'مختبر تفاعلي: 20 تأثير، 19 نوع رسم، Prompt Builder، ومعاينة مباشرة' },
-      { name: 'NOVA — DAY 09 EXECUTIVE 360', type: 'PBIX', url: 'week3/day9/downloads/Nova_Day09_Executive_360.pbix', note: 'ابدأ من آخر ملف Nova فعلي، ما بنرجع نبني الـModel' }
+      { name: '01 — BEFORE & AFTER SHOWCASE', type: 'WEB', url: 'week3/day10/before-after.html', note: 'مقارنة تفاعلية بين شكل Native ورسم HTML، مع اختبار إيقاف الحركة' },
+      { name: '02 — PROMPT ANATOMY', type: 'WEB', url: 'week3/day10/prompt-anatomy.html', note: 'شرح 16 قرار مهم في كتابة Prompt احترافية وأمثلتها' },
+      { name: '03 — AI VISUAL DESIGN LAB', type: 'WEB', url: 'week3/day10/ai-visual-design-lab.html', note: 'المختبر الرئيسي: 20 تأثير، 19 Chart، Safe Mode وVisual Rescue' },
+      { name: '04 — PERSONAL STUDENT MISSIONS', type: 'WEB', url: 'week3/day10/student-missions.html', note: 'مهام محمود وسمية وهشام وايناس مع نقاط التحقق' },
+      { name: '05 — PROMPT CHEAT SHEET', type: 'WEB', url: 'week3/day10/cheat-sheet.html', note: 'مرجع جاهز للطباعة أو الحفظ PDF، مع خيار تنزيل TXT' },
+      { name: '06 — FOUR DAX REFERENCE MEASURES', type: 'Guide', url: 'week3/day10/examples/README.md', note: 'أكواد مرجعية آمنة للحركة؛ مطلوب اختبارها داخل Power BI Desktop' },
+      { name: '07 — NOVA EXECUTIVE 360 PBIX', type: 'PBIX', url: 'week3/day9/downloads/Nova_Day09_Executive_360.pbix', note: 'نسخة Nova الأصلية؛ اعمل Save As قبل تطبيق Day 10' }
     ]
   }
 ];
