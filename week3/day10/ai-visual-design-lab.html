@@ -558,7 +558,10 @@ function validation(){
  return issues;
 }
 function readiness(){
- var tests=[!!v("business"),!!v("measures"),!!v("chart"),Number(v("width"))>=150&&Number(v("height"))>=100,!!v("primaryColor")&&!!v("secondaryColor"),!!effects[selectedEffect],!!v("target"),!!v("output")];
+ var chart=v("chart"),needsDim=!["KPI Card","Gauge","Progress Ring"].includes(chart);
+ var top=Math.min(Math.max(1,Number(v("topN"))||8),Math.max(1,Number(v("maxRows"))||20));
+ var fitOK=!(needsDim&&["Horizontal Bar Chart","Column Chart","Lollipop Chart","Diverging Bar Chart","Heatmap","Matrix"].includes(chart)&&Number(v("height"))<top*27+105);
+ var tests=[!!v("business"),!!v("measures"),!needsDim||(!!v("dimension")&&!/VERIFY EXACT FIELD|VERIFY:/.test(v("dimension"))),!!chart,Number(v("width"))>=150&&Number(v("height"))>=100,Number(v("topN"))<=Number(v("maxRows")),fitOK,!!v("target")&&!!v("output")];
  var count=tests.filter(Boolean).length,issues=validation();
  $("readyValue").textContent=count+" / 8";
  $("readyBar").style.width=count/8*100+"%";
