@@ -213,20 +213,18 @@ const DAYS = [
     id: 10,
     date: '2026-10-11',
     weekday: 'الأحد',
-    phase: 'DECIDE',
-    title: 'The Boardroom',
-    titleAr: 'الاختبار الحقيقي: The Boardroom',
-    hook: 'وصلت بيانات جديدة. الإدارة تريد أن تعرف ماذا تغيّر، لماذا، وأين يجب أن تتدخل.',
-    mission: 'نفّذ العملية كاملة من Refresh إلى Insight ثم قدّم قراراً قابلاً للدفاع عنه.',
-    topics: ['Refresh & Validation', 'Model Check', 'KPI Review', 'Target / Budget', 'PY & Growth', 'Executive Story', 'Power BI Service', 'Publish', 'Workspaces', 'Refresh Concept', 'RLS Overview'],
-    build: ['Final Refresh', 'Executive Dashboard', 'Root Cause Analysis', 'Boardroom Story'],
-    challenge: 'Final Mission: What happened? Why? Where should management focus? What action do you recommend?',
-    deliverable: 'Nova Business Performance 360 — مشروع نهائي متكامل وقابل للعرض على الإدارة.',
-    visualGuide: { image: 'concepts/assets/day10-learner-overview.webp', title: 'Day 10 — Learner Visual Guide', note: 'Refresh وValidation وExecutive View وRoot Cause والعرض النهائي' },
+    phase: 'CREATE',
+    title: 'AI Visual Design Lab',
+    titleAr: 'حوّل أي Visual إلى HTML بالذكاء الاصطناعي',
+    hook: 'بدل ما تسأل AI اعمل رسم حلو، اعطيه البيانات والحجم والألوان والحركة والتفاعل والحدود التقنية بالضبط.',
+    mission: 'اتعلم تكتب Prompt احترافي يحول Visual مناسبة إلى HTML/SVG داخل Power BI باستخدام DAX Measure حقيقية.',
+    topics: ['AI Prompt Engineering', 'Business Question & DAX Measures', 'Visual Chart Types', 'Dimensions & Responsive Layout', '20 Motion & Visual Effects', 'Brand Identity', 'HTML Content Visual', 'Hover & Tooltip Limitations', 'AI Code Debugging', 'Data Validation'],
+    build: ['Open AI Visual Design Lab', 'Choose a role and real business question', 'Provide existing Measures and Dimensions', 'Select Chart Type and size', 'Choose colors and one animation from 20 effects', 'Define Power BI HTML Content edition and technical limits', 'Copy the generated Prompt into AI', 'Verify generated DAX and Visual values against the native report', 'Customize one HTML Visual and save'],
+    challenge: 'حوّل Visual واحدة من صفحتك إلى HTML تصميمها من اختيارك، واحكي ليش اخترت النوع والحركة وكيف تأكدت من صحة الأرقام.',
+    deliverable: 'Prompt متكامل قابل لإعادة الاستخدام + DAX HTML Visual مخصصة لمشروع Nova + اختبار صحة الأرقام.',
     resources: [
-      { name: '10_Boardroom_Final_Case.zip', type: 'ZIP', url: '', note: 'البيانات الجديدة + Brief' },
-      { name: '10_Final_Submission_Checklist.pdf', type: 'PDF', url: '', note: 'قائمة التحقق النهائية' },
-      { name: 'Nova_Business_Performance_360_FINAL.pbix', type: 'PBIX', url: '', note: 'Trainer Reveal — يضاف بعد التحدي' }
+      { name: 'DAY 10 — AI VISUAL DESIGN LAB', type: 'WEB', url: 'week3/day10/ai-visual-design-lab.html', note: 'مختبر تفاعلي: 20 تأثير، 19 نوع رسم، Prompt Builder، ومعاينة مباشرة' },
+      { name: 'NOVA — DAY 09 EXECUTIVE 360', type: 'PBIX', url: 'week3/day9/downloads/Nova_Day09_Executive_360.pbix', note: 'ابدأ من آخر ملف Nova فعلي، ما بنرجع نبني الـModel' }
     ]
   }
 ];
