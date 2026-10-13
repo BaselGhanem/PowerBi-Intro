@@ -30,7 +30,7 @@
   const originalNext = $("nextStep"), originalPrev = $("prevStep");
   const progressBar=document.createElement("div");
   progressBar.className="typeform-progress";
-  progressBar.innerHTML='<span class="typeform-track"><i id="typeformFill"></i></span><span id="typeformPercent" class="en">0%</span>';
+  progressBar.innerHTML='<span class="typeform-track"><i></i></span><span class="en">0%</span>';
   $("studio")?.classList.add("typeform-active");
   const flat=config.flat();
   let selectedChapter=0, selectedQuestion=0;
@@ -156,7 +156,7 @@
     if(e.target.matches("textarea,select,button,summary,input[type=color],input[type=checkbox],input[type=file]"))return;
     if(e.target.matches("input")){e.preventDefault();go(1);}
   }));
-  $("resetButton").addEventListener("click",()=>{screen(0,0,false);setTimeout(render,0);});
+  window.day10LiveReset=()=>screen(0,0,false);
   screen(0,0,false);
 
   const stage=$("previewStage");
@@ -204,10 +204,12 @@
     stage.classList.toggle("live-responsive",!!gv("responsive"));
     stage.style.setProperty("--accent",accent);stage.style.setProperty("--accent2",gold);
     stage.style.setProperty("--motion",(clamp(gv("speed"),.3,30)/(intensity==="Expressive"?.7:intensity==="Subtle"?1.4:1))+"s");
+    stage.style.setProperty("--live-iterations",looping?"infinite":"1");
+    stage.style.setProperty("--live-strength",intensity==="Expressive"?"1.18":intensity==="Subtle"?"0.85":"1");
     stage.style.setProperty("--live-font",gv("font").startsWith("Inter")?"Inter,Arial,sans-serif":gv("font").startsWith("Segoe")?"'Segoe UI',Arial,sans-serif":"Almarai,'Segoe UI',sans-serif");
     stage.style.padding=clamp(gv("padding"),0,90)+"px";
     stage.style.borderRadius=clamp(gv("radius"),0,70)+"px";
-    stage.style.background=bg==="Transparent"?"repeating-conic-gradient(#ffffff06 0% 25%,transparent 0% 50%) 0 0 / 18px 18px, #10212a":bg==="Light pearl"?"#edf7f7":bg==="Glass translucent"?"linear-gradient(135deg,#17616c77,#ffffff0c)":"#101e2a";
+    stage.style.setProperty("background",bg==="Transparent"?"repeating-conic-gradient(#ffffff06 0% 25%,transparent 0% 50%) 0 0 / 18px 18px, #10212a":bg==="Light pearl"?"#edf7f7":bg==="Glass translucent"?"linear-gradient(135deg,#17616c77,#ffffff0c)":"#101e2a","important");
     stage.style.color=bg==="Light pearl"?"#183744":"#effafa";
     stage.style.fontFamily="var(--live-font)";
     stage.style.width=(ratio<.8?Math.max(63,Math.round(100*ratio/.8)):100)+"%";
@@ -218,6 +220,7 @@
     stage.style.animationPlayState=motionOn?"running":"paused";
     stage.style.animationIterationCount=looping?"infinite":"1";
     stage.dataset.motion=motionOn?"on":"off";
+    stage.dataset.loop=looping?"yes":"no";
     stage.dataset.hover=gv("hover").includes("lift")?"lift":gv("hover").includes("tooltip")?"tooltip":gv("hover")==="No hover interaction"?"none":"highlight";
     stage.classList.toggle("qa-mode",$("previewQAToggle").getAttribute("aria-pressed")==="true");
     const title=$("previewTitle");
@@ -316,7 +319,7 @@
     }else if(["Donut Chart","Progress Ring","Gauge","KPI Card"].includes(chart)){
       height=170;
       if(chart==="KPI Card"){
-        out+=txt(18,87,valueFormat(842500),43,"start","currentColor");
+        out+=txt(18,87,valueFormat(gv("unit").includes("Percentage")?78:842500),43,"start","currentColor");
         if(benchmark)out+=txt(18,116,"↑ 12.8% · "+benchmark.slice(0,19),12,"start","var(--accent2)");
         out+=`<path class="chart-line" d="M240 137 L260 104 L280 120 L310 58 L329 36" stroke="var(--accent)" stroke-width="3" fill="none"/>`;
       }else if(chart==="Gauge"){
