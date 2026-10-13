@@ -163,6 +163,27 @@
   const chartHost=$("chartSvg");
   let meta=$("livePreviewMeta");
   if(!meta){meta=document.createElement("div");meta.id="livePreviewMeta";meta.className="live-preview-meta";chartHost.after(meta);}
+
+  const plotLegend=document.createElement("div");
+  plotLegend.className="live-plot-legend";
+  plotLegend.hidden=true;
+  chartHost.after(plotLegend);
+  const hoverTip=document.createElement("div");
+  hoverTip.className="live-hover-tooltip";
+  hoverTip.setAttribute("role","tooltip");
+  stage.appendChild(hoverTip);
+  chartHost.addEventListener("pointermove",ev=>{
+    if(gv("hover")!=="HTML tooltip with contextual value"||!gv("tooltip")){hoverTip.classList.remove("visible");return;}
+    const shape=ev.target.closest?.(".live-shape, .chart-line");
+    if(!shape){hoverTip.classList.remove("visible");return;}
+    const value=shape.querySelector("title")?.textContent||"Illustrative data point";
+    hoverTip.textContent=value;
+    const rect=stage.getBoundingClientRect();
+    hoverTip.style.left=Math.max(40,Math.min(rect.width-40,ev.clientX-rect.left))+"px";
+    hoverTip.style.top=Math.max(45,ev.clientY-rect.top)+"px";
+    hoverTip.classList.add("visible");
+  });
+  chartHost.addEventListener("pointerleave",()=>hoverTip.classList.remove("visible"));
   const detail=document.createElement("details");
   detail.className="live-preview-config";
   detail.innerHTML='<summary>إعدادات المعاينة الحالية <span class="en" id="liveTouched">LIVE</span></summary><div id="liveConfigRows"></div>';
@@ -348,6 +369,19 @@
     chartHost.style.overflowY=height>(ratio<.8?230:Math.min(280,Math.max(175,h*.57)))?"auto":"hidden";
     chartHost.style.overflowX="hidden";
     const oldQa=$("qaRows");if(oldQa)oldQa.hidden=true;
+    plotLegend.hidden=!legend;
+    if(legend){
+      plotLegend.replaceChildren();
+      const values=[["var(--accent)","Main series"],["var(--accent2)",benchmark?"Benchmark":"Accent"]];
+      values.forEach(([color,name])=>{
+        const el=document.createElement("span"),dot=document.createElement("i");
+        dot.style.background=color;
+        el.appendChild(dot);
+        el.appendChild(document.createTextNode(name));
+        plotLegend.appendChild(el);
+      });
+    }
+
     // Respect the line chart axes/legend/labels and expose all non-visual specifications as live metadata.
     meta.replaceChildren();
     const chips=[];
@@ -391,6 +425,11 @@
       motionOn?`Motion · ${looping?"Loop":"Once"}`:"Static",
       benchmark?"Benchmark on":"No benchmark"
     ];
+
+    if(gv("chartNotes"))brief.push("Chart instructions ✓");
+    if(gv("designNotes"))brief.push("Design notes ✓");
+    if(gv("technicalNotes"))brief.push("Technical notes ✓");
+    if($("referenceName")?.textContent)brief.push("Visual reference ✓");
     brief.forEach(s=>{const span=document.createElement("span");span.textContent=s;contextual.appendChild(span);});
   }
   function previewChange(e){
