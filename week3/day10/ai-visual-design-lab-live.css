@@ -79,3 +79,12 @@
 .preview-stage:before,.preview-stage:after,.preview-stage .chart-line{animation-duration:var(--motion,3s)!important;animation-iteration-count:var(--live-iterations,1)!important}
 .live-hover-tooltip{position:absolute;z-index:4;pointer-events:none;max-width:195px;background:#0b252ccc;color:#efffff;border:1px solid #50baba77;border-radius:10px;padding:7px 10px;font:700 10px Inter,Arial,sans-serif;box-shadow:0 9px 22px #0005;opacity:0;transform:translate(-50%,-120%);transition:opacity .13s;white-space:nowrap}
 .live-hover-tooltip.visible{opacity:1}
+
+.live-plot-legend{display:flex;gap:12px;align-items:center;justify-content:center;font:600 10px Inter,Arial,sans-serif;color:#9cbfc4;padding:3px 0 6px}
+.live-plot-legend[hidden]{display:none}
+.live-plot-legend span{display:inline-flex;align-items:center;gap:6px}
+.live-plot-legend i{display:inline-block;width:8px;height:8px;border-radius:50%}
+.preview-stage.fx-grow .live-drawn-svg .live-shape{transform-origin:left center;transform-box:fill-box;animation:liveBarGrow var(--motion,2s) ease-out var(--live-iterations,1)}
+.preview-stage.fx-segments .live-drawn-svg .live-shape{animation:liveSegmentFade var(--motion,2s) ease-out var(--live-iterations,1)}
+@keyframes liveBarGrow{from{transform:scaleX(.05)}to{transform:scaleX(1)}}
+@keyframes liveSegmentFade{from{opacity:.3}to{opacity:1}}
