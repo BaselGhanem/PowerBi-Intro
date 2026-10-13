@@ -31,7 +31,7 @@
   const progressBar=document.createElement("div");
   progressBar.className="typeform-progress";
   progressBar.innerHTML='<span class="typeform-track"><i></i></span><span class="en">0%</span>';
-  $("studio")?.classList.add("typeform-active");
+  document.querySelector("#studio .studio")?.classList.add("typeform-active");
   const flat=config.flat();
   let selectedChapter=0, selectedQuestion=0;
 
